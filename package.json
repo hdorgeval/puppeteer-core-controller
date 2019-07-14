@@ -1,0 +1,36 @@
+{
+  "name": "puppeteer-core-controller",
+  "version": "0.0.1",
+  "description": "fluent API around puppeteer-core",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "tsc-init": "tsc --init",
+    "eslint-init": "eslint --init",
+    "jest-init": "jest --init",
+    "lint": "eslint . --ext .js,.ts --format visualstudio --no-color --max-warnings 10 --report-unused-disable-directives"
+  },
+  "author": "Henri d'Orgeval",
+  "license": "ISC",
+  "dependencies": {
+    "puppeteer-core": "1.18.1"
+  },
+  "devDependencies": {
+    "@types/jest": "24.0.15",
+    "@types/node": "12.6.2",
+    "@types/puppeteer-core": "1.9.0",
+    "@typescript-eslint/eslint-plugin": "1.12.0",
+    "@typescript-eslint/parser": "1.12.0",
+    "eslint": "6.0.1",
+    "eslint-config-prettier": "6.0.0",
+    "eslint-plugin-prettier": "3.1.0",
+    "jest": "24.8.0",
+    "prettier": "1.18.2",
+    "ts-jest": "24.0.2",
+    "ts-node": "8.3.0",
+    "typescript": "3.5.3"
+  },
+  "engines": {
+    "node": ">=6.4.0"
+  }
+}
