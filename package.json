@@ -2,13 +2,18 @@
   "name": "puppeteer-core-controller",
   "version": "0.0.1",
   "description": "fluent API around puppeteer-core",
-  "main": "index.js",
+  "main": "build/controller.js",
+  "typings": "build/controller.d.ts",
   "scripts": {
-    "test": "jest --config=jest.config.js --runInBand",
-    "tsc-init": "tsc --init",
+    "build": "rimraf build && npm run format && npm run lint && npm run tsc",
+    "check-format": "prettier --list-different \"lib/**/*.ts\" ",
     "eslint-init": "eslint --init",
+    "format": "prettier --write \"lib/**/*.ts\" ",
     "jest-init": "jest --init",
-    "lint": "eslint . --ext .js,.ts --format visualstudio --no-color --max-warnings 10 --report-unused-disable-directives"
+    "lint": "eslint . --ext .js,.ts --format visualstudio --no-color --max-warnings 10 --report-unused-disable-directives",
+    "test": "jest --config=jest.config.js --runInBand",
+    "tsc": " tsc --listEmittedFiles",
+    "tsc-init": "tsc --init"
   },
   "author": "Henri d'Orgeval",
   "license": "ISC",
@@ -26,6 +31,7 @@
     "eslint-plugin-prettier": "3.1.0",
     "jest": "24.8.0",
     "prettier": "1.18.2",
+    "rimraf": "2.6.3",
     "ts-jest": "24.0.2",
     "ts-node": "8.3.0",
     "typescript": "3.5.3"
