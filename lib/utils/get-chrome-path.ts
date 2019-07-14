@@ -1,4 +1,5 @@
 import * as os from 'os';
+import * as which from 'which';
 
 const currentPlatformType = os.type();
 
@@ -11,7 +12,10 @@ export function getChromePath(): string {
       return 'C:/Program Files (x86)/Google/Chrome/Application/chrome.exe';
 
     case 'Linux':
-      return '/usr/share/applications/google-chrome-stable';
+      if (which.sync('google-chrome-stable')) {
+        return 'google-chrome-stable';
+      }
+      return 'google-chrome';
 
     default:
       throw new Error('You should supply the path to the Chrome App in the launch options');
