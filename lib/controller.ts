@@ -1,6 +1,7 @@
 import * as puppeteer from 'puppeteer-core';
 import * as action from './actions';
 import { LaunchOptions } from './actions';
+import { getChromePath } from './utils/get-chrome-path';
 
 export class PuppeteerController implements PromiseLike<void> {
   public then<TResult1 = void, TResult2 = never>(
@@ -49,7 +50,7 @@ export class PuppeteerController implements PromiseLike<void> {
       ...this.launchOptions,
       ...options,
     };
-
+    this.launchOptions.executablePath = this.launchOptions.executablePath || getChromePath();
     this.browser = await action.launchAction(this.launchOptions);
   }
 

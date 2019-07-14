@@ -29,7 +29,6 @@ describe('Puppeteer Controller', (): void => {
     // Given
     const launchOptions: LaunchOptions = {
       headless: true,
-      executablePath: '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
     };
 
     // When
@@ -43,7 +42,6 @@ describe('Puppeteer Controller', (): void => {
     // Given
     const launchOptions: LaunchOptions = {
       headless: true,
-      executablePath: '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
     };
     const url = 'https://devexpress.github.io/testcafe/example';
 
