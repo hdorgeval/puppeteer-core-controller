@@ -28,7 +28,7 @@ describe('Puppeteer Controller', (): void => {
   test('should initialize', async (): Promise<void> => {
     // Given
     const launchOptions: LaunchOptions = {
-      headless: false,
+      headless: true,
       executablePath: '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
     };
 
@@ -42,7 +42,7 @@ describe('Puppeteer Controller', (): void => {
   test('should navigate to url', async (): Promise<void> => {
     // Given
     const launchOptions: LaunchOptions = {
-      headless: false,
+      headless: true,
       executablePath: '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
     };
     const url = 'https://devexpress.github.io/testcafe/example';

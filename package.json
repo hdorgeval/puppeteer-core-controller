@@ -4,7 +4,7 @@
   "description": "fluent API around puppeteer-core",
   "main": "index.js",
   "scripts": {
-    "test": "jest",
+    "test": "jest --config=jest.config.js --runInBand",
     "tsc-init": "tsc --init",
     "eslint-init": "eslint --init",
     "jest-init": "jest --init",
