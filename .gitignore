@@ -61,4 +61,5 @@ typings/
 .next
 
 #build directory
-build
+build/
+package/

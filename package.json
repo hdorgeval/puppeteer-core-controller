@@ -4,6 +4,11 @@
   "description": "fluent API around puppeteer-core",
   "main": "build/controller.js",
   "typings": "build/controller.d.ts",
+  "files": [
+    "build",
+    "!*.test.js",
+    "!*.test.d.ts"
+  ],
   "scripts": {
     "build": "rimraf build && npm run format && npm run lint && npm run tsc",
     "check-format": "prettier --list-different \"lib/**/*.ts\" ",
@@ -11,6 +16,7 @@
     "format": "prettier --write \"lib/**/*.ts\" ",
     "jest-init": "jest --init",
     "lint": "eslint . --ext .js,.ts --format visualstudio --no-color --max-warnings 10 --report-unused-disable-directives",
+    "package": "rimraf package && rm -f puppeteer-core-controller*.tgz && npm pack",
     "test": "jest --config=jest.config.js --runInBand",
     "tsc": " tsc --listEmittedFiles",
     "tsc-init": "tsc --init"
