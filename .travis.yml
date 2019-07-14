@@ -21,4 +21,6 @@ script:
   - npx --version
   - npm test
 
-os: osx
+os:
+  - linux
+  - osx
