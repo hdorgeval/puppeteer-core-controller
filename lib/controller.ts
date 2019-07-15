@@ -74,43 +74,43 @@ export class PuppeteerController implements PromiseLike<void> {
     return this;
   }
 
-  public withWindowSize(height: number, width: number): PuppeteerController {
-    this.windowSize = {
-      height,
-      width,
-    };
+  // public withWindowSize(height: number, width: number): PuppeteerController {
+  //   this.windowSize = {
+  //     height,
+  //     width,
+  //   };
 
-    this.launchOptions.args = this.launchOptions.args || [];
-    this.launchOptions.args = this.launchOptions.args.filter(
-      (arg: string): boolean => !arg.startsWith('--window-size'),
-    );
-    this.launchOptions.args.push(
-      `--window-size=${this.windowSize.width},${this.windowSize.height}`,
-    );
-    return this;
-  }
+  //   this.launchOptions.args = this.launchOptions.args || [];
+  //   this.launchOptions.args = this.launchOptions.args.filter(
+  //     (arg: string): boolean => !arg.startsWith('--window-size'),
+  //   );
+  //   this.launchOptions.args.push(
+  //     `--window-size=${this.windowSize.width},${this.windowSize.height}`,
+  //   );
+  //   return this;
+  // }
 
-  public withMaxSizeWindow(): PuppeteerController {
-    this.launchOptions.args = this.launchOptions.args || [];
-    this.launchOptions.args = this.launchOptions.args.filter(
-      (arg: string): boolean => !arg.startsWith('--window-size'),
-    );
-    this.launchOptions.args.push('--start-maximized');
-    return this;
-  }
+  // public withMaxSizeWindow(): PuppeteerController {
+  //   this.launchOptions.args = this.launchOptions.args || [];
+  //   this.launchOptions.args = this.launchOptions.args.filter(
+  //     (arg: string): boolean => !arg.startsWith('--window-size'),
+  //   );
+  //   this.launchOptions.args.push('--start-maximized');
+  //   return this;
+  // }
 
-  public withViewPortSize(height: number, width: number): PuppeteerController {
-    this.launchOptions = {
-      ...this.launchOptions,
-      defaultViewport: {
-        ...this.launchOptions.defaultViewport,
-        width,
-        height,
-      },
-    };
+  // public withViewPortSize(height: number, width: number): PuppeteerController {
+  //   this.launchOptions = {
+  //     ...this.launchOptions,
+  //     defaultViewport: {
+  //       ...this.launchOptions.defaultViewport,
+  //       width,
+  //       height,
+  //     },
+  //   };
 
-    return this;
-  }
+  //   return this;
+  // }
 
   public async getCurrentUrl(): Promise<string> {
     return await action.getCurrentUrl(this.page);

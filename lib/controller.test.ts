@@ -25,6 +25,21 @@ describe('Puppeteer Controller', (): void => {
     expect(result && result.message).toContain('Failed to launch chrome');
   });
 
+  test('should give back an error on navigating to an url without doing an init', async (): Promise<
+    void
+  > => {
+    // Given
+
+    // When
+    await pptc.navigateTo('https://www.google.fr');
+
+    // Then
+    const result = pptc.lastError;
+    expect(result && result.message).toContain(
+      "Cannot navigate to 'https://www.google.fr' because a new page has not been created",
+    );
+  });
+
   test('should initialize', async (): Promise<void> => {
     // Given
     const launchOptions: LaunchOptions = {
