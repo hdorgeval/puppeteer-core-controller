@@ -15,7 +15,7 @@
     "eslint-init": "eslint --init",
     "format": "prettier --write \"lib/**/*.ts\" ",
     "jest-init": "jest --init",
-    "lint": "eslint . --ext .js,.ts --format visualstudio --no-color --max-warnings 10 --report-unused-disable-directives --ignore-pattern 'build/*' --ignore-pattern 'package/*' --ignore-pattern 'coverage/*'",
+    "lint": "eslint . --ext .js,.ts --format visualstudio --no-color --max-warnings 10 --report-unused-disable-directives --ignore-pattern 'build/*' --ignore-pattern 'package/*' --ignore-pattern 'coverage/*' --ignore-pattern 'node_modules/*'",
     "package": "rimraf package && rm -f puppeteer-core-controller*.tgz && npm pack",
     "test": "jest --config=jest.config.js --runInBand",
     "test-with-no-coverage": "jest --config=jest-no-coverage.config.js --runInBand",
