@@ -17,6 +17,6 @@ await pptc
     headless: false,
   })
   .withMaxSizeWindow()
-  .navigateTo('https://devexpress.github.io/testcafe/example')
+  .navigateTo('https://reactstrap.github.io/components/form/')
   .close();
 ```
