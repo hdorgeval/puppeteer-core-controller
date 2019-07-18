@@ -3,6 +3,7 @@ import { LaunchOptions } from './actions';
 describe('Puppeteer Controller', (): void => {
   let pptc: SUT.PuppeteerController;
   beforeEach((): void => {
+    jest.setTimeout(10000);
     pptc = new SUT.PuppeteerController();
   });
   afterEach(
@@ -58,7 +59,7 @@ describe('Puppeteer Controller', (): void => {
     const launchOptions: LaunchOptions = {
       headless: true,
     };
-    const url = 'https://devexpress.github.io/testcafe/example';
+    const url = 'https://reactstrap.github.io/components/form';
 
     // When
     // prettier-ignore
@@ -76,7 +77,7 @@ describe('Puppeteer Controller', (): void => {
     const launchOptions: LaunchOptions = {
       headless: false,
     };
-    const url = 'https://devexpress.github.io/testcafe/example';
+    const url = 'https://reactstrap.github.io/components/form';
 
     // When
     // prettier-ignore
