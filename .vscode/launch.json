@@ -22,9 +22,7 @@
       "request": "launch",
       "args": [
         "--runInBand",
-        "--config=${workspaceFolder}/jest.config.js",
-        "--coverage",
-        "false",
+        "--config=${workspaceFolder}/jest-no-coverage.config.js",
         "${file}"
       ],
       "cwd": "${workspaceFolder}",
