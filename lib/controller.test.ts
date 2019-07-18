@@ -6,6 +6,11 @@ describe('Puppeteer Controller', (): void => {
     jest.setTimeout(10000);
     pptc = new SUT.PuppeteerController();
   });
+  afterEach(
+    async (): Promise<void> => {
+      await pptc.close();
+    },
+  );
   test('should give back an error on incorrect browser path', async (): Promise<void> => {
     // Given
     const launchOptions: LaunchOptions = {
@@ -14,10 +19,7 @@ describe('Puppeteer Controller', (): void => {
     };
 
     // When
-    // prettier-ignore
-    await pptc
-      .initWith(launchOptions)
-      .close();
+    await pptc.initWith(launchOptions);
 
     // Then
     const result = pptc.lastError;
@@ -30,10 +32,7 @@ describe('Puppeteer Controller', (): void => {
     // Given
 
     // When
-    // prettier-ignore
-    await pptc
-      .navigateTo('https://www.google.fr')
-      .close();
+    await pptc.navigateTo('https://www.google.fr');
 
     // Then
     const result = pptc.lastError;
@@ -49,10 +48,7 @@ describe('Puppeteer Controller', (): void => {
     };
 
     // When
-    // prettier-ignore
-    await pptc
-      .initWith(launchOptions)
-      .close();
+    await pptc.initWith(launchOptions);
 
     // Then
     expect(pptc.lastError).toBe(undefined);
@@ -74,7 +70,6 @@ describe('Puppeteer Controller', (): void => {
     // Then
     expect(await pptc.getCurrentUrl()).toBe(`${url}/`);
     expect(pptc.lastError).toBe(undefined);
-    await pptc.close();
   });
 
   test('should start with max sized window', async (): Promise<void> => {
@@ -89,13 +84,13 @@ describe('Puppeteer Controller', (): void => {
     await pptc
       .initWith(launchOptions)
       .withMaxSizeWindow()
-      .navigateTo(url);
-
-    const result = await pptc.getCurrentBrowserWindowState();
-
-    // Then
-    expect(result.isMaximized).toBe(true);
-    expect(pptc.lastError).toBe(undefined);
-    await pptc.close();
+      .navigateTo(url)
+      .then(async(): Promise<void> => {
+        
+        // Then
+        const result = await pptc.getCurrentBrowserWindowState();
+        expect(result.isMaximized).toBe(true);
+        expect(pptc.lastError).toBe(undefined);
+      });
   });
 });
