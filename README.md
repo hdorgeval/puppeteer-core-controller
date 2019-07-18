@@ -15,7 +15,6 @@ const pptc = new PuppeteerController();
 await pptc
   .initWith({
     headless: false,
-    executablePath: '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
   })
   .withMaxSizeWindow()
   .navigateTo('https://devexpress.github.io/testcafe/example')
