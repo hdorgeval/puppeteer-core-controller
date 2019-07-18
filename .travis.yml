@@ -19,6 +19,7 @@ script:
   - node --version
   - npm --version
   - npx --version
+  - npm run build
   - npm test
 
 os:
