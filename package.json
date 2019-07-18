@@ -18,6 +18,7 @@
     "lint": "eslint . --ext .js,.ts --format visualstudio --no-color --max-warnings 10 --report-unused-disable-directives --ignore-pattern 'build/*' --ignore-pattern 'package/*' --ignore-pattern 'coverage/*'",
     "package": "rimraf package && rm -f puppeteer-core-controller*.tgz && npm pack",
     "test": "jest --config=jest.config.js --runInBand",
+    "test-with-no-coverage": "jest --config=jest-no-coverage.config.js --runInBand",
     "tsc": " tsc --listEmittedFiles",
     "tsc-init": "tsc --init"
   },
