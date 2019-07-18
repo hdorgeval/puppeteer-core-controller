@@ -15,7 +15,7 @@ export interface WindowState {
 export async function getCurrentBrowserWindowState(
   page: puppeteer.Page | undefined,
 ): Promise<WindowState> {
-  if (page && !page.isClosed()) {
+  if (page) {
     const windowStateSerialized = await page.evaluate((): string => {
       const result = {
         innerHeight: window.innerHeight,
