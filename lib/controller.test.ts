@@ -71,26 +71,4 @@ describe('Puppeteer Controller', (): void => {
     expect(await pptc.getCurrentUrl()).toBe(`${url}/`);
     expect(pptc.lastError).toBe(undefined);
   });
-
-  test('should start with max sized window', async (): Promise<void> => {
-    // Given
-    const launchOptions: LaunchOptions = {
-      headless: false,
-    };
-    const url = 'https://reactstrap.github.io/components/form';
-
-    // When
-    // prettier-ignore
-    await pptc
-      .initWith(launchOptions)
-      .withMaxSizeWindow()
-      .navigateTo(url)
-      .then(async(): Promise<void> => {
-        
-        // Then
-        const result = await pptc.getCurrentBrowserWindowState();
-        expect(result.isMaximized).toBe(true);
-        expect(pptc.lastError).toBe(undefined);
-      });
-  });
 });
