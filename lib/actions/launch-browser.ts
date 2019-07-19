@@ -11,7 +11,7 @@ export async function launchBrowser(options: Partial<LaunchOptions>): Promise<pu
   const isHeadless = options.headless;
   const newOptions = {
     ...options,
-    headless: true,
+    headless: false,
   };
   const browser = await require('puppeteer-core').launch(newOptions);
   const page = await browser.newPage();
