@@ -6,6 +6,11 @@ describe('Puppeteer Controller', (): void => {
     jest.setTimeout(15000);
     pptc = new SUT.PuppeteerController();
   });
+  afterEach(
+    async (): Promise<void> => {
+      await pptc.close();
+    },
+  );
 
   test('should start with max sized window', async (): Promise<void> => {
     // Given
@@ -19,14 +24,11 @@ describe('Puppeteer Controller', (): void => {
     await pptc
       .initWith(launchOptions)
       .withMaxSizeWindow()
-      .navigateTo(url)
-      .then(async(): Promise<void> => {
-        
-        // Then
-        const result = await pptc.getCurrentBrowserWindowState();
-        expect(result.isMaximized).toBe(true);
-        expect(pptc.lastError).toBe(undefined);
-      })
-      .then(async ():Promise<void> => await pptc.close());
+      .navigateTo(url);
+
+    // Then
+    const result = await pptc.getCurrentBrowserWindowState();
+    expect(result.isMaximized).toBe(true);
+    expect(pptc.lastError).toBe(undefined);
   });
 });
