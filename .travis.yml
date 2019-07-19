@@ -1,5 +1,3 @@
-dist: trusty
-
 addons:
   chrome: stable
   apt:
@@ -21,8 +19,6 @@ before_install:
   - uname
   - if [[ `node -v` = v6* ]]; then npm i -g npx; fi
   - npx --version
-  # Enable user namespace cloning
-  - if [[ `uname` = "Linux" ]]; then sysctl kernel.unprivileged_userns_clone=1; fi
   # Launch XVFB
   - if [[ `uname` = "Linux" ]]; then export DISPLAY=:99.0; fi
   - if [[ `uname` = "Linux" ]]; then sh -e /etc/init.d/xvfb start; fi
@@ -31,7 +27,7 @@ script:
   - node --version
   - npm --version
   - npx --version
-  - npm test
+  - npm run test-with-no-coverage
 
 os:
   - linux
