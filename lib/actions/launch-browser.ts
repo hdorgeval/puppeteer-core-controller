@@ -18,6 +18,9 @@ export async function launchBrowser(options: Partial<LaunchOptions>): Promise<pu
   const windowState = await getCurrentBrowserWindowState(page);
 
   newOptions.args = newOptions.args || [];
+  newOptions.args = newOptions.args.filter(
+    (arg: string): boolean => !arg.startsWith('--window-size'),
+  );
   newOptions.args.push(
     `--window-size=${windowState.screen.availWidth},${windowState.screen.availHeight}`,
   );
