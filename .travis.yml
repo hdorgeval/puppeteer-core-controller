@@ -17,13 +17,15 @@ node_js:
   - '11'
 
 before_install:
+  # Info about OS
+  - uname -a
   - if [[ `node -v` = v6* ]]; then npm i -g npx; fi
   - npx --version
   # Enable user namespace cloning
-  - 'sysctl kernel.unprivileged_userns_clone=1'
+  - if [[ "`uname`" == "Linux" ]]; then 'sysctl kernel.unprivileged_userns_clone=1'; fi
   # Launch XVFB
-  - 'export DISPLAY=:99.0'
-  - 'sh -e /etc/init.d/xvfb start'
+  - if [[ "`uname`" == "Linux" ]]; then 'export DISPLAY=:99.0'; fi
+  - if [[ "`uname`" == "Linux" ]]; then 'sh -e /etc/init.d/xvfb start'; fi
 
 script:
   - node --version
