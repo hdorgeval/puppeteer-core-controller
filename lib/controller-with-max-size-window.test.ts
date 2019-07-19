@@ -1,5 +1,6 @@
 import * as SUT from './controller';
 import { LaunchOptions } from './actions';
+
 describe('Puppeteer Controller', (): void => {
   let pptc: SUT.PuppeteerController;
   beforeEach((): void => {
@@ -10,7 +11,7 @@ describe('Puppeteer Controller', (): void => {
   test('should start with max sized window', async (): Promise<void> => {
     // Given
     const launchOptions: LaunchOptions = {
-      headless: false,
+      headless: true,
     };
     const url = 'https://reactstrap.github.io/components/form';
 
