@@ -18,7 +18,7 @@ node_js:
 
 before_install:
   # Info about OS
-  - uname -a
+  - uname
   - if [[ `node -v` = v6* ]]; then npm i -g npx; fi
   - npx --version
   # Enable user namespace cloning
