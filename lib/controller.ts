@@ -2,6 +2,7 @@ import * as puppeteer from 'puppeteer-core';
 import * as action from './actions';
 import { LaunchOptions, WindowState } from './actions';
 import { getChromePath } from './utils/get-chrome-path';
+import { ClickOptions, defaultClickOptions } from './actions/click';
 
 export class PuppeteerController implements PromiseLike<void> {
   public async then<TResult1 = void, TResult2 = never>(
@@ -84,6 +85,11 @@ export class PuppeteerController implements PromiseLike<void> {
     return this;
   }
 
+  public click(selector: string, options: ClickOptions = defaultClickOptions): PuppeteerController {
+    this.actions.push(async (): Promise<void> => await action.click(selector, options, this.page));
+    return this;
+  }
+
   public close(): PuppeteerController {
     if (this.isExecutingActions) {
       throw new Error(
@@ -134,5 +140,9 @@ export class PuppeteerController implements PromiseLike<void> {
   public async getCurrentBrowserWindowState(): Promise<WindowState> {
     const result = await action.getCurrentBrowserWindowState(this.page);
     return result;
+  }
+
+  public async isChecked(selector: string): Promise<boolean> {
+    return await action.isChecked(selector, this.page);
   }
 }
