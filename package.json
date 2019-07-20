@@ -47,5 +47,21 @@
   },
   "engines": {
     "node": ">=6.4.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hdorgeval/puppeteer-core-controller.git"
+  },
+  "keywords": [
+    "puppeteer",
+    "puppeteer-core",
+    "fluent-api",
+    "e2e",
+    "test-automation",
+    "test-runner"
+  ],
+  "homepage": "https://github.com/hdorgeval/puppeteer-core-controller#readme",
+  "bugs": {
+    "url": "https://github.com/hdorgeval/puppeteer-core-controller/issues"
   }
 }
