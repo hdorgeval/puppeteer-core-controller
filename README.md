@@ -11,6 +11,7 @@ fluent API around puppeteer-core (WIP)
 import { PuppeteerController } from 'puppeteer-core-controller';
 
 const pptc = new PuppeteerController();
+const checkMeOutSelector = 'input[type="checkbox"].form-check-input';
 
 await pptc
   .initWith({
@@ -18,5 +19,6 @@ await pptc
   })
   .withMaxSizeWindow()
   .navigateTo('https://reactstrap.github.io/components/form/')
+  .click(checkMeOutSelector)
   .close();
 ```
