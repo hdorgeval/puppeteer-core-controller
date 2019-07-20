@@ -8,7 +8,7 @@ import {
   TypeTextOptions,
   defaultTypeTextOptions,
 } from '../actions';
-import { getChromePath } from '../utils/get-chrome-path';
+import { getChromePath } from '../utils';
 
 export class PuppeteerController implements PromiseLike<void> {
   public async then<TResult1 = void, TResult2 = never>(
