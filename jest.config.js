@@ -21,13 +21,18 @@ module.exports = {
   collectCoverage: true,
 
   // An array of glob patterns indicating a set of files for which coverage information should be collected
-  collectCoverageFrom: ['lib/**/*.ts', '!lib/**/actions/get*.ts', '!lib/**/actions/is-*.ts'],
+  collectCoverageFrom: [
+    'lib/**/*.ts',
+    '!lib/actions/**/get*.ts',
+    '!lib/actions/**/is-*.ts',
+    '!lib/**/index.ts',
+  ],
 
   // The directory where Jest should output its coverage files
   coverageDirectory: 'coverage',
 
   // An array of regexp pattern strings used to skip coverage collection
-  coveragePathIgnorePatterns: ['/node_modules/', '/test.ts/'],
+  coveragePathIgnorePatterns: ['/node_modules/', '/test.ts/', '/index.ts/'],
 
   // A list of reporter names that Jest uses when writing coverage reports
   coverageReporters: ['lcov'],

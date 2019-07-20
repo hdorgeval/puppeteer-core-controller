@@ -1,9 +1,9 @@
 {
   "name": "puppeteer-core-controller",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "description": "fluent API around puppeteer-core",
-  "main": "build/controller.js",
-  "typings": "build/controller.d.ts",
+  "main": "build/index.js",
+  "typings": "build/index.d.ts",
   "files": [
     "build",
     "!*.test.js",

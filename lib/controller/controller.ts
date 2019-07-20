@@ -1,8 +1,7 @@
 import * as puppeteer from 'puppeteer-core';
-import * as action from './actions';
-import { LaunchOptions, WindowState } from './actions';
-import { getChromePath } from './utils/get-chrome-path';
-import { ClickOptions, defaultClickOptions } from './actions/click';
+import * as action from '../actions';
+import { LaunchOptions, WindowState, ClickOptions, defaultClickOptions } from '../actions';
+import { getChromePath } from '../utils/get-chrome-path';
 
 export class PuppeteerController implements PromiseLike<void> {
   public async then<TResult1 = void, TResult2 = never>(

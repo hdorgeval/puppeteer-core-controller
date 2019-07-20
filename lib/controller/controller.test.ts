@@ -1,5 +1,6 @@
 import * as SUT from './controller';
-import { LaunchOptions } from './actions';
+import { LaunchOptions } from '../actions';
+
 describe('Puppeteer Controller', (): void => {
   let pptc: SUT.PuppeteerController;
   beforeEach((): void => {
