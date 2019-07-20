@@ -6,7 +6,7 @@ export async function isChecked(
 ): Promise<boolean> {
   if (!page) {
     throw new Error(
-      "Cannot get the checked property of '${selector}' because a new page has not been created",
+      `Cannot get the checked property of '${selector}' because a new page has not been created`,
     );
   }
 

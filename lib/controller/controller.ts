@@ -1,6 +1,13 @@
 import * as puppeteer from 'puppeteer-core';
 import * as action from '../actions';
-import { LaunchOptions, WindowState, ClickOptions, defaultClickOptions } from '../actions';
+import {
+  LaunchOptions,
+  WindowState,
+  ClickOptions,
+  defaultClickOptions,
+  TypeTextOptions,
+  defaultTypeTextOptions,
+} from '../actions';
 import { getChromePath } from '../utils/get-chrome-path';
 
 export class PuppeteerController implements PromiseLike<void> {
@@ -89,6 +96,14 @@ export class PuppeteerController implements PromiseLike<void> {
     return this;
   }
 
+  public typeText(
+    text: string,
+    options: TypeTextOptions = defaultTypeTextOptions,
+  ): PuppeteerController {
+    this.actions.push(async (): Promise<void> => await action.typeText(text, options, this.page));
+    return this;
+  }
+
   public close(): PuppeteerController {
     if (this.isExecutingActions) {
       throw new Error(
@@ -138,6 +153,11 @@ export class PuppeteerController implements PromiseLike<void> {
   }
   public async getCurrentBrowserWindowState(): Promise<WindowState> {
     const result = await action.getCurrentBrowserWindowState(this.page);
+    return result;
+  }
+
+  public async getValueOf(selector: string): Promise<string> {
+    const result = await action.getValueOf(selector, this.page);
     return result;
   }
 

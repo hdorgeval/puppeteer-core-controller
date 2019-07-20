@@ -12,6 +12,7 @@ fluent API around puppeteer-core (WIP)
 import { PuppeteerController } from 'puppeteer-core-controller';
 
 const pptc = new PuppeteerController();
+const emailInputSelector = 'input#exampleEmail';
 const checkMeOutSelector = 'input[type="checkbox"].form-check-input';
 
 await pptc
@@ -20,6 +21,8 @@ await pptc
   })
   .withMaxSizeWindow()
   .navigateTo('https://reactstrap.github.io/components/form/')
+  .click(emailInputSelector)
+  .typeText('foo.bar@baz.com')
   .click(checkMeOutSelector)
   .close();
 ```
@@ -44,5 +47,14 @@ await pptc
 - options: same object as [page.click(selector[, options])](https://github.com/GoogleChrome/puppeteer/blob/v1.18.1/docs/api.md#pageclickselector-options)
 
   with an additional property: `timeoutInMilliseconds`. This option enables the click method to wait for the selector to appear in the DOM before attempting to click on it. Defaults to 30000 (30 seconds). Pass 0 to disable this timeout.
+
+---
+
+### typeText(text[, options])
+
+- text: string
+- options: same object as [keyboard.type(text[, options])](https://github.com/GoogleChrome/puppeteer/blob/v1.18.1/docs/api.md#keyboardtypetext-options)
+
+  except that `delay` defaults to 50 milliseconds. Set the `delay` value to `0` to disable the delay.
 
 ---
