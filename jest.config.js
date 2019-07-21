@@ -25,6 +25,7 @@ module.exports = {
     'lib/**/*.ts',
     '!lib/actions/**/get*.ts',
     '!lib/actions/**/is-*.ts',
+    '!lib/actions/**/has-*.ts',
     '!lib/**/index.ts',
   ],
 

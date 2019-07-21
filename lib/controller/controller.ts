@@ -7,6 +7,9 @@ import {
   defaultClickOptions,
   TypeTextOptions,
   defaultTypeTextOptions,
+  KeyboardKey,
+  KeyboardPressOptions,
+  defaultKeyboardPressOptions,
 } from '../actions';
 import { getChromePath } from '../utils';
 
@@ -104,6 +107,14 @@ export class PuppeteerController implements PromiseLike<void> {
     return this;
   }
 
+  public pressKey(
+    key: KeyboardKey,
+    options: KeyboardPressOptions = defaultKeyboardPressOptions,
+  ): PuppeteerController {
+    this.actions.push(async (): Promise<void> => await action.pressKey(key, options, this.page));
+    return this;
+  }
+
   public close(): PuppeteerController {
     if (this.isExecutingActions) {
       throw new Error(
@@ -163,5 +174,9 @@ export class PuppeteerController implements PromiseLike<void> {
 
   public async isChecked(selector: string): Promise<boolean> {
     return await action.isChecked(selector, this.page);
+  }
+
+  public async hasFocus(selector: string): Promise<boolean> {
+    return await action.hasFocus(selector, this.page);
   }
 }
