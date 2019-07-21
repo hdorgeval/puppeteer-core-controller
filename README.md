@@ -23,6 +23,8 @@ await pptc
   .navigateTo('https://reactstrap.github.io/components/form/')
   .click(emailInputSelector)
   .typeText('foo.bar@baz.com')
+  .pressKey('Tab');
+  .typeText('foobar')
   .click(checkMeOutSelector)
   .close();
 ```
@@ -54,6 +56,15 @@ await pptc
 
 - text: string
 - options: same object as [keyboard.type(text[, options])](https://github.com/GoogleChrome/puppeteer/blob/v1.18.1/docs/api.md#keyboardtypetext-options)
+
+  except that `delay` defaults to 50 milliseconds. Set the `delay` value to `0` to disable the delay.
+
+---
+
+### pressKey(key[, options])
+
+- key: 'Tab' | 'Backspace' | 'Enter'
+- options: same object as [keyboard.press(key[, options])](https://github.com/GoogleChrome/puppeteer/blob/v1.18.1/docs/api.md#keyboardpresskey-options)
 
   except that `delay` defaults to 50 milliseconds. Set the `delay` value to `0` to disable the delay.
 
