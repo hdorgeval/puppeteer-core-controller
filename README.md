@@ -37,6 +37,12 @@ await pptc
 
 ---
 
+### withMaxSizeWindow()
+
+- maximize the window size. Should be called after `initWith` and before all other actions.
+
+---
+
 ### navigateTo(url)
 
 - navigate to the specified url
