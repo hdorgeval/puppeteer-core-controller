@@ -10,6 +10,8 @@ import {
   KeyboardKey,
   KeyboardPressOptions,
   defaultKeyboardPressOptions,
+  SelectOptions,
+  defaultSelectOptions,
 } from '../actions';
 import { getChromePath } from '../utils';
 
@@ -115,6 +117,22 @@ export class PuppeteerController implements PromiseLike<void> {
     return this;
   }
 
+  public select(
+    ...values: string[]
+  ): { in: (selector: string, options?: SelectOptions) => PuppeteerController } {
+    return {
+      in: (
+        selector: string,
+        options: SelectOptions = defaultSelectOptions,
+      ): PuppeteerController => {
+        this.actions.push(
+          async (): Promise<void> => await action.select(selector, values, options, this.page),
+        );
+        return this;
+      },
+    };
+  }
+
   public close(): PuppeteerController {
     if (this.isExecutingActions) {
       throw new Error(
@@ -178,5 +196,10 @@ export class PuppeteerController implements PromiseLike<void> {
 
   public async hasFocus(selector: string): Promise<boolean> {
     return await action.hasFocus(selector, this.page);
+  }
+
+  public async getSelectedOptionOf(selector: string): Promise<string | null> {
+    const result = await action.getSelectedOptionOf(selector, this.page);
+    return result;
   }
 }
