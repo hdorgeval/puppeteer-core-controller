@@ -14,6 +14,8 @@ import { PuppeteerController } from 'puppeteer-core-controller';
 const pptc = new PuppeteerController();
 const emailInputSelector = 'input#exampleEmail';
 const checkMeOutSelector = 'input[type="checkbox"].form-check-input';
+const customSelect = 'select#exampleCustomSelect';
+const option = 'Value 3';
 
 await pptc
   .initWith({
@@ -26,6 +28,7 @@ await pptc
   .pressKey('Tab');
   .typeText('foobar')
   .click(checkMeOutSelector)
+  .select(option).in(customSelect)
   .close();
 ```
 
@@ -73,5 +76,12 @@ await pptc
 - options: same object as [keyboard.press(key[, options])](https://github.com/GoogleChrome/puppeteer/blob/v1.18.1/docs/api.md#keyboardpresskey-options)
 
   except that `delay` defaults to 50 milliseconds. Set the `delay` value to `0` to disable the delay.
+
+---
+
+### select(values).in(selector[, options])
+
+- values and selector: same as [page.select(selector, ...values)](https://github.com/GoogleChrome/puppeteer/blob/v1.18.1/docs/api.md#pageselectselector-values)
+- options: {timeoutInMilliseconds}. This option enables the select method to wait for the selector to appear in the DOM before attempting to select the option(s). Defaults to 30000 (30 seconds). Pass 0 to disable this timeout.
 
 ---
