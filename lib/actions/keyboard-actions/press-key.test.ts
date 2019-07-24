@@ -9,7 +9,7 @@ describe('press key', (): void => {
     // When
     // Then
     const expectedError = new Error(
-      "Cannot press key 'Tab' because a new page has not been created",
+      "Error: cannot press key 'Tab' because a new page has not been created",
     );
     await SUT.pressKey('Tab', SUT.defaultKeyboardPressOptions, page).catch((error): void =>
       expect(error).toMatchObject(expectedError),

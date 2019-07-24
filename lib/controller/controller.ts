@@ -15,6 +15,15 @@ import {
 } from '../actions';
 import { getChromePath } from '../utils';
 
+export interface ExpectAssertion {
+  hasFocus: (options?: AssertOptions) => PuppeteerController;
+}
+export interface AssertOptions {
+  timeoutInMilliseconds: number;
+}
+export const defaultAssertOptions: AssertOptions = {
+  timeoutInMilliseconds: 30000,
+};
 export class PuppeteerController implements PromiseLike<void> {
   public async then<TResult1 = void, TResult2 = never>(
     onfulfilled?: ((value: void) => TResult1 | PromiseLike<TResult1>) | null | undefined,
@@ -61,6 +70,9 @@ export class PuppeteerController implements PromiseLike<void> {
       }
     } catch (error) {
       this._lastError = error;
+      this.actions = [];
+      this.isExecutingActions = false;
+      throw error;
     } finally {
       this.actions = [];
       this.isExecutingActions = false;
@@ -136,7 +148,7 @@ export class PuppeteerController implements PromiseLike<void> {
   public close(): PuppeteerController {
     if (this.isExecutingActions) {
       throw new Error(
-        'There are some pending actions. You should call the close() method at a later time',
+        'Error: there are some pending actions. You should call the close() method at a later time',
       );
     }
     this.actions.push(async (): Promise<void> => await action.closeBrowser(this.browser));
@@ -172,5 +184,44 @@ export class PuppeteerController implements PromiseLike<void> {
   public async getSelectedOptionOf(selector: string): Promise<string | null> {
     const result = await action.getSelectedOptionOf(selector, this.page);
     return result;
+  }
+
+  private async assertFor(
+    predicate: () => Promise<boolean>,
+    errorMessage: string,
+    options: AssertOptions = defaultAssertOptions,
+  ): Promise<void> {
+    if (!this.page) {
+      throw new Error('Error: expect statement only works when a page has been opened');
+    }
+    const timeout = options.timeoutInMilliseconds;
+    const interval = 100;
+    const nbIntervals = timeout / interval;
+    for (let index = 0; index < nbIntervals; index++) {
+      await this.page.waitFor(interval);
+      const result = await predicate();
+      if (result === true) {
+        return;
+      }
+    }
+    throw new Error(errorMessage);
+  }
+
+  public expectThat(selector: string): ExpectAssertion {
+    return {
+      hasFocus: (options: AssertOptions = defaultAssertOptions): PuppeteerController => {
+        this.actions.push(
+          async (): Promise<void> => {
+            const errorMessage = `Error: selector '${selector}' does not have the focus.`;
+            await this.assertFor(
+              async (): Promise<boolean> => await this.hasFocus(selector),
+              errorMessage,
+              options,
+            );
+          },
+        );
+        return this;
+      },
+    };
   }
 }

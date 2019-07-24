@@ -29,7 +29,9 @@ describe('Puppeteer Controller', (): void => {
       .navigateTo(url)
       .click(emailInputSelector)
       .typeText('foo.bar@baz.com')
-      .pressKey('Tab');
+      .pressKey('Tab')
+      .expectThat(passwordInputSelector)
+      .hasFocus({ timeoutInMilliseconds: 5000 });
 
     // Then
     const emaildHasFocus = await pptc.hasFocus(emailInputSelector);

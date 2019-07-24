@@ -14,7 +14,7 @@ export async function select(
 ): Promise<void> {
   if (!page) {
     throw new Error(
-      `Cannot select option(s) '${values}' in '${selector}' because a new page has not been created`,
+      `Error: cannot select option(s) '${values}' in '${selector}' because a new page has not been created`,
     );
   }
 

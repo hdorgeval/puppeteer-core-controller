@@ -13,7 +13,7 @@ export async function typeText(
   page: puppeteer.Page | undefined,
 ): Promise<void> {
   if (!page) {
-    throw new Error(`Cannot type text because a new page has not been created`);
+    throw new Error(`Error: cannot type text because a new page has not been created`);
   }
   const puppeteerTypeTextOptions = {
     ...options,

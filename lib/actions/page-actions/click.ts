@@ -16,7 +16,7 @@ export async function click(
   page: puppeteer.Page | undefined,
 ): Promise<void> {
   if (!page) {
-    throw new Error(`Cannot click on '${selector}' because a new page has not been created`);
+    throw new Error(`Error: cannot click on '${selector}' because a new page has not been created`);
   }
   const puppeteerClickOptions = {
     button: options.button,

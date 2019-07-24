@@ -20,10 +20,14 @@ describe('Puppeteer Controller', (): void => {
     };
 
     // When
-    await pptc.initWith(launchOptions);
+    let result: Error | undefined = undefined;
+    try {
+      await pptc.initWith(launchOptions);
+    } catch (error) {
+      result = error;
+    }
 
     // Then
-    const result = pptc.lastError;
     expect(result && result.message).toContain('Failed to launch chrome');
   });
 
@@ -33,12 +37,16 @@ describe('Puppeteer Controller', (): void => {
     // Given
 
     // When
-    await pptc.navigateTo('https://www.google.fr');
+    let result: Error | undefined = undefined;
+    try {
+      await pptc.navigateTo('https://www.google.fr');
+    } catch (error) {
+      result = error;
+    }
 
     // Then
-    const result = pptc.lastError;
     expect(result && result.message).toContain(
-      "Cannot navigate to 'https://www.google.fr' because a new page has not been created",
+      "Error: cannot navigate to 'https://www.google.fr' because a new page has not been created",
     );
   });
 

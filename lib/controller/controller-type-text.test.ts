@@ -27,6 +27,8 @@ describe('Puppeteer Controller', (): void => {
       .withMaxSizeWindow()
       .navigateTo(url)
       .click(emailInputSelector)
+      .expectThat(emailInputSelector)
+      .hasFocus({ timeoutInMilliseconds: 5000 })
       .typeText('foo.bar@baz.com');
 
     // Then

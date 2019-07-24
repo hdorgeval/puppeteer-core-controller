@@ -9,7 +9,7 @@ describe('select', (): void => {
     // When
     // Then
     const expectedError = new Error(
-      "Cannot select option(s) 'value 1,value 2' in 'foobar' because a new page has not been created",
+      "Error: cannot select option(s) 'value 1,value 2' in 'foobar' because a new page has not been created",
     );
     await SUT.select('foobar', optionsToSelect, SUT.defaultSelectOptions, page).catch(
       (error): void => expect(error).toMatchObject(expectedError),

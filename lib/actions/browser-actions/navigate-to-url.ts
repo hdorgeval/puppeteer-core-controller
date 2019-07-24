@@ -5,5 +5,5 @@ export async function navigateTo(url: string, page: puppeteer.Page | undefined):
     await page.goto(url);
     return;
   }
-  throw new Error(`Cannot navigate to '${url}' because a new page has not been created`);
+  throw new Error(`Error: cannot navigate to '${url}' because a new page has not been created`);
 }

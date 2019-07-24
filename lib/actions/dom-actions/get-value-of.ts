@@ -6,7 +6,7 @@ export async function getValueOf(
 ): Promise<string> {
   if (!page) {
     throw new Error(
-      `Cannot get the value of '${selector}' because a new page has not been created`,
+      `Error: cannot get the value of '${selector}' because a new page has not been created`,
     );
   }
 

@@ -6,5 +6,5 @@ export async function startNewPageInBrowser(
   if (browser) {
     return await browser.newPage();
   }
-  throw new Error('Cannot create a new page because the browser has not been launched');
+  throw new Error('Error: cannot create a new page because the browser has not been launched');
 }

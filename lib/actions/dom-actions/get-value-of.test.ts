@@ -9,7 +9,7 @@ describe('get value', (): void => {
     // When
     // Then
     const expectedError = new Error(
-      "Cannot get the value of 'foobar' because a new page has not been created",
+      "Error: cannot get the value of 'foobar' because a new page has not been created",
     );
     await SUT.getValueOf('foobar', page).catch((error): void =>
       expect(error).toMatchObject(expectedError),

@@ -6,7 +6,7 @@ export async function hasFocus(
 ): Promise<boolean> {
   if (!page) {
     throw new Error(
-      `Cannot check that '${selector}' has focus because a new page has not been created`,
+      `Error: cannot check that '${selector}' has focus because a new page has not been created`,
     );
   }
 

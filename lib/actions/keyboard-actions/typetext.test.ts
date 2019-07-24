@@ -8,7 +8,9 @@ describe('type text', (): void => {
 
     // When
     // Then
-    const expectedError = new Error('Cannot type text because a new page has not been created');
+    const expectedError = new Error(
+      'Error: cannot type text because a new page has not been created',
+    );
     await SUT.typeText('foobar', SUT.defaultTypeTextOptions, page).catch((error): void =>
       expect(error).toMatchObject(expectedError),
     );

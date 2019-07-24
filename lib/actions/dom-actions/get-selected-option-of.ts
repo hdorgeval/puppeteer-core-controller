@@ -6,7 +6,7 @@ export async function getSelectedOptionOf(
 ): Promise<string | null> {
   if (!page) {
     throw new Error(
-      `Cannot get the selected option of '${selector}' because a new page has not been created`,
+      `Error: cannot get the selected option of '${selector}' because a new page has not been created`,
     );
   }
 

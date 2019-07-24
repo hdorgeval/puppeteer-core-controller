@@ -15,7 +15,7 @@ export async function pressKey(
   page: puppeteer.Page | undefined,
 ): Promise<void> {
   if (!page) {
-    throw new Error(`Cannot press key '${key}' because a new page has not been created`);
+    throw new Error(`Error: cannot press key '${key}' because a new page has not been created`);
   }
   const puppeteerKeyboardPressOptions = {
     ...options,

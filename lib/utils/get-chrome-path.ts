@@ -18,6 +18,6 @@ export function getChromePath(): string {
       return 'google-chrome';
 
     default:
-      throw new Error('You should supply the path to the Chrome App in the launch options');
+      throw new Error('Error: you should supply the path to the Chrome App in the launch options');
   }
 }

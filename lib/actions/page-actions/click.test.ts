@@ -9,7 +9,7 @@ describe('click', (): void => {
     // When
     // Then
     const expectedError = new Error(
-      "Cannot click on 'foobar' because a new page has not been created",
+      "Error: cannot click on 'foobar' because a new page has not been created",
     );
     await SUT.click('foobar', SUT.defaultClickOptions, page).catch((error): void =>
       expect(error).toMatchObject(expectedError),
