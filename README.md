@@ -13,6 +13,7 @@ import { PuppeteerController } from 'puppeteer-core-controller';
 
 const pptc = new PuppeteerController();
 const emailInputSelector = 'input#exampleEmail';
+const passwordInputSelector = 'input#examplePassword';
 const checkMeOutSelector = 'input[type="checkbox"].form-check-input';
 const customSelect = 'select#exampleCustomSelect';
 const option = 'Value 3';
@@ -26,7 +27,8 @@ await pptc
   .click(emailInputSelector)
   .typeText('foo.bar@baz.com')
   .pressKey('Tab');
-  .typeText('foobar')
+  .expectThat(passwordInputSelector).hasFocus({ timeoutInMilliseconds: 5000 });
+  .typeText("don't tell!")
   .click(checkMeOutSelector)
   .select(option).in(customSelect)
   .close();
@@ -83,5 +85,12 @@ await pptc
 
 - values and selector: same as [page.select(selector, ...values)](https://github.com/GoogleChrome/puppeteer/blob/v1.18.1/docs/api.md#pageselectselector-values)
 - options: {timeoutInMilliseconds}. This option enables the select method to wait for the selector to appear in the DOM before attempting to select the option(s). Defaults to 30000 (30 seconds). Pass 0 to disable this timeout.
+
+---
+
+### expecThat(selector).hasFocus([options])
+
+- selector: string
+- options: {timeoutInMilliseconds}. This option enables the assertion mechanism to wait for the selector to have the focus. Defaults to 30000 (30 seconds).
 
 ---
