@@ -4,7 +4,7 @@ import { LaunchOptions } from '../actions';
 describe('Puppeteer Controller', (): void => {
   let pptc: SUT.PuppeteerController;
   beforeEach((): void => {
-    jest.setTimeout(10000);
+    jest.setTimeout(30000);
     pptc = new SUT.PuppeteerController();
   });
   afterEach(
