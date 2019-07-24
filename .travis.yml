@@ -24,7 +24,6 @@ before_install:
   - npx --version
   # Launch XVFB
   - if [[ `uname` = "Linux" ]]; then export DISPLAY=:99.0; fi
-  - if [[ `uname` = "Linux" ]]; then sh -e /etc/init.d/xvfb start; fi
 
 script:
   - node --version
