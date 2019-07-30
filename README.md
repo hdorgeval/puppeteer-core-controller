@@ -94,3 +94,15 @@ await pptc
 - options: {timeoutInMilliseconds}. This option enables the assertion mechanism to wait for the selector to have the focus. Defaults to 30000 (30 seconds).
 
 ---
+
+### getComputedStyleOf(selector)
+
+- selector: string
+
+  ```js
+  const validInput = 'input[type="text"].is-valid.form-control';
+  const computedStyles = await pptc.getComputedStyleOf(validInput);
+  expect(computedStyles.borderColor).toBe('rgb(40, 167, 69)');
+  ```
+
+---
