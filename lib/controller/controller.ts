@@ -15,6 +15,8 @@ import {
 } from '../actions';
 import { getChromePath } from '../utils';
 
+export type Story = (pptc: PuppeteerController) => void;
+
 export interface ExpectAssertion {
   hasFocus: (options?: AssertOptions) => PuppeteerController;
 }
@@ -152,6 +154,13 @@ export class PuppeteerController implements PromiseLike<void> {
       );
     }
     this.actions.push(async (): Promise<void> => await action.closeBrowser(this.browser));
+    return this;
+  }
+
+  public runStory(story: Story): PuppeteerController {
+    if (typeof story === 'function') {
+      story(this);
+    }
     return this;
   }
 
