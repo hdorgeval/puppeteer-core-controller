@@ -186,6 +186,11 @@ export class PuppeteerController implements PromiseLike<void> {
     return result;
   }
 
+  public async getComputedStyleOf(selector: string): Promise<CSSStyleDeclaration> {
+    const result = await action.getComputedStyleOf(selector, this.page);
+    return result;
+  }
+
   private async assertFor(
     predicate: () => Promise<boolean>,
     errorMessage: string,

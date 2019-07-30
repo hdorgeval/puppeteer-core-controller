@@ -1,5 +1,5 @@
-import * as SUT from './controller';
-import { LaunchOptions } from '../actions';
+import * as SUT from '../controller';
+import { LaunchOptions } from '../../actions';
 
 describe('Puppeteer Controller', (): void => {
   let pptc: SUT.PuppeteerController;
@@ -13,27 +13,23 @@ describe('Puppeteer Controller', (): void => {
     },
   );
 
-  test('should type text on an existing input', async (): Promise<void> => {
+  test('should start with max sized window', async (): Promise<void> => {
     // Given
     const launchOptions: LaunchOptions = {
-      headless: true,
+      headless: false,
     };
     const url = 'https://reactstrap.github.io/components/form';
-    const emailInputSelector = 'input#exampleEmail';
 
     // When
+    // prettier-ignore
     await pptc
       .initWith(launchOptions)
       .withMaxSizeWindow()
-      .navigateTo(url)
-      .click(emailInputSelector)
-      .expectThat(emailInputSelector)
-      .hasFocus({ timeoutInMilliseconds: 5000 })
-      .typeText('foo.bar@baz.com');
+      .navigateTo(url);
 
     // Then
-    const result = await pptc.getValueOf(emailInputSelector);
-    expect(result).toBe('foo.bar@baz.com');
+    const result = await pptc.getCurrentBrowserWindowState();
+    expect(result.isMaximized).toBe(true);
     expect(pptc.lastError).toBe(undefined);
   });
 });

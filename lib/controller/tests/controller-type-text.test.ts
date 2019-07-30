@@ -1,5 +1,5 @@
-import * as SUT from './controller';
-import { LaunchOptions } from '../actions';
+import * as SUT from '../controller';
+import { LaunchOptions } from '../../actions';
 
 describe('Puppeteer Controller', (): void => {
   let pptc: SUT.PuppeteerController;
@@ -13,24 +13,27 @@ describe('Puppeteer Controller', (): void => {
     },
   );
 
-  test('should click on an existing checkbox', async (): Promise<void> => {
+  test('should type text on an existing input', async (): Promise<void> => {
     // Given
     const launchOptions: LaunchOptions = {
       headless: true,
     };
     const url = 'https://reactstrap.github.io/components/form';
-    const checkMeOutSelector = 'input[type="checkbox"].form-check-input';
+    const emailInputSelector = 'input#exampleEmail';
 
     // When
     await pptc
       .initWith(launchOptions)
       .withMaxSizeWindow()
       .navigateTo(url)
-      .click(checkMeOutSelector);
+      .click(emailInputSelector)
+      .expectThat(emailInputSelector)
+      .hasFocus({ timeoutInMilliseconds: 5000 })
+      .typeText('foo.bar@baz.com');
 
     // Then
-    const isChecked = await pptc.isChecked(checkMeOutSelector);
-    expect(isChecked).toBe(true);
+    const result = await pptc.getValueOf(emailInputSelector);
+    expect(result).toBe('foo.bar@baz.com');
     expect(pptc.lastError).toBe(undefined);
   });
 });

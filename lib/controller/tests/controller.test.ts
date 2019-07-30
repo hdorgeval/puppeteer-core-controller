@@ -1,5 +1,5 @@
-import * as SUT from './controller';
-import { LaunchOptions } from '../actions';
+import * as SUT from '../controller';
+import { LaunchOptions } from '../../actions';
 
 describe('Puppeteer Controller', (): void => {
   let pptc: SUT.PuppeteerController;

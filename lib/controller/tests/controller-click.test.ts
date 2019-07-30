@@ -1,5 +1,5 @@
-import * as SUT from './controller';
-import { LaunchOptions } from '../actions';
+import * as SUT from '../controller';
+import { LaunchOptions } from '../../actions';
 
 describe('Puppeteer Controller', (): void => {
   let pptc: SUT.PuppeteerController;
@@ -13,23 +13,24 @@ describe('Puppeteer Controller', (): void => {
     },
   );
 
-  test('should start with max sized window', async (): Promise<void> => {
+  test('should click on an existing checkbox', async (): Promise<void> => {
     // Given
     const launchOptions: LaunchOptions = {
-      headless: false,
+      headless: true,
     };
     const url = 'https://reactstrap.github.io/components/form';
+    const checkMeOutSelector = 'input[type="checkbox"].form-check-input';
 
     // When
-    // prettier-ignore
     await pptc
       .initWith(launchOptions)
       .withMaxSizeWindow()
-      .navigateTo(url);
+      .navigateTo(url)
+      .click(checkMeOutSelector);
 
     // Then
-    const result = await pptc.getCurrentBrowserWindowState();
-    expect(result.isMaximized).toBe(true);
+    const isChecked = await pptc.isChecked(checkMeOutSelector);
+    expect(isChecked).toBe(true);
     expect(pptc.lastError).toBe(undefined);
   });
 });
