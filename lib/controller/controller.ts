@@ -206,7 +206,7 @@ export class PuppeteerController implements PromiseLike<void> {
     options: AssertOptions = defaultAssertOptions,
   ): Promise<void> {
     if (!this.page) {
-      throw new Error('Error: expect statement only works when a page has been opened');
+      throw new Error('Error: expect statement only works when a page has been opened.');
     }
     const timeout = options.timeoutInMilliseconds;
     const interval = 100;

@@ -70,4 +70,24 @@ describe('Puppeteer Controller', (): void => {
     expect(result && result.message).toContain(expectedErrorMessage);
     expect(pptc.lastError && pptc.lastError.message).toBe(expectedErrorMessage);
   });
+
+  test('should throw an error when page is not created', async (): Promise<void> => {
+    // Given
+    const passwordInputSelector = 'input#examplePassword';
+
+    // When
+    let result: Error | undefined = undefined;
+    try {
+      await pptc
+        .expectThat(passwordInputSelector)
+        .hasFocus({ timeoutInMilliseconds: 5000 })
+        .typeText('foo.bar@baz.com');
+    } catch (error) {
+      result = error;
+    }
+
+    // Then
+    const expectedErrorMessage = 'Error: expect statement only works when a page has been opened.';
+    expect(result && result.message).toContain(expectedErrorMessage);
+  });
 });
