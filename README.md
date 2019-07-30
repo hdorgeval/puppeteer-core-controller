@@ -34,6 +34,38 @@ await pptc
   .close();
 ```
 
+## Usage with Stories
+
+```js
+import { PuppeteerController, Story } from 'puppeteer-core-controller';
+
+const pptc = new PuppeteerController();
+const launchOptions: LaunchOptions = {
+  headless: true,
+};
+const url = 'https://reactstrap.github.io/components/form';
+const customSelect = 'select#exampleCustomSelect';
+const option = 'Value 3';
+const openApplication: Story = (pptc: PuppeteerController): void => {
+  pptc
+    .initWith(launchOptions)
+    .withMaxSizeWindow()
+    .navigateTo(url);
+};
+
+const fillForm: Story = (pptc: PuppeteerController): void => {
+  pptc
+    .click(customSelect)
+    .select(option)
+    .in(customSelect);
+};
+
+await pptc
+  .runStory(openApplication)
+  .runStory(fillForm)
+  .close();
+```
+
 ## API
 
 ### initWith([options])
@@ -104,5 +136,11 @@ await pptc
   const computedStyles = await pptc.getComputedStyleOf(validInput);
   expect(computedStyles.borderColor).toBe('rgb(40, 167, 69)');
   ```
+
+---
+
+### runStory(story)
+
+- story: Story
 
 ---
