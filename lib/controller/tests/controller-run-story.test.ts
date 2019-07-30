@@ -25,10 +25,7 @@ describe('Puppeteer Controller', (): void => {
       pptc
         .initWith(launchOptions)
         .withMaxSizeWindow()
-        .navigateTo(url)
-        .click(customSelect)
-        .select(option)
-        .in(customSelect);
+        .navigateTo(url);
     };
 
     const fillForm: SUT.Story = (pptc: SUT.PuppeteerController): void => {
