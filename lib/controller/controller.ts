@@ -19,6 +19,7 @@ export type Story = (pptc: PuppeteerController) => void;
 
 export interface ExpectAssertion {
   hasFocus: (options?: AssertOptions) => PuppeteerController;
+  hasClass: (className: string, options?: AssertOptions) => PuppeteerController;
 }
 export interface AssertOptions {
   timeoutInMilliseconds: number;
@@ -190,6 +191,10 @@ export class PuppeteerController implements PromiseLike<void> {
     return await action.hasFocus(selector, this.page);
   }
 
+  public async hasClass(selector: string, className: string): Promise<boolean> {
+    return await action.hasClass(selector, className, this.page);
+  }
+
   public async getSelectedOptionOf(selector: string): Promise<string | null> {
     const result = await action.getSelectedOptionOf(selector, this.page);
     return result;
@@ -223,6 +228,22 @@ export class PuppeteerController implements PromiseLike<void> {
 
   public expectThat(selector: string): ExpectAssertion {
     return {
+      hasClass: (
+        className: string,
+        options: AssertOptions = defaultAssertOptions,
+      ): PuppeteerController => {
+        this.actions.push(
+          async (): Promise<void> => {
+            const errorMessage = `Error: selector '${selector}' does not have the class '${className}'.`;
+            await this.assertFor(
+              async (): Promise<boolean> => await this.hasClass(selector, className),
+              errorMessage,
+              options,
+            );
+          },
+        );
+        return this;
+      },
       hasFocus: (options: AssertOptions = defaultAssertOptions): PuppeteerController => {
         this.actions.push(
           async (): Promise<void> => {
