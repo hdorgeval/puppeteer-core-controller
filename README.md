@@ -27,8 +27,10 @@ await pptc
   .click(emailInputSelector)
   .typeText('foo.bar@baz.com')
   .pressKey('Tab');
-  .expectThat(passwordInputSelector).hasFocus({ timeoutInMilliseconds: 5000 });
+  .expectThat(passwordInputSelector).hasFocus({ timeoutInMilliseconds: 5000 })
   .typeText("don't tell!")
+  .pressKey('Tab');
+  .expectThat(passwordInputSelector).hasClass('is-valid')
   .click(checkMeOutSelector)
   .select(option).in(customSelect)
   .close();
@@ -124,6 +126,14 @@ await pptc
 
 - selector: string
 - options: {timeoutInMilliseconds}. This option enables the assertion mechanism to wait for the selector to have the focus. Defaults to 30000 (30 seconds).
+
+---
+
+### expecThat(selector).hasClass(className,[options])
+
+- selector: string
+- className: string
+- options: {timeoutInMilliseconds}. This option enables the assertion mechanism to wait for the selector to have the specified class. Defaults to 30000 (30 seconds).
 
 ---
 
