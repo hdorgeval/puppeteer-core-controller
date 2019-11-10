@@ -47,7 +47,7 @@ export class PuppeteerController implements PromiseLike<void> {
   public get lastError(): Error | undefined {
     return this._lastError;
   }
-  private isExecutingActions: boolean = false;
+  private isExecutingActions = false;
   private actions: (() => Promise<void>)[] = [];
   private launchOptions: Partial<LaunchOptions> = {
     defaultViewport: {
