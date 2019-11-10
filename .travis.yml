@@ -11,11 +11,12 @@ services:
   - xvfb
 
 node_js:
-  - '6'
   - '8'
   - '9'
   - '10'
   - '11'
+  - '12'
+  - '13'
 
 before_install:
   # Info about OS
