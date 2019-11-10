@@ -25,4 +25,5 @@
     "prettier.trailingComma": "all",
     "prettier.requireConfig": true,
     "jest.autoEnable": false,
+    "typescript.tsdk": "node_modules/typescript/lib",
 }
