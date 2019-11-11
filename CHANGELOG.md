@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - update dependencies
 
+### Added
+
+- be able to create a new controller by using an existing browser and page instance
+
 ## [0.8.0] - 2019-07-31
 
 ### Added

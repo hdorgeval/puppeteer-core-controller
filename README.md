@@ -36,6 +36,35 @@ await pptc
   .close();
 ```
 
+## Usage in an existing code base
+
+```js
+import { PuppeteerController } from 'puppeteer-core-controller';
+
+// existing code that has a browser and page instance
+// ...
+
+const pptc = new PuppeteerController(browser, page);
+const emailInputSelector = 'input#exampleEmail';
+const passwordInputSelector = 'input#examplePassword';
+const checkMeOutSelector = 'input[type="checkbox"].form-check-input';
+const customSelect = 'select#exampleCustomSelect';
+const option = 'Value 3';
+
+await pptc
+  .navigateTo('https://reactstrap.github.io/components/form/')
+  .click(emailInputSelector)
+  .typeText('foo.bar@baz.com')
+  .pressKey('Tab');
+  .expectThat(passwordInputSelector).hasFocus({ timeoutInMilliseconds: 5000 })
+  .typeText("don't tell!")
+  .pressKey('Tab');
+  .expectThat(passwordInputSelector).hasClass('is-valid')
+  .click(checkMeOutSelector)
+  .select(option).in(customSelect)
+  .close();
+```
+
 ## Usage with Stories
 
 ```js
