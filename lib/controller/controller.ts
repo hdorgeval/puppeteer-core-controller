@@ -109,6 +109,13 @@ export class PuppeteerController implements PromiseLike<void> {
     this.page = await action.startNewPageInBrowser(this.browser);
   }
 
+  public getInstances(): [puppeteer.Browser, puppeteer.Page] | [undefined, undefined] {
+    if (this.browser && this.page) {
+      return [this.browser, this.page];
+    }
+
+    return [undefined, undefined];
+  }
   public initWith(options: Partial<LaunchOptions>): PuppeteerController {
     this.actions.push(async (): Promise<void> => await this.launchAction(options));
     this.actions.push(async (): Promise<void> => await this.startNewPage());
