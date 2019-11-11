@@ -183,3 +183,19 @@ await pptc
 - story: Story
 
 ---
+
+### getInstances()
+
+- get browser and page instances of the controller in order to do stuff not covered by this API.
+
+  ```js
+  const pptc = new PuppeteerController();
+
+  // use the pptc controller API
+  // ...
+
+  const [browser, page] = pptc.getIntances();
+  // now use the browser and page instances through the puppeteer API
+  ```
+
+---

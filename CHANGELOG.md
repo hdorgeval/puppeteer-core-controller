@@ -13,7 +13,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Added
 
-- be able to create a new controller by using an existing browser and page instance
+- be able to create a new controller by using an existing browser and page instance;
+- be able to get internal browser and page instances to do stuff not covered by this API;
 
 ## [0.8.0] - 2019-07-31
 
