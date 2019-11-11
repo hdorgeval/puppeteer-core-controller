@@ -28,6 +28,15 @@ export const defaultAssertOptions: AssertOptions = {
   timeoutInMilliseconds: 30000,
 };
 export class PuppeteerController implements PromiseLike<void> {
+  /**
+   * Create a controller instance by using an existing browser and page instance
+   */
+  constructor(browser?: puppeteer.Browser, page?: puppeteer.Page) {
+    if (browser && page) {
+      this.browser = browser;
+      this.page = page;
+    }
+  }
   public async then<TResult1 = void, TResult2 = never>(
     onfulfilled?: ((value: void) => TResult1 | PromiseLike<TResult1>) | null | undefined,
     onrejected?: ((reason: unknown) => TResult2 | PromiseLike<TResult2>) | null | undefined,
