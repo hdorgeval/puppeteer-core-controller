@@ -20,7 +20,7 @@ describe('show-mouse-position', (): void => {
     // Given
     const url = 'https://reactstrap.github.io/components/form';
     browser = await launchBrowser({
-      headless: false,
+      headless: true,
       executablePath: getChromePath(),
     });
     const page = await browser.newPage();
