@@ -25,6 +25,7 @@ await pptc
   .withMaxSizeWindow()
   .withCursor()
   .navigateTo('https://reactstrap.github.io/components/form/')
+  .hover(emailInputSelector)
   .click(emailInputSelector)
   .typeText('foo.bar@baz.com')
   .pressKey('Tab');
@@ -32,6 +33,7 @@ await pptc
   .typeText("don't tell!")
   .pressKey('Tab');
   .expectThat(passwordInputSelector).hasClass('is-valid')
+  .hover(checkMeOutSelector)
   .click(checkMeOutSelector)
   .select(option).in(customSelect)
   .close();
@@ -117,6 +119,8 @@ await pptc
 
 - show a cursor that is bound to the current mouse position. This method should be called before navigateTo(url).
 
+![demo withCursor](demos/withCursor.gif)
+
 ---
 
 ### navigateTo(url)
@@ -131,6 +135,15 @@ await pptc
 - options: same object as [page.click(selector[, options])](https://github.com/GoogleChrome/puppeteer/blob/v1.18.1/docs/api.md#pageclickselector-options)
 
   with an additional property: `timeoutInMilliseconds`. This option enables the click method to wait for the selector to appear in the DOM before attempting to click on it. Defaults to 30000 (30 seconds). Pass 0 to disable this timeout.
+
+---
+
+### hover(selector[, options])
+
+- selector: string
+- options: {steps: number, timeoutInMilliseconds: number }
+
+  `timeoutInMilliseconds` option enables the hover method to wait for the selector to appear in the DOM before attempting to move the mouse on it. Defaults to 30000 (30 seconds). Pass 0 to disable this timeout.
 
 ---
 
