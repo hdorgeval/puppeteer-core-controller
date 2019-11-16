@@ -12,6 +12,8 @@ import {
   defaultKeyboardPressOptions,
   SelectOptions,
   defaultSelectOptions,
+  HoverOptions,
+  defaultHoverOptions,
 } from '../actions';
 import { getChromePath } from '../utils';
 
@@ -129,6 +131,21 @@ export class PuppeteerController implements PromiseLike<void> {
 
   public click(selector: string, options: ClickOptions = defaultClickOptions): PuppeteerController {
     this.actions.push(async (): Promise<void> => await action.click(selector, options, this.page));
+    return this;
+  }
+
+  public hover(
+    selector: string,
+    options: Partial<HoverOptions> = defaultHoverOptions,
+  ): PuppeteerController {
+    const mergedOptions = {
+      ...defaultHoverOptions,
+      ...options,
+    };
+
+    this.actions.push(
+      async (): Promise<void> => await action.hover(selector, mergedOptions, this.page),
+    );
     return this;
   }
 
