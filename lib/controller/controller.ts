@@ -106,7 +106,7 @@ export class PuppeteerController implements PromiseLike<void> {
   }
 
   private async startNewPage(): Promise<void> {
-    this.page = await action.startNewPageInBrowser(this.browser);
+    this.page = await action.startNewPageInBrowser(this.browser, this.launchOptions.showCursor);
   }
 
   public getInstances(): [puppeteer.Browser, puppeteer.Page] | [undefined, undefined] {
@@ -186,6 +186,11 @@ export class PuppeteerController implements PromiseLike<void> {
     return this;
   }
 
+  public withCursor(): PuppeteerController {
+    this.launchOptions.showCursor = true;
+    return this;
+  }
+
   public async getCurrentUrl(): Promise<string> {
     return await action.getCurrentUrl(this.page);
   }
@@ -218,6 +223,11 @@ export class PuppeteerController implements PromiseLike<void> {
 
   public async getComputedStyleOf(selector: string): Promise<CSSStyleDeclaration> {
     const result = await action.getComputedStyleOf(selector, this.page);
+    return result;
+  }
+
+  public async getClientRectangleOf(selector: string): Promise<ClientRect> {
+    const result = await action.getClientRectangleOf(selector, this.page);
     return result;
   }
 

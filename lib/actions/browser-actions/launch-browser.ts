@@ -3,6 +3,7 @@ import { getCurrentBrowserWindowState } from './get-current-browser-window-state
 
 export interface LaunchOptions extends puppeteer.LaunchOptions {
   browserWindowShouldBeMaximized?: boolean;
+  showCursor?: boolean;
 }
 export async function launchBrowser(options: Partial<LaunchOptions>): Promise<puppeteer.Browser> {
   if (!options.browserWindowShouldBeMaximized) {
