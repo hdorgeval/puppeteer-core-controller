@@ -23,6 +23,7 @@ await pptc
     headless: false,
   })
   .withMaxSizeWindow()
+  .withCursor()
   .navigateTo('https://reactstrap.github.io/components/form/')
   .click(emailInputSelector)
   .typeText('foo.bar@baz.com')
@@ -81,6 +82,7 @@ const openApplication: Story = (pptc: PuppeteerController): void => {
   pptc
     .initWith(launchOptions)
     .withMaxSizeWindow()
+    .withCursor()
     .navigateTo(url);
 };
 
@@ -108,6 +110,12 @@ await pptc
 ### withMaxSizeWindow()
 
 - maximize the window size. Should be called after `initWith` and before all other actions.
+
+---
+
+### withCursor()
+
+- show a cursor that is bound to the current mouse position. This method should be called before navigateTo(url).
 
 ---
 
@@ -174,6 +182,26 @@ await pptc
   const validInput = 'input[type="text"].is-valid.form-control';
   const computedStyles = await pptc.getComputedStyleOf(validInput);
   expect(computedStyles.borderColor).toBe('rgb(40, 167, 69)');
+  ```
+
+---
+
+### getClientRectangleOf(selector)
+
+- selector: string
+
+  ```js
+  const selector = 'input[type="text"].is-valid.form-control';
+  const selectorClientRectangle = await pptc.getClientRectangleOf(selector);
+
+  const middleX = selectorClientRectangle.left + selectorClientRectangle.width / 2;
+  const middleY = selectorClientRectangle.top + selectorClientRectangle.height / 2;
+
+  const expectedMiddleX = 100;
+  const expectedMiddleY = 100;
+
+  expect(Math.abs(middleX - expectedMiddleX)).toBeLessThanOrEqual(1);
+  expect(Math.abs(middleY - expectedMiddleY)).toBeLessThanOrEqual(1);
   ```
 
 ---
