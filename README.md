@@ -240,3 +240,15 @@ await pptc
   ```
 
 ---
+
+### cast(any)
+
+- cast input object as a PuppeteerController instance; usefull when a PuppeteerController instance is stored in an untyped context like in cucumberJS.
+
+```js
+const pptc = cast(this.context.pptc);
+// use the pptc controller API
+// ...
+```
+
+---
