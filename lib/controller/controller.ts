@@ -303,3 +303,12 @@ export class PuppeteerController implements PromiseLike<void> {
     };
   }
 }
+
+/**
+ * cast input object as a PuppeteerController instance
+ * usefull when such instance is store in an untyped context
+ * @param pptcInstance : an untyped PuppeteerController instance
+ */
+export const cast = (pptcInstance: unknown): PuppeteerController => {
+  return pptcInstance as PuppeteerController;
+};
