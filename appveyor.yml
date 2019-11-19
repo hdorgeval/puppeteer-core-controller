@@ -1,9 +1,9 @@
 environment:
   matrix:
     #- nodejs_version: '11'
-    - nodejs_version: '10'
+    #- nodejs_version: '10'
     #- nodejs_version: '9'
-    #- nodejs_version: '8'
+    - nodejs_version: '8'
 
 install:
   - ps: >
@@ -13,10 +13,6 @@ install:
         Install-Product node $env:nodejs_version
       }
   - set PATH=%APPDATA%\npm;%PATH%
-  - ps: >-
-      if ($env:nodejs_version -eq "6") {
-        npm i -g npx
-      }
   - npm install
 matrix:
   fast_finish: false
@@ -26,6 +22,6 @@ test_script:
   - node --version
   - npm --version
   - npx --version
-  - npm test
+  - npm test-with-no-coverage
 cache:
   - '%APPDATA%\npm-cache'
