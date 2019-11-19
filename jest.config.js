@@ -28,7 +28,7 @@ module.exports = {
     '!lib/actions/**/has-*.ts',
     '!lib/actions/**/show-*.ts',
     '!lib/actions/**/exists.ts',
-    '!lib/actions/dom-actions/*.ts',
+    '!lib/actions/**/query-*.ts',
     '!lib/**/index.ts',
   ],
 
