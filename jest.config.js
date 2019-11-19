@@ -29,6 +29,7 @@ module.exports = {
     '!lib/actions/**/show-*.ts',
     '!lib/actions/**/exists.ts',
     '!lib/actions/**/query-*.ts',
+    '!lib/actions/**/wait-*.ts',
     '!lib/**/index.ts',
   ],
 
