@@ -22,6 +22,6 @@ test_script:
   - node --version
   - npm --version
   - npx --version
-  - npm test-with-no-coverage
+  - npm run test-with-no-coverage
 cache:
   - '%APPDATA%\npm-cache'
