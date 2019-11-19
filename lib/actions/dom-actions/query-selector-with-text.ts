@@ -20,11 +20,17 @@ export async function querySelectorWithText(
   for (let index = 0; index < elements.length; index++) {
     const element = elements[index];
     const innerText = await element.evaluate((node): string | undefined => {
-      const nodeWithText = node as HTMLElement;
-      if (nodeWithText && nodeWithText.innerText) {
-        return nodeWithText.innerText;
+      try {
+        const nodeWithText = node as HTMLElement;
+        if (nodeWithText && nodeWithText.innerText) {
+          return nodeWithText.innerText;
+        }
+
+        return undefined;
+      } catch (error) {
+        const err = error as Error;
+        return err.message;
       }
-      return undefined;
     });
 
     if (innerText && innerText.includes(text)) {

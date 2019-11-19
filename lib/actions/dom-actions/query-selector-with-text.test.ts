@@ -4,7 +4,7 @@ import { launchBrowser, getCurrentUrl } from '../browser-actions';
 import { getChromePath } from '../../utils';
 import { showMousePosition } from './index';
 
-describe('get client rectangle', (): void => {
+describe('query selector with text', (): void => {
   let browser: puppeteer.Browser | undefined = undefined;
   beforeEach((): void => {
     jest.setTimeout(30000);
