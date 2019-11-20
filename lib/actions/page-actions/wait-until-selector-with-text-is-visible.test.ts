@@ -3,7 +3,7 @@ import * as SUT from './index';
 import { launchBrowser } from '../browser-actions';
 import { getChromePath } from '../../utils';
 
-describe('wait until selector is visible', (): void => {
+describe('wait until selector with text is visible', (): void => {
   let browser: puppeteer.Browser | undefined = undefined;
   beforeEach((): void => {
     jest.setTimeout(30000);
@@ -22,10 +22,11 @@ describe('wait until selector is visible', (): void => {
     // When
     // Then
     const expectedError = new Error(
-      "Error: cannot wait for selector 'foobar' to be visible because a new page has not been created",
+      "Error: cannot wait for selector 'foo' to be visible because a new page has not been created",
     );
-    await SUT.waitUntilSelectorIsVisible(
-      'foobar',
+    await SUT.waitUntilSelectorWithTextIsVisible(
+      'foo',
+      'bar',
       SUT.defaultWaitOptions,
       page,
     ).catch((error): void => expect(error).toMatchObject(expectedError));
@@ -42,15 +43,18 @@ describe('wait until selector is visible', (): void => {
     // When
 
     // Then
-    const expectedError = new Error('waiting for selector "foobar" failed: timeout 100ms exceeded');
-    await SUT.waitUntilSelectorIsVisible(
-      'foobar',
+    const expectedError = new Error(
+      "Error: waiting for selector 'foo' with text 'bar' failed: timeout 100ms exceeded",
+    );
+    await SUT.waitUntilSelectorWithTextIsVisible(
+      'foo',
+      'bar',
       { timeoutInMilliseconds: 100 },
       page,
     ).catch((error): void => expect(error.message).toBe(expectedError.message));
   });
 
-  test('should find selector before timeout occurs', async (): Promise<void> => {
+  test('should find selector with text before timeout occurs', async (): Promise<void> => {
     // Given
     browser = await launchBrowser({
       headless: true,
@@ -62,7 +66,12 @@ describe('wait until selector is visible', (): void => {
 
     // When
     // Then
-    await SUT.waitUntilSelectorIsVisible('a.btn', SUT.defaultWaitOptions, page).catch((error) => {
+    await SUT.waitUntilSelectorWithTextIsVisible(
+      'a.btn',
+      'Components',
+      SUT.defaultWaitOptions,
+      page,
+    ).catch((error) => {
       throw error;
     });
   });
@@ -79,9 +88,12 @@ describe('wait until selector is visible', (): void => {
 
     // When
     // Then
-    const expectedError = new Error('waiting for selector "a.btn" failed: timeout 1ms exceeded');
-    await SUT.waitUntilSelectorIsVisible(
+    const expectedError = new Error(
+      "Error: waiting for selector 'a.btn' with text 'Components' failed: timeout 1ms exceeded",
+    );
+    await SUT.waitUntilSelectorWithTextIsVisible(
       'a.btn',
+      'Components',
       { timeoutInMilliseconds: 1 },
       page,
     ).catch((error): void => expect(error.message).toBe(expectedError.message));

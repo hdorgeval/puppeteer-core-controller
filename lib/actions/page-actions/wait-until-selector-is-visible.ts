@@ -1,11 +1,6 @@
 import * as puppeteer from 'puppeteer-core';
+import { WaitOptions } from '.';
 
-export interface WaitOptions {
-  timeoutInMilliseconds: number;
-}
-export const defaultWaitOptions: WaitOptions = {
-  timeoutInMilliseconds: 30000,
-};
 export async function waitUntilSelectorIsVisible(
   selector: string,
   options: WaitOptions,
