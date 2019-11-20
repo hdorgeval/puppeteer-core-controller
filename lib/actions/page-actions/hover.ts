@@ -1,5 +1,6 @@
 import * as puppeteer from 'puppeteer-core';
 import { getClientRectangleOf } from '../dom-actions';
+import { waitUntilSelectorIsVisible } from '.';
 
 export interface HoverOptions {
   timeoutInMilliseconds: number;
@@ -18,11 +19,11 @@ export async function hover(
     throw new Error(`Error: cannot hover to '${selector}' because a new page has not been created`);
   }
 
-  await page.waitForSelector(selector, {
-    hidden: false,
-    visible: true,
-    timeout: options.timeoutInMilliseconds,
-  });
+  await waitUntilSelectorIsVisible(
+    selector,
+    { timeoutInMilliseconds: options.timeoutInMilliseconds },
+    page,
+  );
 
   const clientRectangle = await getClientRectangleOf(selector, page);
   const x = clientRectangle.left + clientRectangle.width / 2;
