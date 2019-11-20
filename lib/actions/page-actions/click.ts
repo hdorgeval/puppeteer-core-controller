@@ -1,4 +1,5 @@
 import * as puppeteer from 'puppeteer-core';
+import { waitUntilSelectorIsVisible } from '.';
 
 export interface ClickOptions extends puppeteer.ClickOptions {
   timeoutInMilliseconds: number;
@@ -24,10 +25,11 @@ export async function click(
     clickCount: options.clickCount,
   };
 
-  await page.waitForSelector(selector, {
-    hidden: false,
-    visible: true,
-    timeout: options.timeoutInMilliseconds,
-  });
+  await waitUntilSelectorIsVisible(
+    selector,
+    { timeoutInMilliseconds: options.timeoutInMilliseconds },
+    page,
+  );
+
   await page.click(selector, puppeteerClickOptions);
 }
