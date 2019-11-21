@@ -14,6 +14,8 @@ import {
   defaultSelectOptions,
   HoverOptions,
   defaultHoverOptions,
+  WaitOptions,
+  defaultWaitOptions,
 } from '../actions';
 import { getChromePath } from '../utils';
 
@@ -132,6 +134,30 @@ export class PuppeteerController implements PromiseLike<void> {
   public click(selector: string, options: ClickOptions = defaultClickOptions): PuppeteerController {
     this.actions.push(async (): Promise<void> => await action.click(selector, options, this.page));
     return this;
+  }
+
+  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+  public find(selector: string, waitOptions: WaitOptions = defaultWaitOptions) {
+    return {
+      // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+      withText: (text: string) => {
+        return {
+          click: (clickOptions: ClickOptions = defaultClickOptions): PuppeteerController => {
+            const mergedOptions = {
+              ...defaultWaitOptions,
+              ...defaultClickOptions,
+              ...waitOptions,
+              ...clickOptions,
+            };
+            this.actions.push(
+              async (): Promise<void> =>
+                await action.clickOnSelectorWithText(selector, text, mergedOptions, this.page),
+            );
+            return this;
+          },
+        };
+      },
+    };
   }
 
   public hover(
