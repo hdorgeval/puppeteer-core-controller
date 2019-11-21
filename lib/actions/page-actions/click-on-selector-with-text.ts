@@ -1,8 +1,11 @@
 import * as puppeteer from 'puppeteer-core';
-import { waitUntilSelectorIsVisible, ClickOptions } from '.';
+import { waitUntilSelectorWithTextIsVisible } from './wait-until-selector-with-text-is-visible';
+import { querySelectorWithText } from '../dom-actions';
+import { ClickOptions } from '.';
 
-export async function click(
+export async function clickOnSelectorWithText(
   selector: string,
+  text: string,
   options: ClickOptions,
   page: puppeteer.Page | undefined,
 ): Promise<void> {
@@ -15,11 +18,14 @@ export async function click(
     clickCount: options.clickCount,
   };
 
-  await waitUntilSelectorIsVisible(
+  await waitUntilSelectorWithTextIsVisible(
     selector,
+    text,
     { timeoutInMilliseconds: options.timeoutInMilliseconds },
     page,
   );
 
-  await page.click(selector, puppeteerClickOptions);
+  const element = await querySelectorWithText(selector, text, page);
+
+  await element.click(puppeteerClickOptions);
 }

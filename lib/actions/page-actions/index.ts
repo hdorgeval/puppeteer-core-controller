@@ -1,3 +1,5 @@
+export * from './click-on-selector-with-text';
+export * from './click-options-interfaces';
 export * from './click';
 export * from './hover';
 export * from './select';
