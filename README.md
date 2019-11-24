@@ -194,6 +194,28 @@ await pptc
 
 ---
 
+### find(selector[, waitOptions]).withExactText(text).click([clickOptions])
+
+find a selector whose innerText property is equal to `text`, then click on it.
+
+```js
+await pptc
+  .initWith({ headless: true })
+  .withCursor()
+  .navigateTo('https://reactstrap.github.io')
+  .find('a.btn')
+  .withExactText('Components')
+  .click();
+```
+
+- selector: string
+- waitOptions: {timeoutInMilliseconds: number}.
+  The find method will wait for the selector to to be visible until `timeoutInMilliseconds` expires. Defaults to 30000 (30 seconds).
+- withExactText(text)
+- clickOptions: same object as [page.click(selector[, options])](https://github.com/GoogleChrome/puppeteer/blob/v1.18.1/docs/api.md#pageclickselector-options)
+
+---
+
 ### expecThat(selector).hasFocus([options])
 
 - selector: string

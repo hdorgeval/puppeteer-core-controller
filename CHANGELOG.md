@@ -7,10 +7,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [1.5.0] - 2019-11-24
 
-### Unreleased
+### Changed
 
 - update dependencies
 - fix vulnerabilities
+
+### Added
+
+- add find(selector).withExactText(text).click() to the fluent API
 
 ## [1.4.0] - 2019-11-21
 
