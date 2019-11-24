@@ -1,9 +1,8 @@
 import * as puppeteer from 'puppeteer-core';
-import { waitUntilSelectorWithTextIsVisible } from './wait-until-selector-with-text-is-visible';
-import { querySelectorWithText } from '../dom-actions';
-import { ClickOptions } from '.';
+import { querySelectorWithExactText } from '../dom-actions';
+import { ClickOptions, waitUntilSelectorWithExactTextIsVisible } from '.';
 
-export async function clickOnSelectorWithText(
+export async function clickOnSelectorWithExactText(
   selector: string,
   text: string,
   options: ClickOptions,
@@ -18,14 +17,14 @@ export async function clickOnSelectorWithText(
     clickCount: options.clickCount,
   };
 
-  await waitUntilSelectorWithTextIsVisible(
+  await waitUntilSelectorWithExactTextIsVisible(
     selector,
     text,
     { timeoutInMilliseconds: options.timeoutInMilliseconds },
     page,
   );
 
-  const element = await querySelectorWithText(selector, text, page);
+  const element = await querySelectorWithExactText(selector, text, page);
   await element.hover();
   await element.click(puppeteerClickOptions);
 }
