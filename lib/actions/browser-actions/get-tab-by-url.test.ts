@@ -34,7 +34,7 @@ describe('get-existing-tab-in-browser', (): void => {
     // Given
     const url = 'https://reactstrap.github.io/components/form';
     browser = await launchBrowser({
-      headless: false,
+      headless: true,
       executablePath: getChromePath(),
     });
     await browser.newPage();
