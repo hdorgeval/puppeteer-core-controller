@@ -157,6 +157,24 @@ export class PuppeteerController implements PromiseLike<void> {
           },
         };
       },
+      // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+      withExactText: (text: string) => {
+        return {
+          click: (clickOptions: ClickOptions = defaultClickOptions): PuppeteerController => {
+            const mergedOptions = {
+              ...defaultWaitOptions,
+              ...defaultClickOptions,
+              ...waitOptions,
+              ...clickOptions,
+            };
+            this.actions.push(
+              async (): Promise<void> =>
+                await action.clickOnSelectorWithExactText(selector, text, mergedOptions, this.page),
+            );
+            return this;
+          },
+        };
+      },
     };
   }
 

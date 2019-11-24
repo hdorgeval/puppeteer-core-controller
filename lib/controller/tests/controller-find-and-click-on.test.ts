@@ -26,7 +26,28 @@ describe('Puppeteer Controller', (): void => {
       .withCursor()
       .navigateTo(url)
       .find('a.btn')
-      .withText('Components')
+      .withText('Compo')
+      .click();
+
+    // Then
+    const currentUrl = await pptc.getCurrentUrl();
+    expect(currentUrl).toBe('https://reactstrap.github.io/components/alerts/');
+  });
+
+  test('should find a button with exact text and click on it ', async (): Promise<void> => {
+    // Given
+    const launchOptions: LaunchOptions = {
+      headless: true,
+    };
+    const url = 'https://reactstrap.github.io';
+
+    // When
+    await pptc
+      .initWith(launchOptions)
+      .withCursor()
+      .navigateTo(url)
+      .find('a.btn')
+      .withExactText('Components')
       .click();
 
     // Then
