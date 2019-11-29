@@ -20,7 +20,7 @@ import {
 import { getChromePath } from '../utils';
 
 export type Story = (pptc: PuppeteerController) => Promise<void>;
-export type StoryWithParameter<T> = (pptc: PuppeteerController, param: T) => Promise<void>;
+export type StoryWithProps<T> = (pptc: PuppeteerController, props: T) => Promise<void>;
 
 export interface ExpectAssertion {
   hasFocus: (options?: AssertOptions) => PuppeteerController;
@@ -236,7 +236,7 @@ export class PuppeteerController implements PromiseLike<void> {
     return this;
   }
 
-  public runStory<T>(story: Story | StoryWithParameter<T>, param?: T): PuppeteerController {
+  public runStory<T>(story: Story | StoryWithProps<T>, param?: T): PuppeteerController {
     if (typeof story !== 'function') {
       throw new Error('Error: story should be a function');
     }

@@ -62,11 +62,11 @@ describe('Puppeteer Controller', (): void => {
     const option = 'Value 3';
     const params: StartOptions = { launchOptions, url };
 
-    const openApplication: SUT.StoryWithParameter<StartOptions> = async (pptc, param) => {
+    const openApplication: SUT.StoryWithProps<StartOptions> = async (pptc, props) => {
       // prettier-ignore
       await pptc
-        .initWith(param.launchOptions)
-        .navigateTo(param.url);
+        .initWith(props.launchOptions)
+        .navigateTo(props.url);
     };
 
     const fillForm: SUT.Story = async (pptc) => {
