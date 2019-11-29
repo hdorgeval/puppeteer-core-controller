@@ -71,7 +71,7 @@ await pptc
 ## Usage with Stories
 
 ```js
-import { PuppeteerController, Story } from 'puppeteer-core-controller';
+import { PuppeteerController, Story, StoryWithProps } from 'puppeteer-core-controller';
 
 const pptc = new PuppeteerController();
 const launchOptions: LaunchOptions = {
@@ -80,23 +80,30 @@ const launchOptions: LaunchOptions = {
 const url = 'https://reactstrap.github.io/components/form';
 const customSelect = 'select#exampleCustomSelect';
 const option = 'Value 3';
-const openApplication: Story = (pptc: PuppeteerController): void => {
-  pptc
-    .initWith(launchOptions)
+
+interface StartOptions {
+  launchOptions: LaunchOptions;
+  url: string;
+}
+
+const openApplication: StoryWithProps<StartOptions> = async (pptc, props) => {
+  await pptc
+    .initWith(props.launchOptions)
     .withMaxSizeWindow()
     .withCursor()
-    .navigateTo(url);
+    .navigateTo(props.url);
 };
 
-const fillForm: Story = (pptc: PuppeteerController): void => {
-  pptc
+const fillForm: Story = async (pptc) => {
+  await pptc
     .click(customSelect)
     .select(option)
     .in(customSelect);
 };
 
+const params: StartOptions = { launchOptions, url };
 await pptc
-  .runStory(openApplication)
+  .runStory(openApplication, params)
   .runStory(fillForm)
   .close();
 ```
