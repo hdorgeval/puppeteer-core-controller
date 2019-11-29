@@ -19,7 +19,8 @@ import {
 } from '../actions';
 import { getChromePath } from '../utils';
 
-export type Story = (pptc: PuppeteerController) => void;
+export type Story = (pptc: PuppeteerController) => Promise<void>;
+export type StoryWithParameter<T> = (pptc: PuppeteerController, param: T) => Promise<void>;
 
 export interface ExpectAssertion {
   hasFocus: (options?: AssertOptions) => PuppeteerController;
@@ -235,10 +236,17 @@ export class PuppeteerController implements PromiseLike<void> {
     return this;
   }
 
-  public runStory(story: Story): PuppeteerController {
-    if (typeof story === 'function') {
-      story(this);
+  public runStory<T>(story: Story | StoryWithParameter<T>, param?: T): PuppeteerController {
+    if (typeof story !== 'function') {
+      throw new Error('Error: story should be a function');
     }
+
+    if (param) {
+      this.actions.push(async (): Promise<void> => await story(this, param));
+      return this;
+    }
+
+    this.actions.push(async (): Promise<void> => await (story as Story)(this));
     return this;
   }
 

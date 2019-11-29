@@ -21,15 +21,15 @@ describe('Puppeteer Controller', (): void => {
     const url = 'https://reactstrap.github.io/components/form';
     const customSelect = 'select#exampleCustomSelect';
     const option = 'Value 3';
-    const openApplication: SUT.Story = (pptc: SUT.PuppeteerController): void => {
-      pptc
+    const openApplication: SUT.Story = async (pptc) => {
+      // prettier-ignore
+      await pptc
         .initWith(launchOptions)
-        .withMaxSizeWindow()
         .navigateTo(url);
     };
 
-    const fillForm: SUT.Story = (pptc: SUT.PuppeteerController): void => {
-      pptc
+    const fillForm: SUT.Story = async (pptc) => {
+      await pptc
         .click(customSelect)
         .select(option)
         .in(customSelect);
@@ -39,6 +39,47 @@ describe('Puppeteer Controller', (): void => {
     // prettier-ignore
     await pptc
       .runStory(openApplication)
+      .runStory(fillForm);
+
+    // Then
+    const selectedOption = await pptc.getSelectedOptionOf(customSelect);
+    expect(selectedOption).toBe(option);
+    expect(pptc.lastError).toBe(undefined);
+  });
+
+  test('parameterized story', async (): Promise<void> => {
+    // Given
+    const launchOptions: LaunchOptions = {
+      headless: true,
+    };
+    const url = 'https://reactstrap.github.io/components/form';
+
+    interface StartOptions {
+      launchOptions: LaunchOptions;
+      url: string;
+    }
+    const customSelect = 'select#exampleCustomSelect';
+    const option = 'Value 3';
+    const params: StartOptions = { launchOptions, url };
+
+    const openApplication: SUT.StoryWithParameter<StartOptions> = async (pptc, param) => {
+      // prettier-ignore
+      await pptc
+        .initWith(param.launchOptions)
+        .navigateTo(param.url);
+    };
+
+    const fillForm: SUT.Story = async (pptc) => {
+      await pptc
+        .click(customSelect)
+        .select(option)
+        .in(customSelect);
+    };
+
+    // When
+    // prettier-ignore
+    await pptc
+      .runStory(openApplication, params)
       .runStory(fillForm);
 
     // Then
