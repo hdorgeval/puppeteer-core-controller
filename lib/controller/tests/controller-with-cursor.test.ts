@@ -24,7 +24,6 @@ describe('Puppeteer Controller', (): void => {
     // When
     await pptc
       .initWith(launchOptions)
-      .withMaxSizeWindow()
       .withCursor()
       .navigateTo(url)
       .click(emailInputSelector)
