@@ -112,7 +112,7 @@ await pptc
 
 ### initWith([options])
 
-- options: same object as [puppeteer.launch([options])](https://github.com/GoogleChrome/puppeteer/blob/v1.18.1/docs/api.md#puppeteerlaunchoptions)
+- options: same object as [puppeteer.launch([options])](https://github.com/puppeteer/puppeteer/blob/v2.0.0/docs/api.md#puppeteerlaunchoptions)
 
 ---
 
@@ -139,7 +139,7 @@ await pptc
 ### click(selector[, options])
 
 - selector: string
-- options: same object as [page.click(selector[, options])](https://github.com/GoogleChrome/puppeteer/blob/v1.18.1/docs/api.md#pageclickselector-options)
+- options: same object as [page.click(selector[, options])](https://github.com/puppeteer/puppeteer/blob/v2.0.0/docs/api.md#pageclickselector-options)
 
   with an additional property: `timeoutInMilliseconds`. This option enables the click method to wait for the selector to appear in the DOM before attempting to click on it. Defaults to 30000 (30 seconds). Pass 0 to disable this timeout.
 
@@ -157,7 +157,7 @@ await pptc
 ### typeText(text[, options])
 
 - text: string
-- options: same object as [keyboard.type(text[, options])](https://github.com/GoogleChrome/puppeteer/blob/v1.18.1/docs/api.md#keyboardtypetext-options)
+- options: same object as [keyboard.type(text[, options])](https://github.com/puppeteer/puppeteer/blob/v2.0.0/docs/api.md#keyboardtypetext-options)
 
   except that `delay` defaults to 50 milliseconds. Set the `delay` value to `0` to disable the delay.
 
@@ -166,7 +166,7 @@ await pptc
 ### pressKey(key[, options])
 
 - key: 'Tab' | 'Backspace' | 'Enter'
-- options: same object as [keyboard.press(key[, options])](https://github.com/GoogleChrome/puppeteer/blob/v1.18.1/docs/api.md#keyboardpresskey-options)
+- options: same object as [keyboard.press(key[, options])](https://github.com/puppeteer/puppeteer/blob/v2.0.0/docs/api.md#keyboardpresskey-options)
 
   except that `delay` defaults to 50 milliseconds. Set the `delay` value to `0` to disable the delay.
 
@@ -174,7 +174,7 @@ await pptc
 
 ### select(values).in(selector[, options])
 
-- values and selector: same as [page.select(selector, ...values)](https://github.com/GoogleChrome/puppeteer/blob/v1.18.1/docs/api.md#pageselectselector-values)
+- values and selector: same as [page.select(selector, ...values)](https://github.com/puppeteer/puppeteer/blob/v2.0.0/docs/api.md#pageselectselector-values)
 - options: {timeoutInMilliseconds}. This option enables the select method to wait for the selector to appear in the DOM before attempting to select the option(s). Defaults to 30000 (30 seconds). Pass 0 to disable this timeout.
 
 ---
@@ -197,13 +197,13 @@ await pptc
 - waitOptions: {timeoutInMilliseconds: number}.
   The find method will wait for the selector to to be visible until `timeoutInMilliseconds` expires. Defaults to 30000 (30 seconds).
 - withText(text)
-- clickOptions: same object as [page.click(selector[, options])](https://github.com/GoogleChrome/puppeteer/blob/v1.18.1/docs/api.md#pageclickselector-options)
+- clickOptions: same object as [page.click(selector[, options])](https://github.com/puppeteer/puppeteer/blob/v2.0.0/docs/api.md#pageclickselector-options)
 
 ---
 
 ### find(selector[, waitOptions]).withExactText(text).click([clickOptions])
 
-find a selector whose innerText property is equal to `text`, then click on it.
+find a selector whose innerText property is exactly equal to `text`, then click on it.
 
 ```js
 await pptc
@@ -219,7 +219,7 @@ await pptc
 - waitOptions: {timeoutInMilliseconds: number}.
   The find method will wait for the selector to to be visible until `timeoutInMilliseconds` expires. Defaults to 30000 (30 seconds).
 - withExactText(text)
-- clickOptions: same object as [page.click(selector[, options])](https://github.com/GoogleChrome/puppeteer/blob/v1.18.1/docs/api.md#pageclickselector-options)
+- clickOptions: same object as [page.click(selector[, options])](https://github.com/puppeteer/puppeteer/blob/v2.0.0/docs/api.md#pageclickselector-options)
 
 ---
 
@@ -270,9 +270,19 @@ await pptc
 
 ---
 
+### takeFullPageScreenshotAsBase64([options])
+
+- options: same object as [page.screenshot([options])](https://github.com/puppeteer/puppeteer/blob/v2.0.0/docs/api.md#pagescreenshotoptions)
+
+  ```js
+  const screenshot = await pptc.takeFullPageScreenshotAsBase64();
+  ```
+
+---
+
 ### runStory(story)
 
-- story: Story
+- story: Story | StoryWithProps
 
 ---
 
