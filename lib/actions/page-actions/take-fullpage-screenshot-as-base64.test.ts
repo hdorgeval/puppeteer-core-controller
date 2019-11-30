@@ -89,6 +89,6 @@ describe('fullpage screenshot as base64', (): void => {
     );
 
     // Then
-    expect(result.length).toBeGreaterThan(600000);
+    expect(result.length).toBeGreaterThan(300000);
   });
 });
