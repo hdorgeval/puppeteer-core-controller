@@ -16,6 +16,7 @@ import {
   defaultHoverOptions,
   WaitOptions,
   defaultWaitOptions,
+  mandatoryFullPageScreenshotOptions,
 } from '../actions';
 import { getChromePath } from '../utils';
 
@@ -353,6 +354,13 @@ export class PuppeteerController implements PromiseLike<void> {
         return this;
       },
     };
+  }
+
+  public async takeFullPageScreenshotAsBase64(
+    options: puppeteer.ScreenshotOptions = mandatoryFullPageScreenshotOptions,
+  ): Promise<string> {
+    const result = await action.takeFullPageScreenshotAsBase64(options, this.page);
+    return result;
   }
 }
 
