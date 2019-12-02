@@ -3,6 +3,7 @@ export * from './get-client-rectangle-of';
 export * from './get-computed-style-of';
 export * from './get-selected-option-of';
 export * from './get-value-of';
+export * from './has-active-element';
 export * from './has-class';
 export * from './has-focus';
 export * from './is-checked';
