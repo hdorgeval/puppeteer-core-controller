@@ -44,7 +44,7 @@ describe('query active element', (): void => {
     expect(result).toBeNull();
   });
 
-  test.only('should return null on a page whith no active element', async (): Promise<void> => {
+  test('should return null on a page whith no active element', async (): Promise<void> => {
     // Given
     browser = await launchBrowser({
       headless: true,
