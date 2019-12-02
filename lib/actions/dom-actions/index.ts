@@ -6,6 +6,7 @@ export * from './get-value-of';
 export * from './has-active-element';
 export * from './has-class';
 export * from './has-focus';
+export * from './has-moved';
 export * from './is-checked';
 export * from './query-selector-with-exact-text';
 export * from './query-selector-with-text';
