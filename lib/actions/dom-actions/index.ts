@@ -8,6 +8,7 @@ export * from './has-class';
 export * from './has-focus';
 export * from './has-moved';
 export * from './is-checked';
+export * from './is-moving';
 export * from './query-selector-with-exact-text';
 export * from './query-selector-with-text';
 export * from './show-mouse-position';
