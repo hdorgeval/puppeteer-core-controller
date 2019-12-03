@@ -64,4 +64,22 @@ describe('selector has moved', (): void => {
     // Then
     expect(hasMoved).toBe(true);
   });
+
+  test('should detect that selector does not move', async (): Promise<void> => {
+    // Given
+    browser = await launchBrowser({
+      headless: true,
+      executablePath: getChromePath(),
+    });
+    const page = await browser.newPage();
+    await page.goto(`file:${path.join(__dirname, 'has-moved.test2.html')}`);
+    await page.waitFor(2000); // wait twice the animation duration
+    const previousClientRectangle = await SUT.getClientRectangleOf('#moving', page);
+
+    // When
+    const hasMoved = await SUT.hasMoved('#moving', previousClientRectangle, page);
+
+    // Then
+    expect(hasMoved).toBe(false);
+  });
 });
