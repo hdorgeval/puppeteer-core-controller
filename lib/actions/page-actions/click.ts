@@ -1,5 +1,5 @@
 import * as puppeteer from 'puppeteer-core';
-import { waitUntilSelectorIsVisible, ClickOptions } from '.';
+import { waitUntilSelectorIsVisible, ClickOptions, waitUntilSelectorDoesNotMove } from '.';
 
 export async function click(
   selector: string,
@@ -18,6 +18,14 @@ export async function click(
   await waitUntilSelectorIsVisible(
     selector,
     { timeoutInMilliseconds: options.timeoutInMilliseconds },
+    page,
+  );
+
+  await waitUntilSelectorDoesNotMove(
+    selector,
+    {
+      timeoutInMilliseconds: options.timeoutInMilliseconds,
+    },
     page,
   );
 
