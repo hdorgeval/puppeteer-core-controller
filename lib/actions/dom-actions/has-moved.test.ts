@@ -56,7 +56,7 @@ describe('selector has moved', (): void => {
     const page = await browser.newPage();
     await page.goto(`file:${path.join(__dirname, 'has-moved.test1.html')}`);
     const previousClientRectangle = await SUT.getClientRectangleOf('#moving', page);
-    await page.waitFor(50);
+    await page.waitFor(500);
 
     // When
     const hasMoved = await SUT.hasMoved('#moving', previousClientRectangle, page);
