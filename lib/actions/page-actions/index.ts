@@ -7,6 +7,7 @@ export * from './query-active-element';
 export * from './select';
 export * from './take-fullpage-screenshot-as-base64';
 export * from './wait-options.interfaces';
+export * from './wait-until-selector-does-not-move';
 export * from './wait-until-selector-is-visible';
 export * from './wait-until-selector-with-exact-text-is-visible';
 export * from './wait-until-selector-with-text-is-visible';
