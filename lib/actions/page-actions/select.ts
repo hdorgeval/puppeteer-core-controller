@@ -1,5 +1,5 @@
 import * as puppeteer from 'puppeteer-core';
-import { waitUntilSelectorIsVisible } from '.';
+import { waitUntilSelectorIsVisible, waitUntilSelectorDoesNotMove } from '.';
 
 export interface SelectOptions {
   timeoutInMilliseconds: number;
@@ -24,5 +24,14 @@ export async function select(
     { timeoutInMilliseconds: options.timeoutInMilliseconds },
     page,
   );
+
+  await waitUntilSelectorDoesNotMove(
+    selector,
+    {
+      timeoutInMilliseconds: options.timeoutInMilliseconds,
+    },
+    page,
+  );
+
   await page.select(selector, ...values);
 }
