@@ -6,7 +6,12 @@ Fluent API around puppeteer-core
 [![Build status](https://ci.appveyor.com/api/projects/status/5q3m4m4s62knhb72?svg=true)](https://ci.appveyor.com/project/hdorgeval/puppeteer-core-controller)
 [![npm version](https://img.shields.io/npm/v/puppeteer-core-controller.svg)](https://www.npmjs.com/package/puppeteer-core-controller)
 
-## Usage
+- [Usage](#usage)
+- [Usage in an existing code base](#Usage-in-an-existing-code-base)
+- [Usage with Stories](#Usage-with-Stories)
+- [API Documentation](#API-Documentation)
+
+# Usage
 
 ```js
 import { PuppeteerController } from 'puppeteer-core-controller';
@@ -29,7 +34,7 @@ await pptc
   .click(emailInputSelector)
   .typeText('foo.bar@baz.com')
   .pressKey('Tab');
-  .expectThat(passwordInputSelector).hasFocus({ timeoutInMilliseconds: 5000 })
+  .expectThat(passwordInputSelector).hasFocus()
   .typeText("don't tell!")
   .pressKey('Tab');
   .expectThat(passwordInputSelector).hasClass('is-valid')
@@ -39,7 +44,7 @@ await pptc
   .close();
 ```
 
-## Usage in an existing code base
+# Usage in an existing code base
 
 ```js
 import { PuppeteerController } from 'puppeteer-core-controller';
@@ -59,7 +64,7 @@ await pptc
   .click(emailInputSelector)
   .typeText('foo.bar@baz.com')
   .pressKey('Tab');
-  .expectThat(passwordInputSelector).hasFocus({ timeoutInMilliseconds: 5000 })
+  .expectThat(passwordInputSelector).hasFocus()
   .typeText("don't tell!")
   .pressKey('Tab');
   .expectThat(passwordInputSelector).hasClass('is-valid')
@@ -68,7 +73,7 @@ await pptc
   .close();
 ```
 
-## Usage with Stories
+# Usage with Stories
 
 ```js
 import { PuppeteerController, Story, StoryWithProps } from 'puppeteer-core-controller';
@@ -108,7 +113,42 @@ await pptc
   .close();
 ```
 
-## API
+# API Documentation
+
+- Chainable Methods
+
+  - [initWith([options])](#initWithoptions)
+  - [withMaxSizeWindow()](#withMaxSizeWindow)
+  - [withCursor()](#withCursor)
+  - [navigateTo(url)](#navigateTourl)
+  - [hover(selector[, options])](#hoverselector-options)
+  - [click(selector[, options])](#clickselector-options)
+  - [typeText(text[, options])](#typeTexttext-options)
+  - [pressKey(key[, options])](#pressKeykey-options)
+  - [select(values).in(selector[, options])](#selectvalues.inselector-options)
+  - [find(selector[, waitOptions]).withText(text).click([clickOptions])](#findselector-waitOptions.withTexttext.clickclickOptions)
+  - [find(selector[, waitOptions]).withExactText(text).click([clickOptions])](#findselector-waitOptions.withExactTexttext.clickclickOptions)
+  - [runStory(story)](#runStorystory)
+
+- Chainable Assertions
+
+  - [expecThat(selector).hasClass(className,[options])](#expecThatselectorhasClassclassNameoptions)
+  - [expecThat(selector).hasExactValue(value,[options])](#expecThatselectorhasExactValuevalueoptions)
+  - [expecThat(selector).hasFocus([options])](#expecThatselectorhasFocusoptions)
+
+- Helper Methods
+
+  - [cast(any)](#castany)
+  - [getClientRectangleOf(selector)](#getClientRectangleOfselector)
+  - [getComputedStyleOf(selector)](#getComputedStyleOfselector)
+  - [getCurrentUrl()](#getCurrentUrl)
+  - [getInstances()](#getInstances)
+  - [getSelectedOptionOf(selector)](#getSelectedOptionOfselector)
+  - [getValueOf(selector)](#getValueOfselector)
+  - [isChecked(selector)](#isCheckedselector)
+  - [takeFullPageScreenshotAsBase64([options])](#takeFullPageScreenshotAsBase64options)
+
+## Chainable Methods
 
 ### initWith([options])
 
@@ -223,6 +263,8 @@ await pptc
 
 ---
 
+## Assertion API
+
 ### expecThat(selector).hasFocus([options])
 
 - selector: string
@@ -237,6 +279,24 @@ await pptc
 - options: {timeoutInMilliseconds}. This option enables the assertion mechanism to wait for the selector to have the specified class. Defaults to 30000 (30 seconds).
 
 ---
+
+### expecThat(selector).hasExactValue(value,[options])
+
+- selector: string
+- value: string
+- options: {timeoutInMilliseconds}. This option enables the assertion mechanism to wait for the selector to have the specified value. Defaults to 30000 (30 seconds).
+
+```js
+await pptc
+  .click(emailInputSelector)
+  .typeText('foo.bar@baz.com')
+  .expectThat(emailInputSelector)
+  .hasExactValue('foo.bar@baz.com');
+```
+
+---
+
+## Helper Methods
 
 ### getComputedStyleOf(selector)
 
@@ -267,6 +327,32 @@ await pptc
   expect(Math.abs(middleX - expectedMiddleX)).toBeLessThanOrEqual(1);
   expect(Math.abs(middleY - expectedMiddleY)).toBeLessThanOrEqual(1);
   ```
+
+---
+
+### getCurrentUrl()
+
+- returns: <Promise<string>>
+
+---
+
+### isChecked(selector)
+
+- selector: string
+- returns: <Promise<boolean>>
+
+---
+
+### getSelectedOptionOf(selector)
+
+- selector: string
+
+---
+
+### getValueOf(selector)
+
+- selector: string
+- returns: <Promise<string>>
 
 ---
 
