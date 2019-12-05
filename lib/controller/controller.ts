@@ -269,7 +269,7 @@ export class PuppeteerController implements PromiseLike<void> {
     return result;
   }
 
-  public async getValueOf(selector: string): Promise<string> {
+  public async getValueOf(selector: string): Promise<string | undefined> {
     const result = await action.getValueOf(selector, this.page);
     return result;
   }

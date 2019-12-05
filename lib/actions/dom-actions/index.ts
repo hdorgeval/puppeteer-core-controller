@@ -7,6 +7,7 @@ export * from './has-active-element';
 export * from './has-class';
 export * from './has-focus';
 export * from './has-moved';
+export * from './has-exact-value';
 export * from './is-checked';
 export * from './is-moving';
 export * from './query-selector-with-exact-text';
