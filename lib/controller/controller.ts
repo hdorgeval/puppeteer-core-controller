@@ -26,6 +26,7 @@ export type StoryWithProps<T> = (pptc: PuppeteerController, props: T) => Promise
 export interface ExpectAssertion {
   hasFocus: (options?: AssertOptions) => PuppeteerController;
   hasClass: (className: string, options?: AssertOptions) => PuppeteerController;
+  hasExactValue: (value: string, options?: AssertOptions) => PuppeteerController;
 }
 export interface AssertOptions {
   timeoutInMilliseconds: number;
@@ -285,7 +286,9 @@ export class PuppeteerController implements PromiseLike<void> {
   public async hasClass(selector: string, className: string): Promise<boolean> {
     return await action.hasClass(selector, className, this.page);
   }
-
+  public async hasExactValue(selector: string, value: string): Promise<boolean> {
+    return await action.hasExactValue(selector, value, this.page);
+  }
   public async getSelectedOptionOf(selector: string): Promise<string | null> {
     const result = await action.getSelectedOptionOf(selector, this.page);
     return result;
@@ -303,7 +306,7 @@ export class PuppeteerController implements PromiseLike<void> {
 
   private async assertFor(
     predicate: () => Promise<boolean>,
-    errorMessage: string,
+    errorMessage: string | (() => Promise<string>),
     options: AssertOptions = defaultAssertOptions,
   ): Promise<void> {
     if (!this.page) {
@@ -319,11 +322,36 @@ export class PuppeteerController implements PromiseLike<void> {
         return;
       }
     }
-    throw new Error(errorMessage);
+
+    if (typeof errorMessage === 'string') {
+      throw new Error(errorMessage);
+    }
+
+    throw new Error(await errorMessage());
   }
 
   public expectThat(selector: string): ExpectAssertion {
     return {
+      hasExactValue: (
+        value: string,
+        options: AssertOptions = defaultAssertOptions,
+      ): PuppeteerController => {
+        this.actions.push(
+          async (): Promise<void> => {
+            await this.assertFor(
+              async (): Promise<boolean> => await this.hasExactValue(selector, value),
+              async (): Promise<string> => {
+                const currentValue = (await this.getValueOf(selector)) || 'undefined';
+                const errorMessage = `Error: Selector '${selector}' current value is: '${currentValue}', but this does not match the expected value: '${value}'`;
+                return errorMessage;
+              },
+              options,
+            );
+          },
+        );
+        return this;
+      },
+
       hasClass: (
         className: string,
         options: AssertOptions = defaultAssertOptions,
