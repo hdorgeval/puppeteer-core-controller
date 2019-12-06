@@ -1,10 +1,23 @@
 import * as puppeteer from 'puppeteer-core';
 import { getCurrentBrowserWindowState } from './get-current-browser-window-state';
 
+export interface MinViewPort {
+  /**
+   * min page width in pixels.
+   */
+  minWidth?: number;
+  /**
+   * min page height in pixels.
+   */
+  minHeight?: number;
+}
+
 export interface LaunchOptions extends puppeteer.LaunchOptions {
   browserWindowShouldBeMaximized?: boolean;
   showCursor?: boolean;
+  minViewPort?: MinViewPort;
 }
+
 export async function launchBrowser(options: Partial<LaunchOptions>): Promise<puppeteer.Browser> {
   if (!options.browserWindowShouldBeMaximized) {
     return await require('puppeteer-core').launch(options);
@@ -29,6 +42,22 @@ export async function launchBrowser(options: Partial<LaunchOptions>): Promise<pu
   newOptions.defaultViewport.width = windowState.screen.availWidth;
   newOptions.defaultViewport.height = windowState.screen.availHeight;
   newOptions.headless = isHeadless || false;
+
+  if (
+    options.minViewPort &&
+    typeof options.minViewPort.minWidth === 'number' &&
+    windowState.screen.availWidth < options.minViewPort.minWidth
+  ) {
+    newOptions.defaultViewport.width = options.minViewPort.minWidth;
+  }
+
+  if (
+    options.minViewPort &&
+    typeof options.minViewPort.minHeight === 'number' &&
+    windowState.screen.availHeight < options.minViewPort.minHeight
+  ) {
+    newOptions.defaultViewport.height = options.minViewPort.minHeight;
+  }
 
   await browser.close();
   const maximizedBrowser = await require('puppeteer-core').launch(newOptions);

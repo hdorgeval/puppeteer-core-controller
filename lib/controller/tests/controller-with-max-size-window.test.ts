@@ -32,4 +32,25 @@ describe('Puppeteer Controller', (): void => {
     expect(result.isMaximized).toBe(true);
     expect(pptc.lastError).toBe(undefined);
   });
+
+  test('should start with min sized window', async (): Promise<void> => {
+    // Given
+    const launchOptions: LaunchOptions = {
+      headless: true,
+    };
+    const url = 'https://reactstrap.github.io/components/form';
+
+    // When
+    await pptc
+      .initWith(launchOptions)
+      .withMaxSizeWindow({ minWidth: 2000, minHeight: 2001 })
+      .navigateTo(url);
+
+    // Then
+    const result = await pptc.getCurrentBrowserWindowState();
+    expect(result.isMaximized).toBe(false);
+    expect(result.innerWidth).toBe(2000);
+    expect(result.innerHeight).toBe(2001);
+    expect(pptc.lastError).toBe(undefined);
+  });
 });

@@ -17,6 +17,7 @@ import {
   WaitOptions,
   defaultWaitOptions,
   mandatoryFullPageScreenshotOptions,
+  MinViewPort,
 } from '../actions';
 import { getChromePath } from '../utils';
 
@@ -252,8 +253,17 @@ export class PuppeteerController implements PromiseLike<void> {
     return this;
   }
 
-  public withMaxSizeWindow(): PuppeteerController {
+  /**
+   * Try to maximize the browser window size.
+   * This method might not work on CI environment.
+   * In this case setup the minViewPort parameter to ensure the page has a minimum width and height.
+   * @param {MinViewPort} [minViewPort]
+   * @returns {PuppeteerController}
+   * @memberof PuppeteerController
+   */
+  public withMaxSizeWindow(minViewPort?: MinViewPort): PuppeteerController {
     this.launchOptions.browserWindowShouldBeMaximized = true;
+    this.launchOptions.minViewPort = minViewPort;
     return this;
   }
 
