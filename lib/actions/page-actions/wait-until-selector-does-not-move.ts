@@ -17,8 +17,8 @@ export async function waitUntilSelectorDoesNotMove(
   const waitInterval = 10;
   let elapsedTime = 0;
   let stabilityCounter = 0;
-  const maxStabilityCounter = 10;
-  let iterationCount = 0;
+  const maxStabilityCounter = 7;
+
   // eslint-disable-next-line no-constant-condition
   while (true) {
     if (elapsedTime > options.timeoutInMilliseconds) {
@@ -27,14 +27,9 @@ export async function waitUntilSelectorDoesNotMove(
       );
     }
     if (stabilityCounter >= maxStabilityCounter) {
-      // eslint-disable-next-line no-console
-      console.log(
-        `Selector '${selector}' does not move any more after ${elapsedTime} ms. Exiting while loop after ${iterationCount} iterations`,
-      );
       return;
     }
 
-    iterationCount += 1;
     const isCurrentlyMoving = await isMoving(selector, page);
     if (isCurrentlyMoving) {
       await page.waitFor(waitInterval);
