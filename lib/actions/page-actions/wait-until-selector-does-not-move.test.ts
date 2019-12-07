@@ -58,11 +58,12 @@ describe('wait until selector does not move', (): void => {
       executablePath: getChromePath(),
     });
     const page = await browser.newPage();
-    await page.goto(`file:${path.join(__dirname, 'wait-until-selector-does-not-move.test1.html')}`);
     const animationDuration = 1000;
 
-    // When
     const startTime = new Date().getTime();
+    await page.goto(`file:${path.join(__dirname, 'wait-until-selector-does-not-move.test1.html')}`);
+
+    // When
     await SUT.waitUntilSelectorDoesNotMove('#moving', SUT.defaultWaitOptions, page);
     const endTime = new Date().getTime();
 
