@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+
+  <title>is disabled</title>
+</head>
+
+<body>
+
+  <input id="enabledInput" value="yo!" />
+  <script>
+    window.setTimeout(() => {
+      const input = document.querySelector('#enabledInput');
+      input.disabled = true;
+    }, 3000);
+  </script>
+
+</body>
+
+</html>

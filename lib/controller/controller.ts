@@ -28,6 +28,7 @@ export interface ExpectAssertion {
   hasFocus: (options?: AssertOptions) => PuppeteerController;
   hasClass: (className: string, options?: AssertOptions) => PuppeteerController;
   hasExactValue: (value: string, options?: AssertOptions) => PuppeteerController;
+  isDisabled: (options?: AssertOptions) => PuppeteerController;
 }
 export interface AssertOptions {
   timeoutInMilliseconds: number;
@@ -293,6 +294,10 @@ export class PuppeteerController implements PromiseLike<void> {
     return await action.hasFocus(selector, this.page);
   }
 
+  public async isDisabled(selector: string): Promise<boolean> {
+    return await action.isDisabled(selector, this.page);
+  }
+
   public async hasClass(selector: string, className: string): Promise<boolean> {
     return await action.hasClass(selector, className, this.page);
   }
@@ -384,6 +389,20 @@ export class PuppeteerController implements PromiseLike<void> {
             const errorMessage = `Error: selector '${selector}' does not have the focus.`;
             await this.assertFor(
               async (): Promise<boolean> => await this.hasFocus(selector),
+              errorMessage,
+              options,
+            );
+          },
+        );
+        return this;
+      },
+
+      isDisabled: (options: AssertOptions = defaultAssertOptions): PuppeteerController => {
+        this.actions.push(
+          async (): Promise<void> => {
+            const errorMessage = `Error: selector '${selector}' is not disabled.`;
+            await this.assertFor(
+              async (): Promise<boolean> => await this.isDisabled(selector),
               errorMessage,
               options,
             );
