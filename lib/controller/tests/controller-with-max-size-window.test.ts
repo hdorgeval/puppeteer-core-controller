@@ -48,7 +48,6 @@ describe('Puppeteer Controller', (): void => {
 
     // Then
     const result = await pptc.getCurrentBrowserWindowState();
-    expect(result.isMaximized).toBe(false);
     expect(result.innerWidth).toBe(2000);
     expect(result.innerHeight).toBe(2001);
     expect(pptc.lastError).toBe(undefined);
