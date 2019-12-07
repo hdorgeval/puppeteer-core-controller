@@ -125,18 +125,18 @@ await pptc
   - [click(selector[, options])](#clickselector-options)
   - [typeText(text[, options])](#typeTexttext-options)
   - [pressKey(key[, options])](#pressKeykey-options)
-  - [select(values).in(selector[, options])](#selectvalues.inselector-options)
-  - [find(selector[, waitOptions]).withText(text).click([clickOptions])](#findselector-waitOptions.withTexttext.clickclickOptions)
-  - [find(selector[, waitOptions]).withExactText(text).click([clickOptions])](#findselector-waitOptions.withExactTexttext.clickclickOptions)
+  - [select(values).in(selector[, options])](#selectvaluesinselector-options)
+  - [find(selector[, waitOptions]).withText(text).click([clickOptions])](#findselector-waitOptionswithTexttextclickclickOptions)
+  - [find(selector[, waitOptions]).withExactText(text).click([clickOptions])](#findselector-waitOptionswithExactTexttextclickclickOptions)
   - [runStory(story)](#runStorystory)
 
 - Chainable Assertions
 
-  - [expecThat(selector).hasClass(className,[options])](#expecThatselector.hasClassclassNameoptions)
-  - [expecThat(selector).hasExactValue(value,[options])](#expecThatselector.hasExactValuevalueoptions)
-  - [expecThat(selector).hasFocus([options])](#expecThatselector.hasFocusoptions)
-  - [expecThat(selector).isDisabled([options])](#expecThatselector.isDisabledoptions)
-  - [expecThat(selector).isEnabled([options])](#expecThatselector.isEnabledoptions)
+  - [expecThat(selector).hasClass(className,[options])](#expecthatselectorhaslassclassnameoptions)
+  - [expecThat(selector).hasExactValue(value,[options])](#expecthatselectorhasexactvaluevalueoptions)
+  - [expecThat(selector).hasFocus([options])](#expecThatselectorhasFocusoptions)
+  - [expecThat(selector).isDisabled([options])](#expecThatselectorisDisabledoptions)
+  - [expecThat(selector).isEnabled([options])](#expecThatselectorisEnabledoptions)
 
 - Helper Methods
 
