@@ -29,6 +29,7 @@ export interface ExpectAssertion {
   hasClass: (className: string, options?: AssertOptions) => PuppeteerController;
   hasExactValue: (value: string, options?: AssertOptions) => PuppeteerController;
   isDisabled: (options?: AssertOptions) => PuppeteerController;
+  isEnabled: (options?: AssertOptions) => PuppeteerController;
 }
 export interface AssertOptions {
   timeoutInMilliseconds: number;
@@ -396,13 +397,26 @@ export class PuppeteerController implements PromiseLike<void> {
         );
         return this;
       },
-
       isDisabled: (options: AssertOptions = defaultAssertOptions): PuppeteerController => {
         this.actions.push(
           async (): Promise<void> => {
             const errorMessage = `Error: selector '${selector}' is not disabled.`;
             await this.assertFor(
               async (): Promise<boolean> => await this.isDisabled(selector),
+              errorMessage,
+              options,
+            );
+          },
+        );
+        return this;
+      },
+
+      isEnabled: (options: AssertOptions = defaultAssertOptions): PuppeteerController => {
+        this.actions.push(
+          async (): Promise<void> => {
+            const errorMessage = `Error: selector '${selector}' is disabled.`;
+            await this.assertFor(
+              async (): Promise<boolean> => !(await this.isDisabled(selector)),
               errorMessage,
               options,
             );
