@@ -118,7 +118,7 @@ await pptc
 - Chainable Methods
 
   - [initWith([options])](#initWithoptions)
-  - [withMaxSizeWindow()](#withMaxSizeWindow)
+  - [withMaxSizeWindow([minViewPort])](#withMaxSizeWindowminViewPort)
   - [withCursor()](#withCursor)
   - [navigateTo(url)](#navigateTourl)
   - [hover(selector[, options])](#hoverselector-options)
@@ -156,9 +156,12 @@ await pptc
 
 ---
 
-### withMaxSizeWindow()
+### withMaxSizeWindow([minViewPort])
 
 - maximize the window size. Should be called after `initWith` and before all other actions.
+
+- minViewPort: {minWidth: number, minHeight: number }
+  This method might not work on CI environment. In this case setup the minViewPort parameter to ensure the page has a minimum width and height.
 
 ---
 
