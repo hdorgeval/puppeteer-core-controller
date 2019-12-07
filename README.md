@@ -132,7 +132,7 @@ await pptc
 
 - Chainable Assertions
 
-  - [expecThat(selector).hasClass(className,[options])](#expecthatselectorhaslassclassnameoptions)
+  - [expecThat(selector).hasClass(className,[options])](#expecThatSelectorhasClassclassNameoptions)
   - [expecThat(selector).hasExactValue(value,[options])](#expecthatselectorhasexactvaluevalueoptions)
   - [expecThat(selector).hasFocus([options])](#expecThatselectorhasFocusoptions)
   - [expecThat(selector).isDisabled([options])](#expecThatselectorisDisabledoptions)
