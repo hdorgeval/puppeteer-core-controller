@@ -132,9 +132,11 @@ await pptc
 
 - Chainable Assertions
 
-  - [expecThat(selector).hasClass(className,[options])](#expecThatselectorhasClassclassNameoptions)
-  - [expecThat(selector).hasExactValue(value,[options])](#expecThatselectorhasExactValuevalueoptions)
-  - [expecThat(selector).hasFocus([options])](#expecThatselectorhasFocusoptions)
+  - [expecThat(selector).hasClass(className,[options])](#expecThatselector.hasClassclassNameoptions)
+  - [expecThat(selector).hasExactValue(value,[options])](#expecThatselector.hasExactValuevalueoptions)
+  - [expecThat(selector).hasFocus([options])](#expecThatselector.hasFocusoptions)
+  - [expecThat(selector).isDisabled([options])](#expecThatselector.isDisabledoptions)
+  - [expecThat(selector).isEnabled([options])](#expecThatselector.isEnabledoptions)
 
 - Helper Methods
 
@@ -146,6 +148,7 @@ await pptc
   - [getSelectedOptionOf(selector)](#getSelectedOptionOfselector)
   - [getValueOf(selector)](#getValueOfselector)
   - [isChecked(selector)](#isCheckedselector)
+  - [isDisabled(selector)](#isDisabledselector)
   - [takeFullPageScreenshotAsBase64([options])](#takeFullPageScreenshotAsBase64options)
 
 ## Chainable Methods
@@ -299,11 +302,26 @@ await pptc
 
 ---
 
+### expecThat(selector).isDisabled([options])
+
+- selector: string
+- options: {timeoutInMilliseconds}. This option enables the assertion mechanism to wait for the selector to be disabled. Defaults to 30000 (30 seconds).
+
+---
+
+### expecThat(selector).isEnabled([options])
+
+- selector: string
+- options: {timeoutInMilliseconds}. This option enables the assertion mechanism to wait for the selector to be enabled. Defaults to 30000 (30 seconds).
+
+---
+
 ## Helper Methods
 
 ### getComputedStyleOf(selector)
 
 - selector: string
+- returns: `Promise<CSSStyleDeclaration>`
 
   ```js
   const validInput = 'input[type="text"].is-valid.form-control';
@@ -335,27 +353,35 @@ await pptc
 
 ### getCurrentUrl()
 
-- returns: <Promise<string>>
+- returns: `Promise<string>`
 
 ---
 
 ### isChecked(selector)
 
 - selector: string
-- returns: <Promise<boolean>>
+- returns: `Promise<boolean>`
+
+---
+
+### isDisabled(selector)
+
+- selector: string
+- returns: `Promise<boolean>`
 
 ---
 
 ### getSelectedOptionOf(selector)
 
 - selector: string
+- returns: `Promise<string>`
 
 ---
 
 ### getValueOf(selector)
 
 - selector: string
-- returns: <Promise<string>>
+- returns: `Promise<string>`
 
 ---
 
