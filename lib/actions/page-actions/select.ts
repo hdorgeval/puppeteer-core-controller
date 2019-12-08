@@ -33,5 +33,9 @@ export async function select(
     page,
   );
 
-  await page.select(selector, ...values);
+  const selectedOptions = await page.select(selector, ...values);
+
+  if (Array.isArray(selectedOptions) && selectedOptions.length === 0) {
+    throw new Error(`Error: cannot select '${values.join(',')}' in list '${selector}'`);
+  }
 }

@@ -35,4 +35,31 @@ describe('Puppeteer Controller', (): void => {
     expect(selectedOption).toBe(option);
     expect(pptc.lastError).toBe(undefined);
   });
+
+  test('should throw an error when selecting an unknown option', async (): Promise<void> => {
+    // Given
+    const launchOptions: LaunchOptions = {
+      headless: true,
+    };
+    const url = 'https://reactstrap.github.io/components/form';
+    const customSelect = 'select#exampleCustomSelect';
+
+    // When
+    let result: Error | undefined = undefined;
+    try {
+      await pptc
+        .initWith(launchOptions)
+        .navigateTo(url)
+        .click(customSelect)
+        .select('foobar')
+        .in(customSelect);
+    } catch (error) {
+      result = error;
+    }
+
+    // Then
+    const expectedErrorMessage =
+      "Error: cannot select 'foobar' in list 'select#exampleCustomSelect'";
+    expect(result && result.message).toContain(expectedErrorMessage);
+  });
 });
