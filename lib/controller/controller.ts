@@ -37,6 +37,21 @@ export interface AssertOptions {
 export const defaultAssertOptions: AssertOptions = {
   timeoutInMilliseconds: 30000,
 };
+
+export {
+  LaunchOptions,
+  WindowState,
+  ClickOptions,
+  TypeTextOptions,
+  KeyboardKey,
+  KeyboardPressOptions,
+  SelectOptions,
+  HoverOptions,
+  WaitOptions,
+  mandatoryFullPageScreenshotOptions,
+  MinViewPort,
+} from '../actions';
+
 export class PuppeteerController implements PromiseLike<void> {
   /**
    * Create a controller instance by using an existing browser and page instance
