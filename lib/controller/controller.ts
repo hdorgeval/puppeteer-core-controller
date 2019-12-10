@@ -30,6 +30,7 @@ export interface ExpectAssertion {
   hasExactValue: (value: string, options?: AssertOptions) => PuppeteerController;
   isDisabled: (options?: AssertOptions) => PuppeteerController;
   isEnabled: (options?: AssertOptions) => PuppeteerController;
+  isVisible: (options?: AssertOptions) => PuppeteerController;
 }
 export interface AssertOptions {
   timeoutInMilliseconds: number;
@@ -314,6 +315,10 @@ export class PuppeteerController implements PromiseLike<void> {
     return await action.isDisabled(selector, this.page);
   }
 
+  public async isVisible(selector: string): Promise<boolean> {
+    return await action.isVisible(selector, this.page);
+  }
+
   public async hasClass(selector: string, className: string): Promise<boolean> {
     return await action.hasClass(selector, className, this.page);
   }
@@ -425,13 +430,25 @@ export class PuppeteerController implements PromiseLike<void> {
         );
         return this;
       },
-
       isEnabled: (options: AssertOptions = defaultAssertOptions): PuppeteerController => {
         this.actions.push(
           async (): Promise<void> => {
             const errorMessage = `Error: selector '${selector}' is disabled.`;
             await this.assertFor(
               async (): Promise<boolean> => !(await this.isDisabled(selector)),
+              errorMessage,
+              options,
+            );
+          },
+        );
+        return this;
+      },
+      isVisible: (options: AssertOptions = defaultAssertOptions): PuppeteerController => {
+        this.actions.push(
+          async (): Promise<void> => {
+            const errorMessage = `Error: selector '${selector}' is not visible.`;
+            await this.assertFor(
+              async (): Promise<boolean> => await this.isVisible(selector),
               errorMessage,
               options,
             );
