@@ -137,6 +137,8 @@ await pptc
   - [expecThat(selector).hasFocus([options])](#expecThatselectorhasFocusoptions)
   - [expecThat(selector).isDisabled([options])](#expecThatselectorisDisabledoptions)
   - [expecThat(selector).isEnabled([options])](#expecThatselectorisEnabledoptions)
+  - [expecThat(selector).isVisible([options])](#expecThatselectorisVisibleoptions)
+  - [expecThat(selector).isNotVisible([options])](#expecThatselectorisNotVisibleoptions)
 
 - Helper Methods
 
@@ -149,6 +151,8 @@ await pptc
   - [getValueOf(selector)](#getValueOfselector)
   - [isChecked(selector)](#isCheckedselector)
   - [isDisabled(selector)](#isDisabledselector)
+  - [isVisible(selector)](#isVisibleselector)
+  - [isNotVisible(selector)](#isNotVisibleselector)
   - [takeFullPageScreenshotAsBase64([options])](#takeFullPageScreenshotAsBase64options)
 
 ## Chainable Methods
@@ -316,6 +320,20 @@ await pptc
 
 ---
 
+### expecThat(selector).isVisible([options])
+
+- selector: string
+- options: {timeoutInMilliseconds}. This option enables the assertion mechanism to wait for the selector to be visible. Defaults to 30000 (30 seconds).
+
+---
+
+### expecThat(selector).isNotVisible([options])
+
+- selector: string
+- options: {timeoutInMilliseconds}. This option enables the assertion mechanism to wait for the selector to be hidden or to disappear from the DOM. Defaults to 30000 (30 seconds).
+
+---
+
 ## Helper Methods
 
 ### getComputedStyleOf(selector)
@@ -365,6 +383,20 @@ await pptc
 ---
 
 ### isDisabled(selector)
+
+- selector: string
+- returns: `Promise<boolean>`
+
+---
+
+### isVisible(selector)
+
+- selector: string
+- returns: `Promise<boolean>`
+
+---
+
+### isNotVisible(selector)
 
 - selector: string
 - returns: `Promise<boolean>`
