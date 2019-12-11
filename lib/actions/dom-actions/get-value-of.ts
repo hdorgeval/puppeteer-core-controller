@@ -3,7 +3,7 @@ import * as puppeteer from 'puppeteer-core';
 export async function getValueOf(
   selector: string,
   page: puppeteer.Page | undefined,
-): Promise<string | undefined> {
+): Promise<string | undefined | null> {
   if (!page) {
     throw new Error(
       `Error: cannot get the value of '${selector}' because a new page has not been created`,

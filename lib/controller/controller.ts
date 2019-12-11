@@ -299,7 +299,7 @@ export class PuppeteerController implements PromiseLike<void> {
     return result;
   }
 
-  public async getValueOf(selector: string): Promise<string | undefined> {
+  public async getValueOf(selector: string): Promise<string | undefined | null> {
     const result = await action.getValueOf(selector, this.page);
     return result;
   }
@@ -382,8 +382,15 @@ export class PuppeteerController implements PromiseLike<void> {
             await this.assertFor(
               async (): Promise<boolean> => await this.hasExactValue(selector, value),
               async (): Promise<string> => {
-                const currentValue = (await this.getValueOf(selector)) || 'undefined';
-                const errorMessage = `Error: Selector '${selector}' current value is: '${currentValue}', but this does not match the expected value: '${value}'`;
+                const currentValue = await this.getValueOf(selector);
+                let currentValueAsString = currentValue;
+                if (currentValue === undefined) {
+                  currentValueAsString = 'undefined';
+                }
+                if (currentValue === null) {
+                  currentValueAsString = 'null';
+                }
+                const errorMessage = `Error: Selector '${selector}' current value is: '${currentValueAsString}', but this does not match the expected value: '${value}'`;
                 return errorMessage;
               },
               options,

@@ -13,7 +13,15 @@ export async function hasExactValue(
 
   const value = await getValueOf(selector, page);
 
-  if (value === undefined) {
+  if (value === undefined && expectedValue === '') {
+    return true;
+  }
+
+  if (value === null && expectedValue === '') {
+    return true;
+  }
+
+  if (value === undefined || value === null) {
     throw new Error(`Error: Selector '${selector}' has no value property`);
   }
 
