@@ -1,5 +1,6 @@
 import * as SUT from '../controller';
 import { LaunchOptions } from '../../actions';
+import * as path from 'path';
 
 describe('Puppeteer Controller', (): void => {
   let pptc: SUT.PuppeteerController;
@@ -85,6 +86,51 @@ describe('Puppeteer Controller', (): void => {
     // Then
     const selectedOption = await pptc.getSelectedOptionOf(customSelect);
     expect(selectedOption).toBe(option);
+    expect(pptc.lastError).toBe(undefined);
+  });
+
+  test('parameterized story of type string with empty value', async (): Promise<void> => {
+    // Given
+    const launchOptions: LaunchOptions = {
+      headless: true,
+    };
+    const url = `file:${path.join(__dirname, 'controller-run-story.test.html')}`;
+
+    interface StartOptions {
+      launchOptions: LaunchOptions;
+      url: string;
+    }
+    const customSelect = 'select#selectWithBlankOption';
+    const params: StartOptions = { launchOptions, url };
+
+    const openApplication: SUT.StoryWithProps<StartOptions> = async (pptc, props) => {
+      // prettier-ignore
+      await pptc
+        .initWith(props.launchOptions)
+        .navigateTo(props.url);
+    };
+
+    const selectOption: SUT.StoryWithProps<string> = async (pptc, optionToBeSelected) => {
+      await pptc
+        .expectThat(customSelect)
+        .isVisible()
+        .expectThat(customSelect)
+        .isEnabled()
+        .hover(customSelect)
+        .click(customSelect)
+        .select(optionToBeSelected)
+        .in(customSelect);
+    };
+
+    // When
+    // prettier-ignore
+    await pptc
+      .runStory(openApplication, params)
+      .runStory(selectOption, '');
+
+    // Then
+    const selectedOption = await pptc.getSelectedOptionOf(customSelect);
+    expect(selectedOption).toBe('');
     expect(pptc.lastError).toBe(undefined);
   });
 });

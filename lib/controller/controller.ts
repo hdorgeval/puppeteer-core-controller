@@ -263,12 +263,12 @@ export class PuppeteerController implements PromiseLike<void> {
       throw new Error('Error: story should be a function');
     }
 
-    if (param) {
-      this.actions.push(async (): Promise<void> => await story(this, param));
+    if (param === undefined) {
+      this.actions.push(async (): Promise<void> => await (story as Story)(this));
       return this;
     }
 
-    this.actions.push(async (): Promise<void> => await (story as Story)(this));
+    this.actions.push(async (): Promise<void> => await story(this, param));
     return this;
   }
 
