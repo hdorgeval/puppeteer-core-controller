@@ -29,6 +29,8 @@ describe('Puppeteer Controller', (): void => {
 
     // Then
     const result = await pptc.getCurrentBrowserWindowState();
+    // eslint-disable-next-line no-console
+    console.log('browser window state:', result);
     expect(result.isMaximized).toBe(true);
     expect(pptc.lastError).toBe(undefined);
   });
