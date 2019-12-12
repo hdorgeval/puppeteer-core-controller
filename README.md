@@ -118,6 +118,7 @@ await pptc
 - Chainable Methods
 
   - [initWith([options])](#initWithoptions)
+  - [recordPageErrors()](#recordPageErrors)
   - [withMaxSizeWindow([minViewPort])](#withMaxSizeWindowminViewPort)
   - [withCursor()](#withCursor)
   - [navigateTo(url)](#navigateTourl)
@@ -130,6 +131,7 @@ await pptc
   - [find(selector[, waitOptions]).withText(text).click([clickOptions])](#findselector-waitOptionswithTexttextclickclickOptions)
   - [find(selector[, waitOptions]).withExactText(text).click([clickOptions])](#findselector-waitOptionswithExactTexttextclickclickOptions)
   - [runStory(story)](#runStorystory)
+  - [wait(duration)](#waitduration)
 
 - Chainable Assertions
 
@@ -144,9 +146,11 @@ await pptc
 - Helper Methods
 
   - [cast(any)](#castany)
+  - [clearPageErrors()](#clearPageErrors)
   - [getClientRectangleOf(selector)](#getClientRectangleOfselector)
   - [getComputedStyleOf(selector)](#getComputedStyleOfselector)
   - [getCurrentUrl()](#getCurrentUrl)
+  - [getPageErrors()](#getPageErrors)
   - [getInstances()](#getInstances)
   - [getSelectedOptionOf(selector)](#getSelectedOptionOfselector)
   - [getValueOf(selector)](#getValueOfselector)
@@ -178,6 +182,14 @@ await pptc
 - show a cursor that is bound to the current mouse position. This method should be called before navigateTo(url).
 
 ![demo withCursor](demos/withCursor.gif)
+
+---
+
+### recordPageErrors()
+
+- track and record page errors. Should be called after `initWith`.
+- use `getPageErrors()` helper method on the controller to access errors that have occurred.
+- use `clearPageErrors()` helper method on the controller to clear all past errors.
 
 ---
 
@@ -291,6 +303,20 @@ await pptc
   The find method will wait for the selector to to be visible until `timeoutInMilliseconds` expires. Defaults to 30000 (30 seconds).
 - withExactText(text)
 - clickOptions: same object as [page.click(selector[, options])](https://github.com/puppeteer/puppeteer/blob/v2.0.0/docs/api.md#pageclickselector-options)
+
+---
+
+### runStory(story)
+
+- story: Story | StoryWithProps
+
+---
+
+### wait(duration)
+
+- duration: number
+
+  time to wait in milliseconds.
 
 ---
 
@@ -458,12 +484,6 @@ const value = await pptc
 
 ---
 
-### runStory(story)
-
-- story: Story | StoryWithProps
-
----
-
 ### getInstances()
 
 - get browser and page instances of the controller in order to do stuff not covered by this API.
@@ -477,6 +497,31 @@ const value = await pptc
   const [browser, page] = pptc.getIntances();
   // now use the browser and page instances through the puppeteer API
   ```
+
+---
+
+### getPageErrors()
+
+- get page errors that occurred while executing the test.
+
+  ```js
+  await pptc
+      .initWith(launchOptions)
+      .recordPageErrors()
+      .navigateTo(url)
+      ...
+      .close();
+
+  const errors: Error[] = pptc.getPageErrors();
+  // analyse errors by iterating on the returned array
+  // an empty array means that no error has occurred or that you forgot to call the recordPageErrors() method
+  ```
+
+---
+
+### clearPageErrors()
+
+- clear page errors that occurred. Usefull if you want to track page errors only after a specific context has been setup on the page.
 
 ---
 
