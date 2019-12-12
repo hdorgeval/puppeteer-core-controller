@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html)
 
+## [1.14.0] - 2019-12-12
+
+### Added
+
+- add `wait(duration)` method in the fluent API
+- add `recordPageErrors()` method in the fluent API
+- add `getPageErrors()` helper method on the controller
+- add `clearPageErrors()` helper method on the controller
+
 ## [1.13.0] - 2019-12-12
 
 ### Added
