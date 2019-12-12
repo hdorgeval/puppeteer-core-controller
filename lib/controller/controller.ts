@@ -95,6 +95,15 @@ export class PuppeteerController implements PromiseLike<void> {
     args: [`--window-size=${this.windowSize.width},${this.windowSize.height}`],
   };
 
+  private pageErrors: Error[] = [];
+  public getPageErrors(): Error[] {
+    return [...this.pageErrors];
+  }
+
+  public clearPageErrors(): void {
+    this.pageErrors = [];
+  }
+
   private async executeActions(): Promise<void> {
     try {
       this.isExecutingActions = true;
@@ -149,8 +158,23 @@ export class PuppeteerController implements PromiseLike<void> {
     return this;
   }
 
+  public recordPageErrors(): PuppeteerController {
+    this.actions.push(
+      async (): Promise<void> =>
+        await action.recordPageErrors(this.page, (err) => this.pageErrors.push(err)),
+    );
+    return this;
+  }
+
   public navigateTo(url: string): PuppeteerController {
     this.actions.push(async (): Promise<void> => await action.navigateTo(url, this.page));
+    return this;
+  }
+
+  public wait(durationInMilliseconds: number): PuppeteerController {
+    this.actions.push(
+      async (): Promise<void> => await action.wait(durationInMilliseconds, this.page),
+    );
     return this;
   }
 

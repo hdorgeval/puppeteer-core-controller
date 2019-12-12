@@ -17,7 +17,7 @@ describe('Puppeteer Controller', (): void => {
   test('should clear text on an existing input', async (): Promise<void> => {
     // Given
     const launchOptions: LaunchOptions = {
-      headless: false,
+      headless: true,
     };
     const url = `file:${path.join(__dirname, 'controller-clear.test.html')}`;
     const selector = 'input#enabledInput';
