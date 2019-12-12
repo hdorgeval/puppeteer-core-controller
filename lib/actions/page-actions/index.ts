@@ -1,3 +1,4 @@
+export * from './clear';
 export * from './click-on-selector-with-exact-text';
 export * from './click-on-selector-with-text';
 export * from './click-options-interfaces';

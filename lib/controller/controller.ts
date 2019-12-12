@@ -159,6 +159,11 @@ export class PuppeteerController implements PromiseLike<void> {
     return this;
   }
 
+  public clear(selector: string, options: ClickOptions = defaultClickOptions): PuppeteerController {
+    this.actions.push(async (): Promise<void> => await action.clear(selector, options, this.page));
+    return this;
+  }
+
   // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
   public find(selector: string, waitOptions: WaitOptions = defaultWaitOptions) {
     return {
