@@ -122,6 +122,7 @@ await pptc
   - [withCursor()](#withCursor)
   - [navigateTo(url)](#navigateTourl)
   - [hover(selector[, options])](#hoverselector-options)
+  - [clear(selector[, options])](#clearselector-options)
   - [click(selector[, options])](#clickselector-options)
   - [typeText(text[, options])](#typeTexttext-options)
   - [pressKey(key[, options])](#pressKeykey-options)
@@ -210,6 +211,26 @@ await pptc
 - options: same object as [keyboard.type(text[, options])](https://github.com/puppeteer/puppeteer/blob/v2.0.0/docs/api.md#keyboardtypetext-options)
 
   except that `delay` defaults to 50 milliseconds. Set the `delay` value to `0` to disable the delay.
+
+---
+
+### clear(selector[, options])
+
+Clear text in an input box.
+
+- selector: string
+- options: same object as [page.click(selector[, options])](https://github.com/puppeteer/puppeteer/blob/v2.0.0/docs/api.md#pageclickselector-options)
+
+This method does not wait for the selector to be in the DOM.
+In some cases you might have to wait that the input field is visible before clearing it's value:
+
+```js
+const value = await pptc
+  .expectThat(selector)
+  .isVisible()
+  .hover(selector)
+  .clear(selector);
+```
 
 ---
 
@@ -414,6 +435,16 @@ await pptc
 
 - selector: string
 - returns: `Promise<string>`
+
+This method does not wait for the selector to be in the DOM.
+In some cases you might have to wait that the input field is visible before getting it's value:
+
+```js
+const value = await pptc
+  .expectThat(selector)
+  .isVisible()
+  .getValueOf(selector);
+```
 
 ---
 
