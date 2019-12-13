@@ -18,16 +18,48 @@ export interface LaunchOptions extends puppeteer.LaunchOptions {
   minViewPort?: MinViewPort;
 }
 
+async function tryLaunchBrowser(options: Partial<LaunchOptions>): Promise<puppeteer.Browser> {
+  const maxRetries = 3;
+
+  for (let index = 0; index <= maxRetries; index++) {
+    try {
+      const browser = await require('puppeteer-core').launch(options);
+      return browser;
+    } catch (error) {
+      if (index >= maxRetries) {
+        throw error;
+      }
+      if (
+        error.message &&
+        typeof error.message === 'string' &&
+        (error.message as string).includes('Failed to launch chrome')
+      ) {
+        // no need to retry: path to chrome is incorrect
+        throw error;
+      }
+      // eslint-disable-next-line no-console
+      console.warn(`an error has occured while launching the browser by puppeteer:`);
+      if (error.message) {
+        // eslint-disable-next-line no-console
+        console.warn(`${error.message}`);
+      }
+      // eslint-disable-next-line no-console
+      console.warn(`retrying to launch the browser ...`);
+    }
+  }
+  throw new Error('Cannot launch browser');
+}
+
 export async function launchBrowser(options: Partial<LaunchOptions>): Promise<puppeteer.Browser> {
   if (!options.browserWindowShouldBeMaximized) {
-    return await require('puppeteer-core').launch(options);
+    return await tryLaunchBrowser(options);
   }
   const isHeadless = options.headless;
   const newOptions = {
     ...options,
     headless: false,
   };
-  const browser = await require('puppeteer-core').launch(newOptions);
+  const browser = await tryLaunchBrowser(newOptions);
   const page = await browser.newPage();
   const windowState = await getCurrentBrowserWindowState(page);
 
