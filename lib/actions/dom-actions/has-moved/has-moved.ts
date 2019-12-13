@@ -1,5 +1,5 @@
 import * as puppeteer from 'puppeteer-core';
-import { getClientRectangleOf } from './get-client-rectangle-of';
+import { getClientRectangleOf } from '../get-client-rectangle-of';
 
 export const zeroClientRectangle: ClientRect = {
   top: 0,

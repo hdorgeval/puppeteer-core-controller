@@ -1,7 +1,7 @@
 import * as puppeteer from 'puppeteer-core';
-import * as SUT from './index';
-import { launchBrowser } from '../browser-actions';
-import { getChromePath } from '../../utils';
+import * as SUT from '../index';
+import { launchBrowser } from '../../browser-actions';
+import { getChromePath } from '../../../utils';
 import { zeroClientRectangle } from './has-moved';
 import * as path from 'path';
 
