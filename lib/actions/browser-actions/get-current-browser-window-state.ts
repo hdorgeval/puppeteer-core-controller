@@ -29,8 +29,7 @@ export async function getCurrentBrowserWindowState(
         isMaximized:
           Math.abs(window.outerWidth - window.screen.availWidth) <
             window.screen.availWidth * 0.03 &&
-          Math.abs(window.outerHeight - window.screen.availHeight) <
-            window.screen.availHeight * 0.03,
+          Math.abs(window.outerHeight - window.screen.availHeight) < 100,
       };
       return JSON.stringify(result);
     });
