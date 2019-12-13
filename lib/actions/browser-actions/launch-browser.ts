@@ -61,5 +61,5 @@ export async function launchBrowser(options: Partial<LaunchOptions>): Promise<pu
 
   await browser.close();
   const maximizedBrowser = await require('puppeteer-core').launch(newOptions);
-  return Promise.resolve(maximizedBrowser);
+  return maximizedBrowser;
 }

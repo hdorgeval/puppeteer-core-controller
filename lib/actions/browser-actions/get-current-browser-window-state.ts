@@ -35,7 +35,7 @@ export async function getCurrentBrowserWindowState(
       return JSON.stringify(result);
     });
     const windowState = JSON.parse(windowStateSerialized);
-    return Promise.resolve(windowState);
+    return windowState;
   }
   throw new Error('Error: cannot get current window because a new page has not been created');
 }
