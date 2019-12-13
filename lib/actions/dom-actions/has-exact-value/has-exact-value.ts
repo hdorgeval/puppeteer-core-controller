@@ -1,5 +1,5 @@
 import * as puppeteer from 'puppeteer-core';
-import { getValueOf } from './index';
+import { getValueOf } from '../index';
 export async function hasExactValue(
   selector: string,
   expectedValue: string,
