@@ -1,6 +1,6 @@
 import * as puppeteer from 'puppeteer-core';
-import { getClientRectangleOf } from './get-client-rectangle-of';
-import { hasMoved } from './has-moved';
+import { getClientRectangleOf } from '../get-client-rectangle-of';
+import { hasMoved } from '../has-moved';
 
 export async function isMoving(
   selector: string,
