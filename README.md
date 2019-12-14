@@ -135,13 +135,13 @@ await pptc
 
 - Chainable Assertions
 
-  - [expecThat(selector).hasClass(className,[options])](#expecThatSelectorhasClassclassNameoptions)
-  - [expecThat(selector).hasExactValue(value,[options])](#expecthatselectorhasexactvaluevalueoptions)
-  - [expecThat(selector).hasFocus([options])](#expecThatselectorhasFocusoptions)
-  - [expecThat(selector).isDisabled([options])](#expecThatselectorisDisabledoptions)
-  - [expecThat(selector).isEnabled([options])](#expecThatselectorisEnabledoptions)
-  - [expecThat(selector).isVisible([options])](#expecThatselectorisVisibleoptions)
-  - [expecThat(selector).isNotVisible([options])](#expecThatselectorisNotVisibleoptions)
+  - [expectThat(selector).hasClass(className,[options])](#expectThatSelectorhasClassclassNameoptions)
+  - [expectThat(selector).hasExactValue(value,[options])](#expectThatselectorhasexactvaluevalueoptions)
+  - [expectThat(selector).hasFocus([options])](#expectThatselectorhasFocusoptions)
+  - [expectThat(selector).isDisabled([options])](#expectThatselectorisDisabledoptions)
+  - [expectThat(selector).isEnabled([options])](#expectThatselectorisEnabledoptions)
+  - [expectThat(selector).isVisible([options])](#expectThatselectorisVisibleoptions)
+  - [expectThat(selector).isNotVisible([options])](#expectThatselectorisNotVisibleoptions)
 
 - Helper Methods
 
@@ -322,14 +322,14 @@ await pptc
 
 ## Assertion API
 
-### expecThat(selector).hasFocus([options])
+### expectThat(selector).hasFocus([options])
 
 - selector: string
 - options: {timeoutInMilliseconds}. This option enables the assertion mechanism to wait for the selector to have the focus. Defaults to 30000 (30 seconds).
 
 ---
 
-### expecThat(selector).hasClass(className,[options])
+### expectThat(selector).hasClass(className,[options])
 
 - selector: string
 - className: string
@@ -337,7 +337,7 @@ await pptc
 
 ---
 
-### expecThat(selector).hasExactValue(value,[options])
+### expectThat(selector).hasExactValue(value,[options])
 
 - selector: string
 - value: string
@@ -353,28 +353,28 @@ await pptc
 
 ---
 
-### expecThat(selector).isDisabled([options])
+### expectThat(selector).isDisabled([options])
 
 - selector: string
 - options: {timeoutInMilliseconds}. This option enables the assertion mechanism to wait for the selector to be disabled. Defaults to 30000 (30 seconds).
 
 ---
 
-### expecThat(selector).isEnabled([options])
+### expectThat(selector).isEnabled([options])
 
 - selector: string
 - options: {timeoutInMilliseconds}. This option enables the assertion mechanism to wait for the selector to be enabled. Defaults to 30000 (30 seconds).
 
 ---
 
-### expecThat(selector).isVisible([options])
+### expectThat(selector).isVisible([options])
 
 - selector: string
 - options: {timeoutInMilliseconds}. This option enables the assertion mechanism to wait for the selector to be visible. Defaults to 30000 (30 seconds).
 
 ---
 
-### expecThat(selector).isNotVisible([options])
+### expectThat(selector).isNotVisible([options])
 
 - selector: string
 - options: {timeoutInMilliseconds}. This option enables the assertion mechanism to wait for the selector to be hidden or to disappear from the DOM. Defaults to 30000 (30 seconds).
