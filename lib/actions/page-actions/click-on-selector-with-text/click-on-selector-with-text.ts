@@ -1,7 +1,7 @@
 import * as puppeteer from 'puppeteer-core';
-import { waitUntilSelectorWithTextIsVisible } from './wait-until-selector-with-text-is-visible';
-import { querySelectorWithText } from '../dom-actions';
-import { ClickOptions } from '.';
+import { waitUntilSelectorWithTextIsVisible } from '../wait-until-selector-with-text-is-visible';
+import { querySelectorWithText } from '../../dom-actions';
+import { ClickOptions } from '..';
 
 export async function clickOnSelectorWithText(
   selector: string,
