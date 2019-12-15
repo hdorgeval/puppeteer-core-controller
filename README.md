@@ -118,6 +118,7 @@ await pptc
 - Chainable Methods
 
   - [initWith([options])](#initWithoptions)
+  - [recordFailedRequests()](#recordFailedRequests)
   - [recordPageErrors()](#recordPageErrors)
   - [withMaxSizeWindow([minViewPort])](#withMaxSizeWindowminViewPort)
   - [withCursor()](#withCursor)
@@ -146,10 +147,12 @@ await pptc
 - Helper Methods
 
   - [cast(any)](#castany)
+  - [clearFailedRequests()](#clearFailedRequests)
   - [clearPageErrors()](#clearPageErrors)
   - [getClientRectangleOf(selector)](#getClientRectangleOfselector)
   - [getComputedStyleOf(selector)](#getComputedStyleOfselector)
   - [getCurrentUrl()](#getCurrentUrl)
+  - [getFailedRequests()](#getFailedRequests)
   - [getPageErrors()](#getPageErrors)
   - [getInstances()](#getInstances)
   - [getSelectedOptionOf(selector)](#getSelectedOptionOfselector)
@@ -190,6 +193,14 @@ await pptc
 - track and record page errors. Should be called after `initWith`.
 - use `getPageErrors()` helper method on the controller to access errors that have occurred.
 - use `clearPageErrors()` helper method on the controller to clear all past errors.
+
+---
+
+### recordFailedRequests()
+
+- track and record failed requests. Should be called after `initWith`.
+- use `getFailedRequests()` helper method on the controller to access errors that have occurred.
+- use `clearFailedRequests()` helper method on the controller to clear all past errors.
 
 ---
 
@@ -522,6 +533,34 @@ const value = await pptc
 ### clearPageErrors()
 
 - clear page errors that occurred. Usefull if you want to track page errors only after a specific context has been setup on the page.
+
+---
+
+### getFailedRequests()
+
+- get failed requests that occurred while executing the test.
+- returns: `Request[]`.
+
+  See [Request](https://github.com/puppeteer/puppeteer/blob/master/docs/api.md#class-request)
+
+  ```js
+  await pptc
+      .initWith(launchOptions)
+      .recordFailedRequests()
+      .navigateTo(url)
+      ...
+      .close();
+
+  const errors: puppeteer.Request[] = pptc.getFailedRequests();
+  // analyse errors by iterating on the returned array
+  // an empty array means that no error has occurred or that you forgot to call the recordFailedRequests() method
+  ```
+
+---
+
+### clearFailedRequests()
+
+- clear failed requests that occurred. Usefull if you want to track failed requests only after a specific context has been setup on the page.
 
 ---
 
