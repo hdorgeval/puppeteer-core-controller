@@ -99,9 +99,16 @@ export class PuppeteerController implements PromiseLike<void> {
   public getPageErrors(): Error[] {
     return [...this.pageErrors];
   }
-
   public clearPageErrors(): void {
     this.pageErrors = [];
+  }
+
+  private failedRequests: puppeteer.Request[] = [];
+  public getFailedRequests(): puppeteer.Request[] {
+    return [...this.failedRequests];
+  }
+  public clearFailedRequests(): void {
+    this.failedRequests = [];
   }
 
   private async executeActions(): Promise<void> {
@@ -162,6 +169,16 @@ export class PuppeteerController implements PromiseLike<void> {
     this.actions.push(
       async (): Promise<void> =>
         await action.recordPageErrors(this.page, (err) => this.pageErrors.push(err)),
+    );
+    return this;
+  }
+
+  public recordFailedRequests(): PuppeteerController {
+    this.actions.push(
+      async (): Promise<void> =>
+        await action.recordFailedRequests(this.page, (request) =>
+          this.failedRequests.push(request),
+        ),
     );
     return this;
   }

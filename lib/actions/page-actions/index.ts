@@ -5,6 +5,7 @@ export * from './click-options-interfaces';
 export * from './click';
 export * from './hover';
 export * from './query-active-element';
+export * from './record-failed-requests';
 export * from './record-page-errors';
 export * from './select';
 export * from './take-fullpage-screenshot-as-base64';
