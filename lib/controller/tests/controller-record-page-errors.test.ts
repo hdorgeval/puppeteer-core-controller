@@ -37,6 +37,30 @@ describe('Puppeteer Controller', (): void => {
     expect(result[2].message).toContain('Error#3');
   });
 
+  test('should record page errors - after init', async (): Promise<void> => {
+    // Given
+    const launchOptions: LaunchOptions = {
+      headless: true,
+    };
+    const url = `file:${path.join(__dirname, 'controller-record-page-errors.test.html')}`;
+
+    // When
+    await pptc.initWith(launchOptions);
+
+    await pptc
+      .recordPageErrors()
+      .navigateTo(url)
+      .wait(2000);
+
+    // Then
+    const result = pptc.getPageErrors();
+
+    expect(result.length).toBe(3);
+    expect(result[0].message).toContain('Error#1');
+    expect(result[1].message).toContain('Error#2');
+    expect(result[2].message).toContain('Error#3');
+  });
+
   test('should clear page errors', async (): Promise<void> => {
     // Given
     const launchOptions: LaunchOptions = {

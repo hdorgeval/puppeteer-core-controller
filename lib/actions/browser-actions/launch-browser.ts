@@ -16,6 +16,8 @@ export interface LaunchOptions extends puppeteer.LaunchOptions {
   browserWindowShouldBeMaximized?: boolean;
   showCursor?: boolean;
   minViewPort?: MinViewPort;
+  recordFailedRequests?: boolean;
+  recordPageErrors?: boolean;
 }
 
 async function tryLaunchBrowser(options: Partial<LaunchOptions>): Promise<puppeteer.Browser> {

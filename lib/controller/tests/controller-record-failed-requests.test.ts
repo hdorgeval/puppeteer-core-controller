@@ -26,6 +26,35 @@ describe('Puppeteer Controller', (): void => {
     },
   );
 
+  test('should record failed requests HTTP 500 - after init', async (): Promise<void> => {
+    // Given
+    const launchOptions: LaunchOptions = {
+      headless: true,
+    };
+    fakeServer &&
+      fakeServer.http
+        .get()
+        .to('/500')
+        .willFail(500);
+
+    const url = `file:${path.join(__dirname, 'controller-record-failed-requests-500.test.html')}`;
+
+    // When
+    await pptc.initWith(launchOptions);
+
+    await pptc
+      .recordFailedRequests()
+      .navigateTo(url)
+      .wait(2000);
+
+    // Then
+    const result = pptc.getFailedRequests();
+
+    expect(result.length).toBe(1);
+    expect(result[0].response()?.status()).toBe(500);
+    expect(result[0].response()?.statusText()).toBe('Internal Server Error');
+  });
+
   test('should record failed requests HTTP 500', async (): Promise<void> => {
     // Given
     const launchOptions: LaunchOptions = {

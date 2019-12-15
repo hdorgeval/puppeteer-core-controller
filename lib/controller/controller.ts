@@ -150,6 +150,12 @@ export class PuppeteerController implements PromiseLike<void> {
 
   private async startNewPage(): Promise<void> {
     this.page = await action.startNewPageInBrowser(this.browser, this.launchOptions.showCursor);
+    if (this.launchOptions.recordFailedRequests) {
+      await action.recordFailedRequests(this.page, (request) => this.failedRequests.push(request));
+    }
+    if (this.launchOptions.recordPageErrors) {
+      await action.recordPageErrors(this.page, (err) => this.pageErrors.push(err));
+    }
   }
 
   public getInstances(): [puppeteer.Browser, puppeteer.Page] | [undefined, undefined] {
@@ -166,6 +172,10 @@ export class PuppeteerController implements PromiseLike<void> {
   }
 
   public recordPageErrors(): PuppeteerController {
+    if (this.page === undefined) {
+      this.launchOptions.recordPageErrors = true;
+      return this;
+    }
     this.actions.push(
       async (): Promise<void> =>
         await action.recordPageErrors(this.page, (err) => this.pageErrors.push(err)),
@@ -174,6 +184,10 @@ export class PuppeteerController implements PromiseLike<void> {
   }
 
   public recordFailedRequests(): PuppeteerController {
+    if (this.page === undefined) {
+      this.launchOptions.recordFailedRequests = true;
+      return this;
+    }
     this.actions.push(
       async (): Promise<void> =>
         await action.recordFailedRequests(this.page, (request) =>
