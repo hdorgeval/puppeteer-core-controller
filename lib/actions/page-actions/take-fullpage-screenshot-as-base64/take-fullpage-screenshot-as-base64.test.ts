@@ -1,7 +1,7 @@
 import * as puppeteer from 'puppeteer-core';
-import * as SUT from '.';
-import { getChromePath } from '../../utils';
-import { launchBrowser } from '..';
+import * as SUT from '..';
+import { getChromePath } from '../../../utils';
+import { launchBrowser } from '../../browser-actions';
 
 describe('fullpage screenshot as base64', (): void => {
   let browser: puppeteer.Browser | undefined = undefined;
