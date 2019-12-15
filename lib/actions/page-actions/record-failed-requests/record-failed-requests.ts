@@ -13,8 +13,10 @@ export async function recordFailedRequests(
   page.on('requestfinished', (request) => {
     const response = request.response();
     if (response === null) {
+      callback(request);
       return;
     }
+
     const status = response.status();
     if (failedStatus.includes(status)) {
       callback(request);
