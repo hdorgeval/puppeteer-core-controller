@@ -1,6 +1,6 @@
 import * as puppeteer from 'puppeteer-core';
-import { querySelectorWithExactText } from '../dom-actions';
-import { ClickOptions, waitUntilSelectorWithExactTextIsVisible } from '.';
+import { querySelectorWithExactText } from '../../dom-actions';
+import { ClickOptions, waitUntilSelectorWithExactTextIsVisible } from '..';
 
 export async function clickOnSelectorWithExactText(
   selector: string,

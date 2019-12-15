@@ -1,7 +1,7 @@
 import * as puppeteer from 'puppeteer-core';
-import * as SUT from './index';
-import { launchBrowser, getCurrentUrl } from '../browser-actions';
-import { getChromePath } from '../../utils';
+import * as SUT from '../index';
+import { launchBrowser, getCurrentUrl } from '../../browser-actions';
+import { getChromePath } from '../../../utils';
 
 describe('click on selector with exact text', (): void => {
   let browser: puppeteer.Browser | undefined = undefined;
