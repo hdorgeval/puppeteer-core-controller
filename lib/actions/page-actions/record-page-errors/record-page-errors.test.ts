@@ -16,6 +16,20 @@ describe('record page errors', (): void => {
       }
     },
   );
+  test('should return an error when page has not been initalized', async (): Promise<void> => {
+    // Given
+    const page: puppeteer.Page | undefined = undefined;
+    const errors: Error[] = [];
+
+    // When
+    // Then
+    const expectedError = new Error(
+      'Error: cannot record page errors because a new page has not been created',
+    );
+    await SUT.recordPageErrors(page, (err) => errors.push(err)).catch((error): void =>
+      expect(error).toMatchObject(expectedError),
+    );
+  });
   test('should record page errors', async (): Promise<void> => {
     // Given
     browser = await launchBrowser({

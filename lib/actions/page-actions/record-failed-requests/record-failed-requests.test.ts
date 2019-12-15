@@ -28,6 +28,21 @@ describe('record failed requests', (): void => {
       }
     },
   );
+  test('should return an error when page has not been initalized', async (): Promise<void> => {
+    // Given
+    const page: puppeteer.Page | undefined = undefined;
+    const errors: puppeteer.Request[] = [];
+
+    // When
+    // Then
+    const expectedError = new Error(
+      'Error: cannot record failed requests because a new page has not been created',
+    );
+    await SUT.recordFailedRequests(page, (req) => errors.push(req)).catch((error): void =>
+      expect(error).toMatchObject(expectedError),
+    );
+  });
+
   test('should record failed requests HTTP 500', async (): Promise<void> => {
     // Given
     browser = await launchBrowser({
@@ -77,5 +92,28 @@ describe('record failed requests', (): void => {
     expect(errors.length).toBe(1);
     expect(errors[0].response()?.status()).toBe(503);
     expect(errors[0].response()?.statusText()).toBe('Service Unavailable');
+  });
+
+  test('should record failed requests due to invalid url', async (): Promise<void> => {
+    // Given
+    browser = await launchBrowser({
+      headless: true,
+      executablePath: getChromePath(),
+    });
+    const page = await browser.newPage();
+    const errors: puppeteer.Request[] = [];
+
+    // When
+    await SUT.recordFailedRequests(page, (req) => errors.push(req));
+    await page.goto(`file:${path.join(__dirname, 'record-failed-requests.test.html')}`);
+    await page.waitFor(2000);
+
+    // Then
+    expect(errors.length).toBe(1);
+    const failedRequest = errors[0];
+    const response = failedRequest.response();
+    const failedReason = failedRequest.failure();
+    expect(failedReason?.errorText).toBe('net::ERR_NAME_NOT_RESOLVED');
+    expect(response).toBe(null);
   });
 });
