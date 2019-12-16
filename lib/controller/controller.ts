@@ -25,19 +25,28 @@ export type Story = (pptc: PuppeteerController) => Promise<void>;
 export type StoryWithProps<T> = (pptc: PuppeteerController, props: T) => Promise<void>;
 
 export interface ExpectAssertion {
-  hasFocus: (options?: AssertOptions) => PuppeteerController;
-  hasClass: (className: string, options?: AssertOptions) => PuppeteerController;
-  hasExactValue: (value: string, options?: AssertOptions) => PuppeteerController;
-  isDisabled: (options?: AssertOptions) => PuppeteerController;
-  isEnabled: (options?: AssertOptions) => PuppeteerController;
-  isVisible: (options?: AssertOptions) => PuppeteerController;
-  isNotVisible: (options?: AssertOptions) => PuppeteerController;
+  hasFocus: (options?: Partial<AssertOptions>) => PuppeteerController;
+  hasClass: (className: string, options?: Partial<AssertOptions>) => PuppeteerController;
+  hasExactValue: (value: string, options?: Partial<AssertOptions>) => PuppeteerController;
+  isDisabled: (options?: Partial<AssertOptions>) => PuppeteerController;
+  isEnabled: (options?: Partial<AssertOptions>) => PuppeteerController;
+  isVisible: (options?: Partial<AssertOptions>) => PuppeteerController;
+  isNotVisible: (options?: Partial<AssertOptions>) => PuppeteerController;
 }
 export interface AssertOptions {
   timeoutInMilliseconds: number;
+  /**
+   * time during which the Assert must give back the same result.
+   * Defaults to 300 milliseconds.
+   * You must not setup a duration < 100 milliseconds.
+   * @type {number}
+   * @memberof AssertOptions
+   */
+  stabilityInMilliseconds: number;
 }
 export const defaultAssertOptions: AssertOptions = {
   timeoutInMilliseconds: 30000,
+  stabilityInMilliseconds: 300,
 };
 
 export {
@@ -416,10 +425,20 @@ export class PuppeteerController implements PromiseLike<void> {
     const timeout = options.timeoutInMilliseconds;
     const interval = 100;
     const nbIntervals = timeout / interval;
+    const stabilityCounterMaxValue = options.stabilityInMilliseconds / interval;
+    let stabilityCounterCurrentValue = 0;
+
     for (let index = 0; index < nbIntervals; index++) {
       await this.page.waitFor(interval);
       const result = await predicate();
       if (result === true) {
+        stabilityCounterCurrentValue += 1;
+      }
+      if (result === false) {
+        stabilityCounterCurrentValue = 0;
+      }
+
+      if (stabilityCounterCurrentValue >= stabilityCounterMaxValue) {
         return;
       }
     }
@@ -435,8 +454,12 @@ export class PuppeteerController implements PromiseLike<void> {
     return {
       hasExactValue: (
         value: string,
-        options: AssertOptions = defaultAssertOptions,
+        options: Partial<AssertOptions> = defaultAssertOptions,
       ): PuppeteerController => {
+        const assertOptions: AssertOptions = {
+          ...defaultAssertOptions,
+          ...options,
+        };
         this.actions.push(
           async (): Promise<void> => {
             await this.assertFor(
@@ -453,7 +476,7 @@ export class PuppeteerController implements PromiseLike<void> {
                 const errorMessage = `Error: Selector '${selector}' current value is: '${currentValueAsString}', but this does not match the expected value: '${value}'`;
                 return errorMessage;
               },
-              options,
+              assertOptions,
             );
           },
         );
@@ -462,81 +485,107 @@ export class PuppeteerController implements PromiseLike<void> {
 
       hasClass: (
         className: string,
-        options: AssertOptions = defaultAssertOptions,
+        options: Partial<AssertOptions> = defaultAssertOptions,
       ): PuppeteerController => {
+        const assertOptions: AssertOptions = {
+          ...defaultAssertOptions,
+          ...options,
+        };
         this.actions.push(
           async (): Promise<void> => {
             const errorMessage = `Error: selector '${selector}' does not have the class '${className}'.`;
             await this.assertFor(
               async (): Promise<boolean> => await this.hasClass(selector, className),
               errorMessage,
-              options,
+              assertOptions,
             );
           },
         );
         return this;
       },
-      hasFocus: (options: AssertOptions = defaultAssertOptions): PuppeteerController => {
+      hasFocus: (options: Partial<AssertOptions> = defaultAssertOptions): PuppeteerController => {
+        const assertOptions: AssertOptions = {
+          ...defaultAssertOptions,
+          ...options,
+        };
         this.actions.push(
           async (): Promise<void> => {
             const errorMessage = `Error: selector '${selector}' does not have the focus.`;
             await this.assertFor(
               async (): Promise<boolean> => await this.hasFocus(selector),
               errorMessage,
-              options,
+              assertOptions,
             );
           },
         );
         return this;
       },
-      isDisabled: (options: AssertOptions = defaultAssertOptions): PuppeteerController => {
+      isDisabled: (options: Partial<AssertOptions> = defaultAssertOptions): PuppeteerController => {
+        const assertOptions: AssertOptions = {
+          ...defaultAssertOptions,
+          ...options,
+        };
         this.actions.push(
           async (): Promise<void> => {
             const errorMessage = `Error: selector '${selector}' is not disabled.`;
             await this.assertFor(
               async (): Promise<boolean> => await this.isDisabled(selector),
               errorMessage,
-              options,
+              assertOptions,
             );
           },
         );
         return this;
       },
-      isEnabled: (options: AssertOptions = defaultAssertOptions): PuppeteerController => {
+      isEnabled: (options: Partial<AssertOptions> = defaultAssertOptions): PuppeteerController => {
+        const assertOptions: AssertOptions = {
+          ...defaultAssertOptions,
+          ...options,
+        };
         this.actions.push(
           async (): Promise<void> => {
             const errorMessage = `Error: selector '${selector}' is disabled.`;
             await this.assertFor(
               async (): Promise<boolean> => !(await this.isDisabled(selector)),
               errorMessage,
-              options,
+              assertOptions,
             );
           },
         );
         return this;
       },
-      isVisible: (options: AssertOptions = defaultAssertOptions): PuppeteerController => {
+      isVisible: (options: Partial<AssertOptions> = defaultAssertOptions): PuppeteerController => {
+        const assertOptions: AssertOptions = {
+          ...defaultAssertOptions,
+          ...options,
+        };
         this.actions.push(
           async (): Promise<void> => {
             const errorMessage = `Error: selector '${selector}' is not visible.`;
             await this.assertFor(
               async (): Promise<boolean> => await this.isVisible(selector),
               errorMessage,
-              options,
+              assertOptions,
             );
           },
         );
         return this;
       },
 
-      isNotVisible: (options: AssertOptions = defaultAssertOptions): PuppeteerController => {
+      isNotVisible: (
+        options: Partial<AssertOptions> = defaultAssertOptions,
+      ): PuppeteerController => {
+        const assertOptions: AssertOptions = {
+          ...defaultAssertOptions,
+          ...options,
+        };
         this.actions.push(
           async (): Promise<void> => {
             const errorMessage = `Error: selector '${selector}' is visible.`;
             await this.assertFor(
               async (): Promise<boolean> => await this.isNotVisible(selector),
               errorMessage,
-              options,
+              assertOptions,
             );
           },
         );

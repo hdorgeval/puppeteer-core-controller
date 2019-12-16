@@ -1,5 +1,5 @@
-import * as SUT from '../controller';
-import { LaunchOptions } from '../../actions';
+import * as SUT from '../../controller';
+import { LaunchOptions } from '../../../actions';
 import * as path from 'path';
 
 describe('Puppeteer Controller - assertion API - isNotVisible', (): void => {
@@ -128,5 +128,36 @@ describe('Puppeteer Controller - assertion API - isNotVisible', (): void => {
     expect(wasInitiallyHidden).toBe(false);
     expect(wasFinallyHidden).toBe(true);
     expect(result).toBeUndefined();
+  });
+
+  test('should handle the case where the selector is first hidden for a very short period, then visible', async (): Promise<
+    void
+  > => {
+    // Given
+    const launchOptions: LaunchOptions = {
+      headless: true,
+    };
+
+    const url = `file:${path.join(__dirname, 'controller-expect-is-not-visible.test2.html')}`;
+    const selector = '#hidden-then-visible';
+
+    await pptc.initWith(launchOptions).navigateTo(url);
+    const wasInitiallyHidden = await pptc.isNotVisible(selector);
+
+    // When
+    let result: Error | undefined = undefined;
+    try {
+      await pptc.expectThat(selector).isNotVisible({ timeoutInMilliseconds: 5000 });
+    } catch (error) {
+      result = error;
+    }
+
+    const wasFinallyHidden = await pptc.isNotVisible(selector);
+
+    // Then
+    const expectedErrorMessage = "Error: selector '#hidden-then-visible' is visible.";
+    expect(wasInitiallyHidden).toBe(true);
+    expect(wasFinallyHidden).toBe(false);
+    expect(result && result.message).toContain(expectedErrorMessage);
   });
 });
