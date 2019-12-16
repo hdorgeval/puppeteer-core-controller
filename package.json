@@ -1,6 +1,6 @@
 {
   "name": "puppeteer-core-controller",
-  "version": "1.16.0",
+  "version": "1.16.1",
   "description": "fluent API around puppeteer-core",
   "main": "build/index.js",
   "typings": "build/index.d.ts",
