@@ -1,6 +1,7 @@
 export * from './exists';
 export * from './get-client-rectangle-of';
 export * from './get-computed-style-of';
+export * from './get-innertext-of';
 export * from './get-selected-option-of';
 export * from './get-value-of';
 export * from './has-active-element';
