@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+
+  <title>is disabled</title>
+  <style type="text/css">
+    #uppercase {
+      text-transform: uppercase;
+    }
+  </style>
+</head>
+
+<body>
+
+  <input id="emptyInput"></input>
+  <p id="uppercase">yo!</p>
+  <p id="changing-content">foobar!</p>
+  <p id="empty"></p>
+  <script>
+    window.setTimeout(() => {
+      const el = document.querySelector('#changing-content');
+      el.innerText = 'yo!'
+    }, 3000);
+  </script>
+</body>
+
+</html>

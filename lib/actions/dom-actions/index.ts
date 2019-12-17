@@ -9,6 +9,7 @@ export * from './has-class';
 export * from './has-exact-value';
 export * from './has-focus';
 export * from './has-moved';
+export * from './has-text';
 export * from './is-checked';
 export * from './is-disabled';
 export * from './is-moving';

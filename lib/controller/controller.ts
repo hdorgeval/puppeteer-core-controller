@@ -28,6 +28,7 @@ export interface ExpectAssertion {
   hasFocus: (options?: Partial<AssertOptions>) => PuppeteerController;
   hasClass: (className: string, options?: Partial<AssertOptions>) => PuppeteerController;
   hasExactValue: (value: string, options?: Partial<AssertOptions>) => PuppeteerController;
+  hasText: (text: string, options?: Partial<AssertOptions>) => PuppeteerController;
   isDisabled: (options?: Partial<AssertOptions>) => PuppeteerController;
   isEnabled: (options?: Partial<AssertOptions>) => PuppeteerController;
   isVisible: (options?: Partial<AssertOptions>) => PuppeteerController;
@@ -373,6 +374,11 @@ export class PuppeteerController implements PromiseLike<void> {
     return result;
   }
 
+  public async getInnerTextOf(selector: string): Promise<string> {
+    const result = await action.getInnerTextOf(selector, this.page);
+    return result;
+  }
+
   public async isChecked(selector: string): Promise<boolean> {
     return await action.isChecked(selector, this.page);
   }
@@ -399,6 +405,11 @@ export class PuppeteerController implements PromiseLike<void> {
   public async hasExactValue(selector: string, value: string): Promise<boolean> {
     return await action.hasExactValue(selector, value, this.page);
   }
+
+  public async hasText(selector: string, text: string): Promise<boolean> {
+    return await action.hasText(selector, text, this.page);
+  }
+
   public async getSelectedOptionOf(selector: string): Promise<string | null> {
     const result = await action.getSelectedOptionOf(selector, this.page);
     return result;
@@ -514,6 +525,37 @@ export class PuppeteerController implements PromiseLike<void> {
             await this.assertFor(
               async (): Promise<boolean> => await this.hasFocus(selector),
               errorMessage,
+              assertOptions,
+            );
+          },
+        );
+        return this;
+      },
+
+      hasText: (
+        text: string,
+        options: Partial<AssertOptions> = defaultAssertOptions,
+      ): PuppeteerController => {
+        const assertOptions: AssertOptions = {
+          ...defaultAssertOptions,
+          ...options,
+        };
+        this.actions.push(
+          async (): Promise<void> => {
+            await this.assertFor(
+              async (): Promise<boolean> => await this.hasText(selector, text),
+              async (): Promise<string> => {
+                const currentInnerText = await this.getInnerTextOf(selector);
+                let currentValueAsString = currentInnerText;
+                if (currentInnerText === undefined) {
+                  currentValueAsString = 'undefined';
+                }
+                if (currentInnerText === null) {
+                  currentValueAsString = 'null';
+                }
+                const errorMessage = `Error: Selector '${selector}' current innerText is: '${currentValueAsString}', but this does not match the expected text: '${text}'`;
+                return errorMessage;
+              },
               assertOptions,
             );
           },
