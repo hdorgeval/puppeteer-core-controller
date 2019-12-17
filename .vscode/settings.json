@@ -3,12 +3,10 @@
     "editor.formatOnSave": true,
     "editor.tabSize": 2,
     "eslint.alwaysShowStatus": true,
-    "eslint.autoFixOnSave": true,
     "eslint.options": {
         "extensions": [".js", ".ts", ".tsx"]
     },
     "eslint.validate": [
-
         "javascript",
         "javascriptreact",
         {
@@ -24,4 +22,7 @@
     "prettier.trailingComma": "all",
     "jest.autoEnable": false,
     "typescript.tsdk": "node_modules/typescript/lib",
+    "editor.codeActionsOnSave": {
+        "source.fixAll.eslint": true
+    }
 }
