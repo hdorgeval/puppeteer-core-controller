@@ -139,6 +139,7 @@ await pptc
   - [expectThat(selector).hasClass(className,[options])](#expectThatSelectorhasClassclassNameoptions)
   - [expectThat(selector).hasExactValue(value,[options])](#expectThatselectorhasexactvaluevalueoptions)
   - [expectThat(selector).hasFocus([options])](#expectThatselectorhasFocusoptions)
+  - [expectThat(selector).hasText(text,[options])](#expectThatselectorhastexttextoptions)
   - [expectThat(selector).isDisabled([options])](#expectThatselectorisDisabledoptions)
   - [expectThat(selector).isEnabled([options])](#expectThatselectorisEnabledoptions)
   - [expectThat(selector).isVisible([options])](#expectThatselectorisVisibleoptions)
@@ -153,8 +154,9 @@ await pptc
   - [getComputedStyleOf(selector)](#getComputedStyleOfselector)
   - [getCurrentUrl()](#getCurrentUrl)
   - [getFailedRequests()](#getFailedRequests)
-  - [getPageErrors()](#getPageErrors)
+  - [getInnerTextOf(selector)](#getInnerTextOfselector)
   - [getInstances()](#getInstances)
+  - [getPageErrors()](#getPageErrors)
   - [getSelectedOptionOf(selector)](#getSelectedOptionOfselector)
   - [getValueOf(selector)](#getValueOfselector)
   - [isChecked(selector)](#isCheckedselector)
@@ -364,6 +366,22 @@ await pptc
 
 ---
 
+### expectThat(selector).hasText(text,[options])
+
+- selector: string
+- text: string
+- options: {timeoutInMilliseconds}. This option enables the assertion mechanism to wait for the selector to have the specified value. Defaults to 30000 (30 seconds).
+
+```js
+await pptc
+  .expectThat(selector)
+  .isVisible()
+  .expectThat(selector)
+  .hasText(text);
+```
+
+---
+
 ### expectThat(selector).isDisabled([options])
 
 - selector: string
@@ -481,6 +499,23 @@ const value = await pptc
   .expectThat(selector)
   .isVisible()
   .getValueOf(selector);
+```
+
+---
+
+### getInnerTextOf(selector)
+
+- selector: string
+- returns: `Promise<string>`
+
+This method does not wait for the selector to be in the DOM.
+In some cases you might have to wait that the input field is visible before getting it's value:
+
+```js
+const text = await pptc
+  .expectThat(selector)
+  .isVisible()
+  .getInnerTextOf(selector);
 ```
 
 ---
