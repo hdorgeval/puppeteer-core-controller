@@ -30,6 +30,6 @@ describe('Puppeteer Controller', (): void => {
     // Then
     const duration = endTime - startTime;
     expect(duration).toBeGreaterThan(900);
-    expect(duration).toBeLessThan(1100);
+    expect(duration).toBeLessThan(1200);
   });
 });
