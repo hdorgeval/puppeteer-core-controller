@@ -145,11 +145,12 @@ await pptc
   - [expectThat(selector).isVisible([options])](#expectThatselectorisVisibleoptions)
   - [expectThat(selector).isNotVisible([options])](#expectThatselectorisNotVisibleoptions)
 
-- Helper Methods
+- Helper Methods and Properties
 
   - [cast(any)](#castany)
   - [clearFailedRequests()](#clearFailedRequests)
   - [clearPageErrors()](#clearPageErrors)
+  - [currentPage](#currentPage)
   - [getClientRectangleOf(selector)](#getClientRectangleOfselector)
   - [getComputedStyleOf(selector)](#getComputedStyleOfselector)
   - [getCurrentUrl()](#getCurrentUrl)
@@ -410,7 +411,7 @@ await pptc
 
 ---
 
-## Helper Methods
+## Helper Methods and Properties
 
 ### getComputedStyleOf(selector)
 
@@ -526,6 +527,22 @@ const text = await pptc
 
   ```js
   const screenshot = await pptc.takeFullPageScreenshotAsBase64();
+  ```
+
+---
+
+### currentPage
+
+- get page instance of the controller in order to do stuff not covered by this API.
+
+  ```js
+  const pptc = new PuppeteerController();
+
+  // use the pptc controller API
+  // ...
+
+  const page = pptc.currentPage; // this is a property
+  // now use this page instance through the puppeteer API
   ```
 
 ---
