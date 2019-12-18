@@ -20,6 +20,7 @@ import {
   MinViewPort,
 } from '../actions';
 import { getChromePath } from '../utils';
+import { SelectorController } from '../selector';
 
 export type Story = (pptc: PuppeteerController) => Promise<void>;
 export type StoryWithProps<T> = (pptc: PuppeteerController, props: T) => Promise<void>;
@@ -63,6 +64,7 @@ export {
   mandatoryFullPageScreenshotOptions,
   MinViewPort,
 } from '../actions';
+export { SelectorController } from '../selector';
 
 export class PuppeteerController implements PromiseLike<void> {
   /**
@@ -89,6 +91,10 @@ export class PuppeteerController implements PromiseLike<void> {
     width: 800,
     height: 600,
   };
+
+  public get currentPage(): puppeteer.Page | undefined {
+    return this.page;
+  }
   private _lastError?: Error;
   public get lastError(): Error | undefined {
     return this._lastError;
@@ -641,6 +647,17 @@ export class PuppeteerController implements PromiseLike<void> {
   ): Promise<string> {
     const result = await action.takeFullPageScreenshotAsBase64(options, this.page);
     return result;
+  }
+  /**
+   * Create a Selector object to be able to target a DOM element
+   * that is embedded in a complex dom hierarchy or dom array
+   *
+   * @param {string} selector
+   * @returns {SelectorController}
+   * @memberof PuppeteerController
+   */
+  public selector(selector: string): SelectorController {
+    return new SelectorController(selector, this);
   }
 }
 
