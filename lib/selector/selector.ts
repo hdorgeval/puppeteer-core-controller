@@ -24,7 +24,7 @@ export class SelectorController {
    */
   constructor(selector: string, pptc: PuppeteerController) {
     this.pptc = pptc;
-    this.chainingHistory = selector;
+    this.chainingHistory = `selector(${selector})`;
     this.actions.push(
       async (): Promise<void> => {
         this.handles = await action.querySelectorAllInPage(selector, this.pptc.currentPage);
@@ -34,5 +34,22 @@ export class SelectorController {
 
   public toString(): string {
     return this.chainingHistory;
+  }
+
+  public find(selector: string): SelectorController {
+    this.actions.push(
+      async (): Promise<void> => {
+        this.handles = await action.querySelectorAllFromElements(
+          selector,
+          [...this.handles],
+          this.pptc.currentPage,
+        );
+      },
+    );
+
+    this.chainingHistory = `${this.chainingHistory}
+  .find(${selector})`;
+
+    return this;
   }
 }

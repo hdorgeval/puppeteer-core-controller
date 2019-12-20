@@ -15,6 +15,7 @@ export * from './is-checked';
 export * from './is-disabled';
 export * from './is-moving';
 export * from './is-visible';
+export * from './query-selector-all-from-elements';
 export * from './query-selector-all-in-page';
 export * from './query-selector-with-exact-text';
 export * from './query-selector-with-text';
