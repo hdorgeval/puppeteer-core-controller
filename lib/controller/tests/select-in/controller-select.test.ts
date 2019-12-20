@@ -91,4 +91,35 @@ describe('Puppeteer Controller', (): void => {
       "Cannot select 'value 2' in list 'select#select1' because it does not match available options: 'value1,value2,value3'";
     expect(result && result.message).toContain(expectedErrorMessage);
   });
+
+  test('should not modfiy the selected option when trying to select an unknown option', async (): Promise<
+    void
+  > => {
+    // Given
+    const launchOptions: LaunchOptions = {
+      headless: true,
+    };
+    const url = `file:${path.join(__dirname, 'controller-select.test.html')}`;
+    const selector = 'select#select2';
+
+    // When
+    try {
+      await pptc
+        .initWith(launchOptions)
+        .navigateTo(url)
+        .select('foobar')
+        .in(selector);
+    } catch (error) {
+      // empty catch for testing purposes
+    }
+
+    // Then
+    const allOptions = await pptc.getAllOptionsOf(selector);
+    const selectedOption = await pptc.getSelectedOptionOf(selector);
+
+    expect(Array.isArray(allOptions)).toBe(true);
+    expect(allOptions.length).toBe(3);
+    expect(selectedOption).toBe('value 2');
+    expect(allOptions.find((o) => o.selected)?.label).toBe('value 2');
+  });
 });

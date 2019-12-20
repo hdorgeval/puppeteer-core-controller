@@ -1,23 +1,24 @@
 import * as puppeteer from 'puppeteer-core';
 import * as action from '../actions';
 import {
-  LaunchOptions,
-  WindowState,
   ClickOptions,
   defaultClickOptions,
-  TypeTextOptions,
+  defaultHoverOptions,
+  defaultKeyboardPressOptions,
+  defaultSelectOptions,
   defaultTypeTextOptions,
+  defaultWaitOptions,
+  HoverOptions,
   KeyboardKey,
   KeyboardPressOptions,
-  defaultKeyboardPressOptions,
-  SelectOptions,
-  defaultSelectOptions,
-  HoverOptions,
-  defaultHoverOptions,
-  WaitOptions,
-  defaultWaitOptions,
+  LaunchOptions,
   mandatoryFullPageScreenshotOptions,
   MinViewPort,
+  SelectOptionInfo,
+  SelectOptions,
+  TypeTextOptions,
+  WaitOptions,
+  WindowState,
 } from '../actions';
 import { getChromePath } from '../utils';
 import { SelectorController } from '../selector';
@@ -52,17 +53,18 @@ export const defaultAssertOptions: AssertOptions = {
 };
 
 export {
-  LaunchOptions,
-  WindowState,
   ClickOptions,
-  TypeTextOptions,
+  HoverOptions,
   KeyboardKey,
   KeyboardPressOptions,
-  SelectOptions,
-  HoverOptions,
-  WaitOptions,
+  LaunchOptions,
   mandatoryFullPageScreenshotOptions,
   MinViewPort,
+  SelectOptionInfo,
+  SelectOptions,
+  TypeTextOptions,
+  WaitOptions,
+  WindowState,
 } from '../actions';
 export { SelectorController } from '../selector';
 
@@ -418,6 +420,11 @@ export class PuppeteerController implements PromiseLike<void> {
 
   public async getSelectedOptionOf(selector: string): Promise<string | null> {
     const result = await action.getSelectedOptionOf(selector, this.page);
+    return result;
+  }
+
+  public async getAllOptionsOf(selector: string): Promise<SelectOptionInfo[]> {
+    const result = await action.getAllOptionsOf(selector, this.page);
     return result;
   }
 
