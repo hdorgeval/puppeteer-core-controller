@@ -159,6 +159,7 @@ await pptc
   - [getInstances()](#getInstances)
   - [getPageErrors()](#getPageErrors)
   - [getSelectedOptionOf(selector)](#getSelectedOptionOfselector)
+  - [getAllOptionsOf(selector)](#getAllOptionsOfselector)
   - [getValueOf(selector)](#getValueOfselector)
   - [isChecked(selector)](#isCheckedselector)
   - [isDisabled(selector)](#isDisabledselector)
@@ -477,6 +478,21 @@ await pptc
 
 - selector: string
 - returns: `Promise<boolean>`
+
+---
+
+### getAllOptionsOf(selector)
+
+- selector: string
+- returns: `Promise<SelectOptionInfo[]>`
+
+```ts
+SelectOptionInfo {
+  value: string;
+  label: string;
+  selected: boolean;
+}
+```
 
 ---
 
