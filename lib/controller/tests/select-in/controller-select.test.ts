@@ -1,5 +1,6 @@
-import * as SUT from '../controller';
-import { LaunchOptions } from '../../actions';
+import * as SUT from '../../controller';
+import { LaunchOptions } from '../../../actions';
+import * as path from 'path';
 
 describe('Puppeteer Controller', (): void => {
   let pptc: SUT.PuppeteerController;
@@ -59,7 +60,35 @@ describe('Puppeteer Controller', (): void => {
 
     // Then
     const expectedErrorMessage =
-      "Error: cannot select 'foobar' in list 'select#exampleCustomSelect'";
+      "Cannot select 'foobar' in list 'select#exampleCustomSelect' because it does not match available options: 'Select,Value 1,Value 2,Value 3,Value 4,Value 5'";
+    expect(result && result.message).toContain(expectedErrorMessage);
+  });
+
+  test('should throw an error when selecting an option with a space in it', async (): Promise<
+    void
+  > => {
+    // Given
+    const launchOptions: LaunchOptions = {
+      headless: true,
+    };
+    const url = `file:${path.join(__dirname, 'controller-select.test.html')}`;
+    const selector = 'select#select1';
+
+    // When
+    let result: Error | undefined = undefined;
+    try {
+      await pptc
+        .initWith(launchOptions)
+        .navigateTo(url)
+        .select('value 2')
+        .in(selector);
+    } catch (error) {
+      result = error;
+    }
+
+    // Then
+    const expectedErrorMessage =
+      "Cannot select 'value 2' in list 'select#select1' because it does not match available options: 'value1,value2,value3'";
     expect(result && result.message).toContain(expectedErrorMessage);
   });
 });

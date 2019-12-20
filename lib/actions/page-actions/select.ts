@@ -1,5 +1,6 @@
 import * as puppeteer from 'puppeteer-core';
 import { waitUntilSelectorIsVisible, waitUntilSelectorDoesNotMove } from '.';
+import { getAllOptionsOf } from '../dom-actions';
 
 export interface SelectOptions {
   timeoutInMilliseconds: number;
@@ -33,9 +34,28 @@ export async function select(
     page,
   );
 
-  const selectedOptions = await page.select(selector, ...values);
+  const availableOptions = await getAllOptionsOf(selector, page);
+  const tobeSelectedOptions = [...values];
 
-  if (Array.isArray(selectedOptions) && selectedOptions.length === 0) {
-    throw new Error(`Error: cannot select '${values.join(',')}' in list '${selector}'`);
+  const canSelect = tobeSelectedOptions.every((tobeSelectedOption) => {
+    const match = availableOptions.find(
+      (availableOption) => availableOption.label === tobeSelectedOption,
+    );
+    if (match === undefined) {
+      return false;
+    }
+    return true;
+  });
+
+  if (!canSelect) {
+    throw new Error(
+      `Cannot select '${tobeSelectedOptions.join(
+        ',',
+      )}' in list '${selector}' because it does not match available options: '${availableOptions
+        .map((o) => o.label)
+        .join(',')}'`,
+    );
   }
+
+  await page.select(selector, ...values);
 }

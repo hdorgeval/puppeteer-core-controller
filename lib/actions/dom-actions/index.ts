@@ -1,4 +1,5 @@
 export * from './exists';
+export * from './get-all-options-of';
 export * from './get-client-rectangle-of';
 export * from './get-computed-style-of';
 export * from './get-innertext-of';
