@@ -67,7 +67,7 @@ describe('Puppeteer Controller - Selector API - constructor', (): void => {
     expect((await handles[0].getProperty('innerText')).toString()).toContain('row1');
     expect((await handles[1].getProperty('innerText')).toString()).toContain('row2');
     expect((await handles[2].getProperty('innerText')).toString()).toContain('row3');
-    expect(selector.toString()).toBe('[role="row"]');
+    expect(selector.toString()).toBe('selector([role="row"])');
   });
 
   test('should get handles, even when selector is created before page is instanciated', async (): Promise<
@@ -90,6 +90,6 @@ describe('Puppeteer Controller - Selector API - constructor', (): void => {
     expect((await handles[0].getProperty('innerText')).toString()).toContain('row1');
     expect((await handles[1].getProperty('innerText')).toString()).toContain('row2');
     expect((await handles[2].getProperty('innerText')).toString()).toContain('row3');
-    expect(selector.toString()).toBe('[role="row"]');
+    expect(selector.toString()).toBe('selector([role="row"])');
   });
 });
