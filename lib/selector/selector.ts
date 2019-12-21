@@ -9,6 +9,7 @@ export class SelectorController {
   private handles: puppeteer.ElementHandle<Element>[] = [];
 
   private async executeActions(): Promise<void> {
+    this.handles = [];
     for (let index = 0; index < this.actions.length; index++) {
       await this.actions[index]();
     }
@@ -49,6 +50,53 @@ export class SelectorController {
 
     this.chainingHistory = `${this.chainingHistory}
   .find(${selector})`;
+
+    return this;
+  }
+
+  /**
+   * Takes the nth element found at the previous step
+   *
+   * @param {number} index : 1-based index
+   * @returns {SelectorController}
+   * @memberof SelectorController
+   * @example
+   * nth(1): take the first element found at previous step.
+   * nth(-1): take the last element found at previous step.
+   */
+  public nth(index: number): SelectorController {
+    this.actions.push(
+      async (): Promise<void> => {
+        if (index === 0) {
+          throw new Error('Index is one-based');
+        }
+        if (Math.abs(index) > this.handles.length) {
+          this.handles = [];
+          return;
+        }
+
+        if (index > 0) {
+          let nthHandle: puppeteer.ElementHandle<Element> | undefined;
+          for (let i = 1; i <= index; i++) {
+            nthHandle = this.handles.shift();
+          }
+          nthHandle ? (this.handles = [nthHandle]) : (this.handles = []);
+          return;
+        }
+
+        if (index < 0) {
+          let nthHandle: puppeteer.ElementHandle<Element> | undefined;
+          for (let i = 1; i <= -index; i++) {
+            nthHandle = this.handles.pop();
+          }
+          nthHandle ? (this.handles = [nthHandle]) : (this.handles = []);
+          return;
+        }
+      },
+    );
+
+    this.chainingHistory = `${this.chainingHistory}
+  .nth(${index})`;
 
     return this;
   }
