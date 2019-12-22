@@ -54,6 +54,23 @@ export class SelectorController {
     return this;
   }
 
+  public withText(text: string): SelectorController {
+    this.actions.push(
+      async (): Promise<void> => {
+        this.handles = await action.getElementsWithText(
+          text,
+          [...this.handles],
+          this.pptc.currentPage,
+        );
+      },
+    );
+
+    this.chainingHistory = `${this.chainingHistory}
+  .withText(${text})`;
+
+    return this;
+  }
+
   /**
    * Takes the nth element found at the previous step
    *
