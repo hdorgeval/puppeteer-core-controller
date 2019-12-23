@@ -15,9 +15,15 @@ export class SelectorController {
     }
   }
 
+  /**
+   * executes the search
+   *
+   * @returns {Promise<puppeteer.ElementHandle<Element>[]>} will return an empty array if no elements are found, will return all found elements otherwise.
+   * @memberof SelectorController
+   */
   public async getHandles(): Promise<puppeteer.ElementHandle<Element>[]> {
     await this.executeActions();
-    return this.handles;
+    return [...this.handles];
   }
 
   /**
