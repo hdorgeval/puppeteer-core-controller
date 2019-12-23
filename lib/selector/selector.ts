@@ -71,6 +71,19 @@ export class SelectorController {
     return this;
   }
 
+  public parent(): SelectorController {
+    this.actions.push(
+      async (): Promise<void> => {
+        this.handles = await action.getParentsOf([...this.handles], this.pptc.currentPage);
+      },
+    );
+
+    this.chainingHistory = `${this.chainingHistory}
+  .parent()`;
+
+    return this;
+  }
+
   /**
    * Takes the nth element found at the previous step
    *
