@@ -1,5 +1,5 @@
 import * as puppeteer from 'puppeteer-core';
-import { exists } from './index';
+import { exists } from '../index';
 declare const window: Window;
 export async function isVisible(
   selector: string,
