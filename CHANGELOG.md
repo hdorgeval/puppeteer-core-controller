@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html)
 
+## [1.20.0] - 2019-12-23
+
+### Added
+
+- add `find(selector)` method on the Selector API
+- add `withText(text)` method on the Selector API
+- add `nth(index)` method on the Selector API
+- add `parent()` method on the Selector API
+
+### Changed
+
+- update dependencies
+
 ## [1.19.0] - 2019-12-20
 
 ### Added
