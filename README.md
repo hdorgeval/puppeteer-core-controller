@@ -10,6 +10,7 @@ Fluent API around puppeteer-core
 - [Usage in an existing code base](#Usage-in-an-existing-code-base)
 - [Usage with Stories](#Usage-with-Stories)
 - [API Documentation](#API-Documentation)
+- [Selector API Documentation](#Selector-API-Documentation)
 
 # Usage
 
@@ -641,5 +642,68 @@ const pptc = cast(this.context.pptc);
 // use the pptc controller API
 // ...
 ```
+
+---
+
+# Selector API Documentation
+
+## Usage
+
+The Selector API enables to find and target a DOM element that is embedded in complex DOM Hierarchy.
+
+To use the Selector API, you must get a selector object from the controller:
+
+```ts
+import { PuppeteerController } from 'puppeteer-core-controller';
+
+const pptc = new PuppeteerController();
+const selector = pptc
+  .selector('[role="row"]') // will get all dom elements, within the current page, with the attribute role="row"
+  .withText('foobar') // will filter only those that contains the text 'foobar'
+  .find('td') // from previous result(s), find all embedded <td> elements
+  .nth(2); // take only the second cell
+```
+
+Once you have build a selector object, you can 'execute' the search at any time and get the found elements:
+
+```ts
+const handles = await selector.getHandles();
+```
+
+## Chainable Methods
+
+### find(selector)
+
+- selector: string
+
+---
+
+### withText(text)
+
+- text: string
+
+---
+
+### nth(index)
+
+- index: number (1-based index)
+
+---
+
+### parent()
+
+- index: number (1-based index)
+
+get parent of each elements found in the previous step.
+
+---
+
+## Helper Methods
+
+### getHandles()
+
+- returns: `Promise<ElementHandle<Element>[]>`
+
+  see [class: ElementHandle](https://github.com/puppeteer/puppeteer/blob/master/docs/api.md#class-elementhandle)
 
 ---
