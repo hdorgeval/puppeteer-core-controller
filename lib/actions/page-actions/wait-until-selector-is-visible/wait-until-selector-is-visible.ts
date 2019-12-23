@@ -1,5 +1,5 @@
 import * as puppeteer from 'puppeteer-core';
-import { WaitOptions } from '.';
+import { WaitOptions } from '..';
 
 export async function waitUntilSelectorIsVisible(
   selector: string,
