@@ -12,7 +12,7 @@ export async function isHandleVisible(
     return false;
   }
 
-  const result = selector.evaluate((el): boolean => {
+  const result = await selector.evaluate((el): boolean => {
     function hasVisibleBoundingBox(element: Element): boolean {
       const rect = element.getBoundingClientRect();
       return !!(rect.top || rect.bottom || rect.width || rect.height);

@@ -27,6 +27,26 @@ export class SelectorController {
   }
 
   /**
+   * Checks if the selector is visible.
+   * If the selector targets multiple DOM elements, this check is done only on the first one found.
+   * The result may differ from one execution to another
+   * especially if targeted element is rendered lately because its data is based on some backend response.
+   * So the visibilty status is the one known when executing this method.
+   * @returns {Promise<boolean>}
+   * @memberof SelectorController
+   */
+  public async isVisible(): Promise<boolean> {
+    const handles = await this.getHandles();
+    if (handles.length === 0) {
+      return false;
+    }
+
+    const handle = handles[0];
+    const isElementVisible = await action.isHandleVisible(handle);
+    return isElementVisible;
+  }
+
+  /**
    *
    */
   constructor(selector: string, pptc: PuppeteerController) {
