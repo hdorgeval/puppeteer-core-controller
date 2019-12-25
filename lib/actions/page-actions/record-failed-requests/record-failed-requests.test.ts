@@ -94,6 +94,31 @@ describe('record failed requests', (): void => {
     expect(errors[0].response()?.statusText()).toBe('Service Unavailable');
   });
 
+  test('should record failed requests HTTP 307', async (): Promise<void> => {
+    // Given
+    browser = await launchBrowser({
+      headless: true,
+      executablePath: getChromePath(),
+    });
+    const page = await browser.newPage();
+    const errors: puppeteer.Request[] = [];
+    fakeServer &&
+      fakeServer.http
+        .get()
+        .to('/307')
+        .willFail(307);
+
+    // When
+    await SUT.recordFailedRequests(page, (req) => errors.push(req));
+    await page.goto(`file:${path.join(__dirname, 'record-failed-requests-307.test.html')}`);
+    await page.waitFor(2000);
+
+    // Then
+    expect(errors.length).toBe(1);
+    expect(errors[0].response()?.status()).toBe(307);
+    expect(errors[0].response()?.statusText()).toBe('Temporary Redirect');
+  });
+
   test('should record failed requests due to invalid url', async (): Promise<void> => {
     // Given
     browser = await launchBrowser({

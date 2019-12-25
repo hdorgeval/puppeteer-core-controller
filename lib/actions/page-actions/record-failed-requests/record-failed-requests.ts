@@ -1,6 +1,6 @@
 import * as puppeteer from 'puppeteer-core';
 
-const failedStatus = [500, 503, 400, 401, 403];
+const failedStatus = [500, 503, 400, 401, 403, 307];
 
 export async function recordFailedRequests(
   page: puppeteer.Page | undefined,
@@ -22,9 +22,6 @@ export async function recordFailedRequests(
       callback(request);
       return;
     }
-
-    // eslint-disable-next-line no-console
-    console.log('HDO> requestfinished > request', request);
   });
 
   page.on('requestfailed', (request) => {
