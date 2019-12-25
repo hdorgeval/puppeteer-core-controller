@@ -20,7 +20,11 @@ export async function recordFailedRequests(
     const status = response.status();
     if (failedStatus.includes(status)) {
       callback(request);
+      return;
     }
+
+    // eslint-disable-next-line no-console
+    console.log('HDO> requestfinished > request', request);
   });
 
   page.on('requestfailed', (request) => {
