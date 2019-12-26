@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html)
 
+## [1.21.0] - 2019-12-26
+
+### Added
+
+- add `expectThat(selector).hasAttribute(attributeName).withValue(attributeValue)` method in the fluent assertion API
+
+- add `isVisible()` helper method on the Selector API
+
+### Fixed
+
+- do not throw while checking selector existence
+
 ## [1.20.0] - 2019-12-23
 
 ### Added
