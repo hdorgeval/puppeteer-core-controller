@@ -8,6 +8,8 @@ export * from './get-parents-of';
 export * from './get-selected-option-of';
 export * from './get-value-of';
 export * from './has-active-element';
+export * from './has-attribute-with-value';
+export * from './has-attribute';
 export * from './has-class';
 export * from './has-exact-value';
 export * from './has-focus';

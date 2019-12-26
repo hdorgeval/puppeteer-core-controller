@@ -26,7 +26,12 @@ import { SelectorController } from '../selector';
 export type Story = (pptc: PuppeteerController) => Promise<void>;
 export type StoryWithProps<T> = (pptc: PuppeteerController, props: T) => Promise<void>;
 
+interface ExpectAssertionForAttribute {
+  withValue: (attributeValue: string, options?: Partial<AssertOptions>) => PuppeteerController;
+}
+
 export interface ExpectAssertion {
+  hasAttribute: (attributeName: string) => ExpectAssertionForAttribute;
   hasFocus: (options?: Partial<AssertOptions>) => PuppeteerController;
   hasClass: (className: string, options?: Partial<AssertOptions>) => PuppeteerController;
   hasExactValue: (value: string, options?: Partial<AssertOptions>) => PuppeteerController;
@@ -410,6 +415,14 @@ export class PuppeteerController implements PromiseLike<void> {
   public async hasClass(selector: string, className: string): Promise<boolean> {
     return await action.hasClass(selector, className, this.page);
   }
+
+  public async hasAttributeWithValue(
+    selector: string,
+    attributeName: string,
+    attributeValue: string,
+  ): Promise<boolean> {
+    return await action.hasAttributeWithValue(selector, attributeName, attributeValue, this.page);
+  }
   public async hasExactValue(selector: string, value: string): Promise<boolean> {
     return await action.hasExactValue(selector, value, this.page);
   }
@@ -476,6 +489,32 @@ export class PuppeteerController implements PromiseLike<void> {
 
   public expectThat(selector: string): ExpectAssertion {
     return {
+      hasAttribute: (attributeName: string): ExpectAssertionForAttribute => {
+        return {
+          withValue: (
+            attributeValue: string,
+            options: Partial<AssertOptions> = defaultAssertOptions,
+          ): PuppeteerController => {
+            const assertOptions: AssertOptions = {
+              ...defaultAssertOptions,
+              ...options,
+            };
+            this.actions.push(
+              async (): Promise<void> => {
+                const errorMessage = `Error: Selector '${selector}' does not have the attribute '${attributeName}' with the value '${attributeValue}'.`;
+                await this.assertFor(
+                  async (): Promise<boolean> =>
+                    await this.hasAttributeWithValue(selector, attributeName, attributeValue),
+                  errorMessage,
+                  assertOptions,
+                );
+              },
+            );
+            return this;
+          },
+        };
+      },
+
       hasExactValue: (
         value: string,
         options: Partial<AssertOptions> = defaultAssertOptions,
