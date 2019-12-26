@@ -27,8 +27,17 @@
 
   <p id="hidden">Yo!</p>
   <p id="visible">I am visible</p>
+  <p id="visible-then-removed">I am visible but will disappear</p>
   <p id="transparent">I am transparent</p>
   <p id="out-of-screen">I am out of screen</p>
+
+  <script>
+    window.setTimeout(() => {
+      const el = document.querySelector('#visible-then-removed');
+      el.remove();
+    }, 210);
+  </script>
 </body>
+
 
 </html>

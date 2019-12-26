@@ -16,21 +16,30 @@ export async function isVisible(
     return false;
   }
 
-  const result = await page.$eval(selector, (el: Element): boolean => {
-    function hasVisibleBoundingBox(element: Element): boolean {
-      const rect = element.getBoundingClientRect();
-      return !!(rect.top || rect.bottom || rect.width || rect.height);
-    }
+  try {
+    const result = await page.$eval(selector, (el: Element): boolean => {
+      function hasVisibleBoundingBox(element: Element): boolean {
+        const rect = element.getBoundingClientRect();
+        return !!(rect.top || rect.bottom || rect.width || rect.height);
+      }
 
-    const style = window.getComputedStyle(el);
+      const style = window.getComputedStyle(el);
 
-    if (style && style.opacity && style.opacity === '0') {
-      return false;
-    }
+      if (style && style.opacity && style.opacity === '0') {
+        return false;
+      }
 
-    const isVisible = style && style.visibility !== 'hidden' && hasVisibleBoundingBox(el);
-    return isVisible;
-  });
+      const isVisible = style && style.visibility !== 'hidden' && hasVisibleBoundingBox(el);
+      return isVisible;
+    });
 
-  return result;
+    return result;
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.warn(
+      `An internal error has occured in Puppeteer API while checking if selector '${selector}'  is visible`,
+      error,
+    );
+    return false;
+  }
 }

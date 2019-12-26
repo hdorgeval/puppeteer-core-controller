@@ -112,4 +112,20 @@ describe('selector is visible', (): void => {
     // Then
     expect(result).toBe(false);
   });
+
+  test.skip('should return false when selector is removed from DOM', async (): Promise<void> => {
+    // Given
+    browser = await launchBrowser({
+      headless: true,
+      executablePath: getChromePath(),
+    });
+    const page = await browser.newPage();
+    await page.goto(`file:${path.join(__dirname, 'is-visible.test1.html')}`);
+
+    // When
+    const result = await SUT.isVisible('#visible-then-removed', page);
+
+    // Then
+    expect(result).toBe(false);
+  });
 });
