@@ -137,6 +137,7 @@ await pptc
 
 - Chainable Assertions
 
+  - [expectThat(selector).hasAttribute(attributeName).withValue(attributeValue,[options])](#expectThatselectorhasAttributeattributeNamewithValueattributeValueoptions)
   - [expectThat(selector).hasClass(className,[options])](#expectThatSelectorhasClassclassNameoptions)
   - [expectThat(selector).hasExactValue(value,[options])](#expectThatselectorhasexactvaluevalueoptions)
   - [expectThat(selector).hasFocus([options])](#expectThatselectorhasFocusoptions)
@@ -337,6 +338,22 @@ await pptc
 ---
 
 ## Assertion API
+
+### expectThat(selector).hasAttribute(attributeName).withValue(attributeValue,[options])
+
+- selector: `string`
+- attributeName: `string`
+- attributeValue: `string`
+- options: {timeoutInMilliseconds}. This option enables the assertion mechanism to wait for the selector to have the specified value. Defaults to 30000 (30 seconds).
+
+```js
+await pptc
+  .expectThat(selector)
+  .hasAttribute('foo')
+  .withValue('bar');
+```
+
+---
 
 ### expectThat(selector).hasFocus([options])
 
@@ -705,5 +722,17 @@ get parent of each elements found in the previous step.
 - returns: `Promise<ElementHandle<Element>[]>`
 
   see [class: ElementHandle](https://github.com/puppeteer/puppeteer/blob/master/docs/api.md#class-elementhandle)
+
+---
+
+### isVisible()
+
+- returns: `Promise<boolean>`
+
+Checks if the selector is visible.
+
+If the selector targets multiple DOM elements, this check is done only on the first one found.
+
+The result may differ from one execution to another especially if targeted element is rendered lately because its data is based on some backend response.
 
 ---
