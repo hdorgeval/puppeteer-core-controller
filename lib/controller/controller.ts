@@ -431,7 +431,7 @@ export class PuppeteerController implements PromiseLike<void> {
     return await action.hasText(selector, text, this.page);
   }
 
-  public async getSelectedOptionOf(selector: string): Promise<string | null> {
+  public async getSelectedOptionOf(selector: string): Promise<SelectOptionInfo | null> {
     const result = await action.getSelectedOptionOf(selector, this.page);
     return result;
   }

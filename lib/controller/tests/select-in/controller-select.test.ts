@@ -19,21 +19,19 @@ describe('Puppeteer Controller', (): void => {
     const launchOptions: LaunchOptions = {
       headless: true,
     };
-    const url = 'https://reactstrap.github.io/components/form';
-    const customSelect = 'select#exampleCustomSelect';
-    const option = 'Value 3';
+    const url = `file:${path.join(__dirname, 'controller-select.test.html')}`;
+    const selector = '#select2';
 
     // When
     await pptc
       .initWith(launchOptions)
       .navigateTo(url)
-      .click(customSelect)
-      .select(option)
-      .in(customSelect);
+      .select('value 3')
+      .in(selector);
 
     // Then
-    const selectedOption = await pptc.getSelectedOptionOf(customSelect);
-    expect(selectedOption).toBe(option);
+    const selectedOption = await pptc.getSelectedOptionOf(selector);
+    expect(selectedOption?.label).toBe('value 3');
     expect(pptc.lastError).toBe(undefined);
   });
 
@@ -42,37 +40,8 @@ describe('Puppeteer Controller', (): void => {
     const launchOptions: LaunchOptions = {
       headless: true,
     };
-    const url = 'https://reactstrap.github.io/components/form';
-    const customSelect = 'select#exampleCustomSelect';
-
-    // When
-    let result: Error | undefined = undefined;
-    try {
-      await pptc
-        .initWith(launchOptions)
-        .navigateTo(url)
-        .click(customSelect)
-        .select('foobar')
-        .in(customSelect);
-    } catch (error) {
-      result = error;
-    }
-
-    // Then
-    const expectedErrorMessage =
-      "Cannot select 'foobar' in list 'select#exampleCustomSelect' because it does not match available options: 'Select,Value 1,Value 2,Value 3,Value 4,Value 5'";
-    expect(result && result.message).toContain(expectedErrorMessage);
-  });
-
-  test('should throw an error when selecting an option with a space in it', async (): Promise<
-    void
-  > => {
-    // Given
-    const launchOptions: LaunchOptions = {
-      headless: true,
-    };
     const url = `file:${path.join(__dirname, 'controller-select.test.html')}`;
-    const selector = 'select#select1';
+    const selector = '#select1';
 
     // When
     let result: Error | undefined = undefined;
@@ -80,7 +49,7 @@ describe('Puppeteer Controller', (): void => {
       await pptc
         .initWith(launchOptions)
         .navigateTo(url)
-        .select('value 2')
+        .select('foobar')
         .in(selector);
     } catch (error) {
       result = error;
@@ -88,11 +57,11 @@ describe('Puppeteer Controller', (): void => {
 
     // Then
     const expectedErrorMessage =
-      "Cannot select 'value 2' in list 'select#select1' because it does not match available options: 'value1,value2,value3'";
+      "Cannot select 'foobar' in list '#select1' because it does not match available options: 'value1,value2,value3'";
     expect(result && result.message).toContain(expectedErrorMessage);
   });
 
-  test('should not modfiy the selected option when trying to select an unknown option', async (): Promise<
+  test('should throw an error when selecting an option by its value instead of its label', async (): Promise<
     void
   > => {
     // Given
@@ -100,7 +69,35 @@ describe('Puppeteer Controller', (): void => {
       headless: true,
     };
     const url = `file:${path.join(__dirname, 'controller-select.test.html')}`;
-    const selector = 'select#select2';
+    const selector = '#select2';
+
+    // When
+    let result: Error | undefined = undefined;
+    try {
+      await pptc
+        .initWith(launchOptions)
+        .navigateTo(url)
+        .select('value3')
+        .in(selector);
+    } catch (error) {
+      result = error;
+    }
+
+    // Then
+    const expectedErrorMessage =
+      "Cannot select 'value3' in list '#select2' because it does not match available options: 'value 1,value 2,value 3'";
+    expect(result && result.message).toContain(expectedErrorMessage);
+  });
+
+  test('should not modify the selected option when trying to select an unknown option', async (): Promise<
+    void
+  > => {
+    // Given
+    const launchOptions: LaunchOptions = {
+      headless: true,
+    };
+    const url = `file:${path.join(__dirname, 'controller-select.test.html')}`;
+    const selector = '#select2';
 
     // When
     try {
@@ -119,7 +116,9 @@ describe('Puppeteer Controller', (): void => {
 
     expect(Array.isArray(allOptions)).toBe(true);
     expect(allOptions.length).toBe(3);
-    expect(selectedOption).toBe('value 2');
+    expect(selectedOption?.label).toBe('value 2');
+    expect(selectedOption?.value).toBe('value2');
+    expect(selectedOption?.selected).toBe(true);
     expect(allOptions.find((o) => o.selected)?.label).toBe('value 2');
   });
 });

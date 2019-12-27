@@ -44,7 +44,7 @@ describe('Puppeteer Controller', (): void => {
 
     // Then
     const selectedOption = await pptc.getSelectedOptionOf(customSelect);
-    expect(selectedOption).toBe(option);
+    expect(selectedOption?.label).toBe(option);
     expect(pptc.lastError).toBe(undefined);
   });
 
@@ -85,7 +85,7 @@ describe('Puppeteer Controller', (): void => {
 
     // Then
     const selectedOption = await pptc.getSelectedOptionOf(customSelect);
-    expect(selectedOption).toBe(option);
+    expect(selectedOption?.label).toBe(option);
     expect(pptc.lastError).toBe(undefined);
   });
 
@@ -130,7 +130,7 @@ describe('Puppeteer Controller', (): void => {
 
     // Then
     const selectedOption = await pptc.getSelectedOptionOf(customSelect);
-    expect(selectedOption).toBe('');
+    expect(selectedOption?.label).toBe('');
     expect(pptc.lastError).toBe(undefined);
   });
 });

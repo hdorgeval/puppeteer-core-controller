@@ -57,5 +57,13 @@ export async function select(
     );
   }
 
-  await page.select(selector, ...values);
+  const optionValues = values.map((value) => {
+    const match = availableOptions.find((availableOption) => availableOption.label === value);
+    if (match === undefined) {
+      return value;
+    }
+    return match.value;
+  });
+
+  await page.select(selector, ...optionValues);
 }

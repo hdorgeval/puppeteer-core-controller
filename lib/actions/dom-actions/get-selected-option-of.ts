@@ -1,16 +1,17 @@
 import * as puppeteer from 'puppeteer-core';
+import { SelectOptionInfo } from '.';
 
 export async function getSelectedOptionOf(
   selector: string,
   page: puppeteer.Page | undefined,
-): Promise<string | null> {
+): Promise<SelectOptionInfo | null> {
   if (!page) {
     throw new Error(
       `Error: cannot get the selected option of '${selector}' because a new page has not been created`,
     );
   }
 
-  const result = await page.$eval(selector, (el: Element): string | null => {
+  const stringifiedResult = await page.$eval(selector, (el: Element): string | null => {
     const selectElement = el as HTMLSelectElement;
     if (!selectElement) {
       return null;
@@ -22,8 +23,14 @@ export async function getSelectedOptionOf(
     if (selectedOptions.length === 0) {
       return null;
     }
-    return selectedOptions[0].innerText;
+    const optionInfo: SelectOptionInfo = {
+      label: selectedOptions[0].label,
+      selected: true,
+      value: selectedOptions[0].value,
+    };
+    return JSON.stringify(optionInfo);
   });
 
+  const result = stringifiedResult === null ? null : JSON.parse(stringifiedResult);
   return result;
 }
