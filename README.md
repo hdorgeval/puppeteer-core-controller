@@ -218,7 +218,7 @@ await pptc
 
 ### click(selector[, options])
 
-- selector: string
+- selector: `string`
 - options: same object as [page.click(selector[, options])](https://github.com/puppeteer/puppeteer/blob/v2.0.0/docs/api.md#pageclickselector-options)
 
   with an additional property: `timeoutInMilliseconds`. This option enables the click method to wait for the selector to appear in the DOM before attempting to click on it. Defaults to 30000 (30 seconds). Pass 0 to disable this timeout.
@@ -227,7 +227,7 @@ await pptc
 
 ### hover(selector[, options])
 
-- selector: string
+- selector: `string`
 - options: {steps: number, timeoutInMilliseconds: number }
 
   `timeoutInMilliseconds` option enables the hover method to wait for the selector to appear in the DOM before attempting to move the mouse on it. Defaults to 30000 (30 seconds). Pass 0 to disable this timeout.
@@ -236,7 +236,7 @@ await pptc
 
 ### typeText(text[, options])
 
-- text: string
+- text: `string`
 - options: same object as [keyboard.type(text[, options])](https://github.com/puppeteer/puppeteer/blob/v2.0.0/docs/api.md#keyboardtypetext-options)
 
   except that `delay` defaults to 50 milliseconds. Set the `delay` value to `0` to disable the delay.
@@ -247,7 +247,7 @@ await pptc
 
 Clear text in an input box.
 
-- selector: string
+- selector: `string`
 - options: same object as [page.click(selector[, options])](https://github.com/puppeteer/puppeteer/blob/v2.0.0/docs/api.md#pageclickselector-options)
 
 This method does not wait for the selector to be in the DOM.
@@ -274,8 +274,25 @@ const value = await pptc
 
 ### select(values).in(selector[, options])
 
-- values and selector: same as [page.select(selector, ...values)](https://github.com/puppeteer/puppeteer/blob/v2.0.0/docs/api.md#pageselectselector-values)
+- values : `string[]`
+
+  There is a major difference between the `select` method of the Puppeteer API and this `select` method: You should pass the labels of the select DOM element (ie: what you see on the screen) instead of the value of the `value` attribute found on the `option` element.
+
+- selector: same as [page.select(selector, ...values)](https://github.com/puppeteer/puppeteer/blob/v2.0.0/docs/api.md#pageselectselector-values)
+
 - options: {timeoutInMilliseconds}. This option enables the select method to wait for the selector to appear in the DOM before attempting to select the option(s). Defaults to 30000 (30 seconds). Pass 0 to disable this timeout.
+
+```html
+<select id="select">
+  <option value="value1" selected>value 1</option>
+  <option value="value2">value 2</option>
+  <option value="value3">value 3</option>
+</select>
+```
+
+```js
+await pptc.select('value 2').in(selector);
+```
 
 ---
 
@@ -293,7 +310,7 @@ await pptc
   .click();
 ```
 
-- selector: string
+- selector: `string`
 - waitOptions: {timeoutInMilliseconds: number}.
   The find method will wait for the selector to to be visible until `timeoutInMilliseconds` expires. Defaults to 30000 (30 seconds).
 - withText(text)
@@ -315,7 +332,7 @@ await pptc
   .click();
 ```
 
-- selector: string
+- selector: `string`
 - waitOptions: {timeoutInMilliseconds: number}.
   The find method will wait for the selector to to be visible until `timeoutInMilliseconds` expires. Defaults to 30000 (30 seconds).
 - withExactText(text)
@@ -325,13 +342,13 @@ await pptc
 
 ### runStory(story)
 
-- story: Story | StoryWithProps
+- story: `Story | StoryWithProps`
 
 ---
 
 ### wait(duration)
 
-- duration: number
+- duration: `number`
 
   time to wait in milliseconds.
 
@@ -357,23 +374,23 @@ await pptc
 
 ### expectThat(selector).hasFocus([options])
 
-- selector: string
+- selector: `string`
 - options: {timeoutInMilliseconds}. This option enables the assertion mechanism to wait for the selector to have the focus. Defaults to 30000 (30 seconds).
 
 ---
 
 ### expectThat(selector).hasClass(className,[options])
 
-- selector: string
-- className: string
+- selector: `string`
+- className: `string`
 - options: {timeoutInMilliseconds}. This option enables the assertion mechanism to wait for the selector to have the specified class. Defaults to 30000 (30 seconds).
 
 ---
 
 ### expectThat(selector).hasExactValue(value,[options])
 
-- selector: string
-- value: string
+- selector: `string`
+- value: `string`
 - options: {timeoutInMilliseconds}. This option enables the assertion mechanism to wait for the selector to have the specified value. Defaults to 30000 (30 seconds).
 
 ```js
@@ -388,8 +405,8 @@ await pptc
 
 ### expectThat(selector).hasText(text,[options])
 
-- selector: string
-- text: string
+- selector: `string`
+- text: `string`
 - options: {timeoutInMilliseconds}. This option enables the assertion mechanism to wait for the selector to have the specified value. Defaults to 30000 (30 seconds).
 
 ```js
@@ -404,28 +421,28 @@ await pptc
 
 ### expectThat(selector).isDisabled([options])
 
-- selector: string
+- selector: `string`
 - options: {timeoutInMilliseconds}. This option enables the assertion mechanism to wait for the selector to be disabled. Defaults to 30000 (30 seconds).
 
 ---
 
 ### expectThat(selector).isEnabled([options])
 
-- selector: string
+- selector: `string`
 - options: {timeoutInMilliseconds}. This option enables the assertion mechanism to wait for the selector to be enabled. Defaults to 30000 (30 seconds).
 
 ---
 
 ### expectThat(selector).isVisible([options])
 
-- selector: string
+- selector: `string`
 - options: {timeoutInMilliseconds}. This option enables the assertion mechanism to wait for the selector to be visible. Defaults to 30000 (30 seconds).
 
 ---
 
 ### expectThat(selector).isNotVisible([options])
 
-- selector: string
+- selector: `string`
 - options: {timeoutInMilliseconds}. This option enables the assertion mechanism to wait for the selector to be hidden or to disappear from the DOM. Defaults to 30000 (30 seconds).
 
 ---
@@ -434,7 +451,7 @@ await pptc
 
 ### getComputedStyleOf(selector)
 
-- selector: string
+- selector: `string`
 - returns: `Promise<CSSStyleDeclaration>`
 
   ```js
@@ -447,7 +464,7 @@ await pptc
 
 ### getClientRectangleOf(selector)
 
-- selector: string
+- selector: `string`
 
   ```js
   const selector = 'input[type="text"].is-valid.form-control';
@@ -473,35 +490,35 @@ await pptc
 
 ### isChecked(selector)
 
-- selector: string
+- selector: `string`
 - returns: `Promise<boolean>`
 
 ---
 
 ### isDisabled(selector)
 
-- selector: string
+- selector: `string`
 - returns: `Promise<boolean>`
 
 ---
 
 ### isVisible(selector)
 
-- selector: string
+- selector: `string`
 - returns: `Promise<boolean>`
 
 ---
 
 ### isNotVisible(selector)
 
-- selector: string
+- selector: `string`
 - returns: `Promise<boolean>`
 
 ---
 
 ### getAllOptionsOf(selector)
 
-- selector: string
+- selector: `string`
 - returns: `Promise<SelectOptionInfo[]>`
 
 ```ts
@@ -516,14 +533,14 @@ SelectOptionInfo {
 
 ### getSelectedOptionOf(selector)
 
-- selector: string
-- returns: `Promise<string>`
+- selector: `string`
+- returns: `Promise<SelectOptionInfo | null>`
 
 ---
 
 ### getValueOf(selector)
 
-- selector: string
+- selector: `string`
 - returns: `Promise<string>`
 
 This method does not wait for the selector to be in the DOM.
@@ -540,7 +557,7 @@ const value = await pptc
 
 ### getInnerTextOf(selector)
 
-- selector: string
+- selector: `string`
 - returns: `Promise<string>`
 
 This method does not wait for the selector to be in the DOM.
@@ -691,25 +708,25 @@ const handles = await selector.getHandles();
 
 ### find(selector)
 
-- selector: string
+- selector: `string`
 
 ---
 
 ### withText(text)
 
-- text: string
+- text: `string`
 
 ---
 
 ### nth(index)
 
-- index: number (1-based index)
+- index: `number` (1-based index)
 
 ---
 
 ### parent()
 
-- index: number (1-based index)
+- index: `number` (1-based index)
 
 get parent of each elements found in the previous step.
 
