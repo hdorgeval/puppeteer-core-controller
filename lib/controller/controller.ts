@@ -52,6 +52,37 @@ export interface AssertOptions {
    */
   stabilityInMilliseconds: number;
 }
+
+export interface WaitUntilOptions {
+  /**
+   * Defaults to 30000 milliseconds.
+   *
+   * @type {number}
+   * @memberof WaitUntilOptions
+   */
+  timeoutInMilliseconds: number;
+  /**
+   * Time during which the callback must always return true.
+   * Defaults to 300 milliseconds.
+   * You must not setup a duration < 100 milliseconds.
+   * @type {number}
+   * @memberof AssertOptions
+   */
+  stabilityInMilliseconds: number;
+  /**
+   * Throw a timeout exception when the callback still returns false.
+   * Defaults to false.
+   * @type {boolean}
+   * @memberof WaitUntilOptions
+   */
+  throwOnTimeout: boolean;
+}
+
+export const defaultWaitUntilOptions: WaitUntilOptions = {
+  stabilityInMilliseconds: 300,
+  throwOnTimeout: false,
+  timeoutInMilliseconds: 30000,
+};
 export const defaultAssertOptions: AssertOptions = {
   timeoutInMilliseconds: 30000,
   stabilityInMilliseconds: 300,
@@ -688,6 +719,62 @@ export class PuppeteerController implements PromiseLike<void> {
     };
   }
 
+  private async waitFor(
+    predicate: () => Promise<boolean>,
+    errorMessage: string | (() => Promise<string>),
+    options: WaitUntilOptions = defaultWaitUntilOptions,
+  ): Promise<void> {
+    if (!this.page) {
+      throw new Error('Error: expect statement only works when a page has been opened.');
+    }
+    const timeout = options.timeoutInMilliseconds;
+    const interval = 100;
+    const nbIntervals = timeout / interval;
+    const stabilityCounterMaxValue = options.stabilityInMilliseconds / interval;
+    let stabilityCounterCurrentValue = 0;
+
+    for (let index = 0; index < nbIntervals; index++) {
+      await this.page.waitFor(interval);
+      const result = await predicate();
+      if (result === true) {
+        stabilityCounterCurrentValue += 1;
+      }
+      if (result === false) {
+        stabilityCounterCurrentValue = 0;
+      }
+
+      if (stabilityCounterCurrentValue >= stabilityCounterMaxValue) {
+        return;
+      }
+    }
+
+    if (!options.throwOnTimeout) {
+      return;
+    }
+
+    if (typeof errorMessage === 'string') {
+      throw new Error(errorMessage);
+    }
+
+    throw new Error(await errorMessage());
+  }
+  public waitUntil(
+    predicate: () => Promise<boolean>,
+    options: Partial<WaitUntilOptions> = defaultWaitUntilOptions,
+    errorMessage?: string | (() => Promise<string>),
+  ): PuppeteerController {
+    const waitUntilOptions: WaitUntilOptions = {
+      ...defaultWaitUntilOptions,
+      ...options,
+    };
+    this.actions.push(
+      async (): Promise<void> => {
+        const defaultErrorMessage = `predicate still resolved to false after ${waitUntilOptions.timeoutInMilliseconds} ms.`;
+        await this.waitFor(predicate, errorMessage || defaultErrorMessage, waitUntilOptions);
+      },
+    );
+    return this;
+  }
   public async takeFullPageScreenshotAsBase64(
     options: puppeteer.ScreenshotOptions = mandatoryFullPageScreenshotOptions,
   ): Promise<string> {
