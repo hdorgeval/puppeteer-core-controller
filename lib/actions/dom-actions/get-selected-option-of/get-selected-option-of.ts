@@ -1,5 +1,5 @@
 import * as puppeteer from 'puppeteer-core';
-import { SelectOptionInfo } from '.';
+import { SelectOptionInfo } from '..';
 
 export async function getSelectedOptionOf(
   selector: string,

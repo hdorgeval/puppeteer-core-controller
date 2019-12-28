@@ -1,6 +1,6 @@
 import * as puppeteer from 'puppeteer-core';
-import { getChromePath } from '../../utils';
-import { launchBrowser, exists } from '..';
+import { getChromePath } from '../../../utils';
+import { launchBrowser, exists } from '../..';
 import { showMousePosition } from './show-mouse-position';
 
 describe('show-mouse-position', (): void => {

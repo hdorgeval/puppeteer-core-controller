@@ -1,10 +1,10 @@
 import * as puppeteer from 'puppeteer-core';
-import * as SUT from './index';
-import { launchBrowser, getCurrentUrl } from '../browser-actions';
-import { getChromePath } from '../../utils';
-import { showMousePosition } from './index';
+import * as SUT from '../index';
+import { launchBrowser, getCurrentUrl } from '../../browser-actions';
+import { getChromePath } from '../../../utils';
+import { showMousePosition } from '../index';
 
-describe('query selector with text', (): void => {
+describe('query selector with exact text', (): void => {
   let browser: puppeteer.Browser | undefined = undefined;
   beforeEach((): void => {
     jest.setTimeout(30000);
@@ -25,7 +25,7 @@ describe('query selector with text', (): void => {
     const expectedError = new Error(
       "Error: cannot query selector 'foobar' with text 'yo' because a new page has not been created",
     );
-    await SUT.querySelectorWithText('foobar', text, page).catch((error): void =>
+    await SUT.querySelectorWithExactText('foobar', text, page).catch((error): void =>
       expect(error).toMatchObject(expectedError),
     );
   });
@@ -43,7 +43,7 @@ describe('query selector with text', (): void => {
 
     // Then
     const expectedError = new Error("Error: Cannot find selector 'foobar'");
-    await SUT.querySelectorWithText('foobar', text, page).catch((error): void =>
+    await SUT.querySelectorWithExactText('foobar', text, page).catch((error): void =>
       expect(error).toMatchObject(expectedError),
     );
   });
@@ -58,18 +58,22 @@ describe('query selector with text', (): void => {
     const url = 'https://reactstrap.github.io/';
     await page.goto(url);
 
-    const text = 'yo';
+    const text = 'Danger';
 
     // When
 
     // Then
-    const expectedError = new Error("Error: Cannot find a selector 'a.btn' with text 'yo'");
-    await SUT.querySelectorWithText('a.btn', text, page).catch((error): void =>
-      expect(error).toMatchObject(expectedError),
+    const expectedError = new Error(
+      "Error: Cannot find a selector '.btn' with exact text 'Danger'",
     );
+    await SUT.querySelectorWithExactText('.btn', text, page)
+      .then(() => {
+        throw new Error('should throw an error!');
+      })
+      .catch((error): void => expect(error).toMatchObject(expectedError));
   });
 
-  test('should find selector with text', async (): Promise<void> => {
+  test('should find selector with exact text', async (): Promise<void> => {
     // Given
     browser = await launchBrowser({
       headless: true,
@@ -83,7 +87,7 @@ describe('query selector with text', (): void => {
     const text = 'Components';
 
     // When
-    const result = await SUT.querySelectorWithText('a.btn', text, page);
+    const result = await SUT.querySelectorWithExactText('a.btn', text, page);
 
     // Then
     expect(result).toBeDefined();
