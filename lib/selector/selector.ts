@@ -27,6 +27,20 @@ export class SelectorController {
   }
 
   /**
+   * executes the search and returns the first found element
+   *
+   * @returns {Promise<puppeteer.ElementHandle<Element> | null>} will return null if no elements are found, will return first found element otherwise.
+   * @memberof SelectorController
+   */
+  public async getFirstHandleOrNull(): Promise<puppeteer.ElementHandle<Element> | null> {
+    await this.executeActions();
+    if (this.handles.length === 0) {
+      return null;
+    }
+    return this.handles[0];
+  }
+
+  /**
    * Checks if the selector is visible.
    * If the selector targets multiple DOM elements, this check is done only on the first one found.
    * The result may differ from one execution to another
