@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+
+  <title>Count selectors</title>
+  <style type="text/css">
+    #hidden {
+      width: 20px;
+      display: none;
+    }
+
+    #transparent {
+      opacity: 0.0;
+      color: black;
+    }
+
+    #out-of-screen {
+      position: absolute;
+      top: -100px;
+    }
+
+    #hidden-then-visible {
+      opacity: 0.0;
+      color: black;
+    }
+  </style>
+</head>
+
+<body>
+  <table border="1">
+    <tr role="row">
+      <td>
+        <select data-test-id="my-select">
+          <option value="1" selected>label 1</option>
+          <option value="2">label 2</option>
+          <option value="3">label 3</option>
+        </select>
+      </td>
+      <td>row1-cell2</td>
+    </tr>
+    <tr role="row">
+      <td>
+        <select data-test-id="my-select">
+          <option value="1">label 1</option>
+          <option value="2" selected>label 2</option>
+          <option value="3">label 3</option>
+        </select>
+      </td>
+      <td>row2-cell2</td>
+    </tr>
+    <tr role="row">
+      <td>
+        <select data-test-id="my-select">
+          <option value="1">label 1</option>
+          <option value="2">label 2</option>
+          <option value="3" selected>label 3</option>
+        </select>
+      </td>
+      <td>
+        <p id="transparent">I am transparent</p>
+      </td>
+    </tr>
+  </table>
+</body>
+
+</html>

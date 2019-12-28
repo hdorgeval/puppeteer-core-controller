@@ -16,7 +16,9 @@ export class SelectorController {
   }
 
   /**
-   * executes the search
+   * Executes the search.
+   * The result may differ from one execution to another
+   * especially if targeted element is rendered lately because its data is based on some backend response.
    *
    * @returns {Promise<puppeteer.ElementHandle<Element>[]>} will return an empty array if no elements are found, will return all found elements otherwise.
    * @memberof SelectorController
@@ -27,7 +29,9 @@ export class SelectorController {
   }
 
   /**
-   * executes the search and returns the first found element
+   * Executes the search and returns the first found element.
+   * The result may differ from one execution to another
+   * especially if targeted element is rendered lately because its data is based on some backend response.
    *
    * @returns {Promise<puppeteer.ElementHandle<Element> | null>} will return null if no elements are found, will return first found element otherwise.
    * @memberof SelectorController
@@ -38,6 +42,19 @@ export class SelectorController {
       return null;
     }
     return this.handles[0];
+  }
+
+  /**
+   * Gets the number of found elements.
+   * The result may differ from one execution to another
+   * especially if targeted element is rendered lately because its data is based on some backend response.
+   *
+   * @returns {Promise<number>} will return 0 if no elements are found.
+   * @memberof SelectorController
+   */
+  public async count(): Promise<number> {
+    await this.executeActions();
+    return this.handles.length;
   }
 
   /**
