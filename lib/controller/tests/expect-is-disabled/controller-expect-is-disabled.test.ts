@@ -1,5 +1,5 @@
-import * as SUT from '../controller';
-import { LaunchOptions } from '../../actions';
+import * as SUT from '../../controller';
+import { LaunchOptions } from '../../../actions';
 import * as path from 'path';
 
 describe('Puppeteer Controller - assertion API - isDisabled', (): void => {

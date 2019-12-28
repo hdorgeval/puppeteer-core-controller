@@ -1,8 +1,8 @@
-import * as SUT from '../controller';
-import { LaunchOptions } from '../../actions';
+import * as SUT from '../../controller';
+import { LaunchOptions } from '../../../actions';
 import * as path from 'path';
 
-describe('Puppeteer Controller - assertion API - isVisible', (): void => {
+describe('Puppeteer Controller - assertion API - isEnabled', (): void => {
   let pptc: SUT.PuppeteerController;
   beforeEach((): void => {
     jest.setTimeout(30000);
@@ -29,23 +29,24 @@ describe('Puppeteer Controller - assertion API - isVisible', (): void => {
         .initWith(launchOptions)
         .navigateTo(url)
         .expectThat(foobarSelector)
-        .isVisible({ timeoutInMilliseconds: 5000 });
+        .isEnabled({ timeoutInMilliseconds: 5000 });
     } catch (error) {
       result = error;
     }
 
     // Then
-    const expectedErrorMessage = "Error: selector 'foobar' is not visible.";
+    const expectedErrorMessage = 'Error: failed to find element matching selector "foobar"';
     expect(result && result.message).toContain(expectedErrorMessage);
     expect(pptc.lastError && pptc.lastError.message).toBe(expectedErrorMessage);
   });
 
-  test('should throw an error when selector is hidden', async (): Promise<void> => {
+  test('should throw an error when selector is disabled', async (): Promise<void> => {
     // Given
     const launchOptions: LaunchOptions = {
       headless: true,
     };
-    const url = `file:${path.join(__dirname, 'controller-expect-is-visible.test1.html')}`;
+    const url = 'https://reactstrap.github.io/components/form';
+    const inputSelector = 'input#exampleCustomCheckbox3';
 
     // When
     let result: Error | undefined = undefined;
@@ -53,14 +54,14 @@ describe('Puppeteer Controller - assertion API - isVisible', (): void => {
       await pptc
         .initWith(launchOptions)
         .navigateTo(url)
-        .expectThat('#hidden')
-        .isVisible({ timeoutInMilliseconds: 5000 });
+        .expectThat(inputSelector)
+        .isEnabled({ timeoutInMilliseconds: 5000 });
     } catch (error) {
       result = error;
     }
 
     // Then
-    const expectedErrorMessage = "Error: selector '#hidden' is not visible.";
+    const expectedErrorMessage = "Error: selector 'input#exampleCustomCheckbox3' is disabled.";
     expect(result && result.message).toContain(expectedErrorMessage);
     expect(pptc.lastError && pptc.lastError.message).toBe(expectedErrorMessage);
   });
@@ -71,7 +72,7 @@ describe('Puppeteer Controller - assertion API - isVisible', (): void => {
     // When
     let result: Error | undefined = undefined;
     try {
-      await pptc.expectThat('foobar').isVisible({ timeoutInMilliseconds: 5000 });
+      await pptc.expectThat('foobar').isEnabled({ timeoutInMilliseconds: 5000 });
     } catch (error) {
       result = error;
     }
@@ -81,12 +82,13 @@ describe('Puppeteer Controller - assertion API - isVisible', (): void => {
     expect(result && result.message).toContain(expectedErrorMessage);
   });
 
-  test('should expect is visible', async (): Promise<void> => {
+  test('should expect is enabled', async (): Promise<void> => {
     // Given
     const launchOptions: LaunchOptions = {
       headless: true,
     };
-    const url = `file:${path.join(__dirname, 'controller-expect-is-visible.test1.html')}`;
+    const url = 'https://reactstrap.github.io/components/form';
+    const inputSelector = 'input#exampleCustomCheckbox2';
 
     // When
     let result: Error | undefined = undefined;
@@ -94,8 +96,8 @@ describe('Puppeteer Controller - assertion API - isVisible', (): void => {
       await pptc
         .initWith(launchOptions)
         .navigateTo(url)
-        .expectThat('#visible')
-        .isVisible();
+        .expectThat(inputSelector)
+        .isEnabled({ timeoutInMilliseconds: 5000 });
     } catch (error) {
       result = error;
     }
@@ -104,31 +106,57 @@ describe('Puppeteer Controller - assertion API - isVisible', (): void => {
     expect(result).toBeUndefined();
   });
 
-  test('should wait for the selector to be visible', async (): Promise<void> => {
+  test('should wait for the selector to be enabled', async (): Promise<void> => {
     // Given
     const launchOptions: LaunchOptions = {
       headless: true,
     };
 
-    const url = `file:${path.join(__dirname, 'controller-expect-is-visible.test1.html')}`;
-    const selector = '#hidden-then-visible';
+    const url = `file:${path.join(__dirname, 'controller-expect-is-enabled.test.html')}`;
+    const inputSelector = 'input#disabledInput';
 
     await pptc.initWith(launchOptions).navigateTo(url);
-    const wasInitiallyVisible = await pptc.isVisible(selector);
+    const wasInitiallyDisabled = await pptc.isDisabled(inputSelector);
 
     // When
     let result: Error | undefined = undefined;
     try {
-      await pptc.expectThat(selector).isVisible();
+      await pptc.expectThat(inputSelector).isEnabled();
     } catch (error) {
       result = error;
     }
 
-    const wasFinallyVisible = await pptc.isVisible(selector);
+    const wasFinallyDisabled = await pptc.isDisabled(inputSelector);
 
     // Then
-    expect(wasInitiallyVisible).toBe(false);
-    expect(wasFinallyVisible).toBe(true);
+    expect(wasInitiallyDisabled).toBe(true);
+    expect(wasFinallyDisabled).toBe(false);
     expect(result).toBeUndefined();
+  });
+
+  test('should timeout for the selector to be enabled', async (): Promise<void> => {
+    // Given
+    const launchOptions: LaunchOptions = {
+      headless: true,
+    };
+
+    const url = `file:${path.join(__dirname, 'controller-expect-is-enabled.test.html')}`;
+    const inputSelector = 'input#disabledInput';
+
+    await pptc.initWith(launchOptions).navigateTo(url);
+    const wasInitiallyDisabled = await pptc.isDisabled(inputSelector);
+
+    // When
+    let result: Error | undefined = undefined;
+    try {
+      await pptc.expectThat(inputSelector).isEnabled({ timeoutInMilliseconds: 1000 });
+    } catch (error) {
+      result = error;
+    }
+
+    // Then
+    expect(wasInitiallyDisabled).toBe(true);
+    const expectedErrorMessage = "Error: selector 'input#disabledInput' is disabled.";
+    expect(result && result.message).toContain(expectedErrorMessage);
   });
 });
