@@ -134,6 +134,7 @@ await pptc
   - [find(selector[, waitOptions]).withExactText(text).click([clickOptions])](#findselector-waitOptionswithExactTexttextclickclickOptions)
   - [runStory(story)](#runStorystory)
   - [wait(duration)](#waitduration)
+  - [waitUntil(predicate[, waitOptions[, errorMessage]])](#waitUntilpredicate-waitOptions-errorMessage)
 
 - Chainable Assertions
 
@@ -354,14 +355,93 @@ await pptc
 
 ---
 
+### waitUntil(predicate[, waitOptions[, errorMessage]])
+
+- predicate: `() => Promise<boolean>`
+- waitOptions: `Partial<WaitUntilOptions>`
+- errorMessage: `string | (() => Promise<string>`
+
+Wait until predicate becomes true.
+
+```js
+interface WaitUntilOptions {
+  /**
+   * Defaults to 30000 milliseconds.
+   *
+   * @type {number}
+   * @memberof WaitUntilOptions
+   */
+  timeoutInMilliseconds: number;
+  /**
+   * Time during which the callback must always return true.
+   * Defaults to 300 milliseconds.
+   * You must not setup a duration < 100 milliseconds.
+   * @type {number}
+   * @memberof AssertOptions
+   */
+  stabilityInMilliseconds: number;
+  /**
+   * Throw a timeout exception when the callback still returns false.
+   * Defaults to false.
+   * @type {boolean}
+   * @memberof WaitUntilOptions
+   */
+  throwOnTimeout: boolean;
+}
+```
+
+Usage example:
+
+```js
+const selector = pptc
+  .selector('[role="row"]')
+  .find('td')
+  .withText('hidden, then visible')
+  .find('p');
+
+await pptc
+  .initWith(launchOptions)
+  .navigateTo(url)
+  .waitUntil(() => selector.isVisible());
+```
+
+---
+
 ## Assertion API
+
+### Assert Options
+
+Every method in the Assertion API may use `options` to customize the behavior of the internal waiting mechanism:
+
+```ts
+interface AssertOptions {
+  /**
+   * Defaults to 30000 milliseconds.
+   *
+   * @type {number}
+   * @memberof AssertOptions
+   */
+  timeoutInMilliseconds: number;
+  /**
+   * time during which the Assert must give back the same result.
+   * Defaults to 300 milliseconds.
+   * You must not setup a duration < 100 milliseconds.
+   * @type {number}
+   * @memberof AssertOptions
+   */
+  stabilityInMilliseconds: number;
+}
+```
 
 ### expectThat(selector).hasAttribute(attributeName).withValue(attributeValue,[options])
 
 - selector: `string`
 - attributeName: `string`
 - attributeValue: `string`
-- options: {timeoutInMilliseconds}. This option enables the assertion mechanism to wait for the selector to have the specified value. Defaults to 30000 (30 seconds).
+- options: `Partial<AssertOptions>`
+
+  {timeoutInMilliseconds}. This option enables the assertion mechanism to wait for the selector to have the specified value. Defaults to 30000 (30 seconds).
+  See [Assert Options](#Assert-Options).
 
 ```js
 await pptc
@@ -376,6 +456,7 @@ await pptc
 
 - selector: `string`
 - options: {timeoutInMilliseconds}. This option enables the assertion mechanism to wait for the selector to have the focus. Defaults to 30000 (30 seconds).
+  See [Assert Options](#Assert-Options).
 
 ---
 
@@ -384,6 +465,7 @@ await pptc
 - selector: `string`
 - className: `string`
 - options: {timeoutInMilliseconds}. This option enables the assertion mechanism to wait for the selector to have the specified class. Defaults to 30000 (30 seconds).
+  See [Assert Options](#Assert-Options).
 
 ---
 
@@ -392,6 +474,7 @@ await pptc
 - selector: `string`
 - value: `string`
 - options: {timeoutInMilliseconds}. This option enables the assertion mechanism to wait for the selector to have the specified value. Defaults to 30000 (30 seconds).
+  See [Assert Options](#Assert-Options).
 
 ```js
 await pptc
@@ -408,6 +491,7 @@ await pptc
 - selector: `string`
 - text: `string`
 - options: {timeoutInMilliseconds}. This option enables the assertion mechanism to wait for the selector to have the specified value. Defaults to 30000 (30 seconds).
+  See [Assert Options](#Assert-Options).
 
 ```js
 await pptc
@@ -423,6 +507,7 @@ await pptc
 
 - selector: `string`
 - options: {timeoutInMilliseconds}. This option enables the assertion mechanism to wait for the selector to be disabled. Defaults to 30000 (30 seconds).
+  See [Assert Options](#Assert-Options).
 
 ---
 
@@ -430,6 +515,7 @@ await pptc
 
 - selector: `string`
 - options: {timeoutInMilliseconds}. This option enables the assertion mechanism to wait for the selector to be enabled. Defaults to 30000 (30 seconds).
+  See [Assert Options](#Assert-Options).
 
 ---
 
@@ -437,6 +523,7 @@ await pptc
 
 - selector: `string`
 - options: {timeoutInMilliseconds}. This option enables the assertion mechanism to wait for the selector to be visible. Defaults to 30000 (30 seconds).
+  See [Assert Options](#Assert-Options).
 
 ---
 
@@ -444,6 +531,7 @@ await pptc
 
 - selector: `string`
 - options: {timeoutInMilliseconds}. This option enables the assertion mechanism to wait for the selector to be hidden or to disappear from the DOM. Defaults to 30000 (30 seconds).
+  See [Assert Options](#Assert-Options).
 
 ---
 
@@ -683,7 +771,7 @@ const pptc = cast(this.context.pptc);
 
 ## Usage
 
-The Selector API enables to find and target a DOM element that is embedded in complex DOM Hierarchy.
+The Selector API enables to find and target a DOM element or a collection of DOM elements that is embedded in complex DOM Hierarchy.
 
 To use the Selector API, you must get a selector object from the controller:
 
@@ -700,8 +788,14 @@ const selector = pptc
 
 Once you have build a selector object, you can 'execute' the search at any time and get the found elements:
 
-```ts
+```js
 const handles = await selector.getHandles();
+```
+
+If the selector targets only one DOM element, you can 'execute' the search at any time and get the found element:
+
+```js
+const handle = await selector.getFirstHandleOrNull();
 ```
 
 ## Chainable Methods
@@ -740,6 +834,22 @@ get parent of each elements found in the previous step.
 
   see [class: ElementHandle](https://github.com/puppeteer/puppeteer/blob/master/docs/api.md#class-elementhandle)
 
+  Executes the search. Will return an empty array if no elements are found, will return all found elements otherwise.
+
+  The result may differ from one execution to another especially if targeted element is rendered lately because its data is based on some backend response.
+
+---
+
+### getFirstHandleOrNull()
+
+- returns: `Promise<ElementHandle<Element> | null>`
+
+  see [class: ElementHandle](https://github.com/puppeteer/puppeteer/blob/master/docs/api.md#class-elementhandle)
+
+  Executes the search and returns the first found element. Will return null if no elements are found.
+
+  The result may differ from one execution to another especially if targeted element is rendered lately because its data is based on some backend response.
+
 ---
 
 ### isVisible()
@@ -749,6 +859,16 @@ get parent of each elements found in the previous step.
 Checks if the selector is visible.
 
 If the selector targets multiple DOM elements, this check is done only on the first one found.
+
+The result may differ from one execution to another especially if targeted element is rendered lately because its data is based on some backend response.
+
+---
+
+### count()
+
+- returns: `Promise<number>`
+
+Gets the number of found elements.
 
 The result may differ from one execution to another especially if targeted element is rendered lately because its data is based on some backend response.
 
