@@ -42,6 +42,12 @@ export interface ExpectAssertion {
   isNotVisible: (options?: Partial<AssertOptions>) => PuppeteerController;
 }
 export interface AssertOptions {
+  /**
+   * Defaults to 30000 milliseconds.
+   *
+   * @type {number}
+   * @memberof AssertOptions
+   */
   timeoutInMilliseconds: number;
   /**
    * time during which the Assert must give back the same result.
