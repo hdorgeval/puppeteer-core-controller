@@ -17,19 +17,6 @@ describe('query selector all from elements', (): void => {
       }
     },
   );
-  test('should return an error when page has not been initalized', async (): Promise<void> => {
-    // Given
-    const page: puppeteer.Page | undefined = undefined;
-
-    // When
-    // Then
-    const expectedError = new Error(
-      "Error: cannot query selector 'foobar' because a new page has not been created",
-    );
-    await SUT.querySelectorAllFromElements('foobar', [], page).catch((error): void =>
-      expect(error).toMatchObject(expectedError),
-    );
-  });
 
   test('should return an empty array when root elements is empty', async (): Promise<void> => {
     // Given
@@ -37,10 +24,9 @@ describe('query selector all from elements', (): void => {
       headless: true,
       executablePath: getChromePath(),
     });
-    const page = await browser.newPage();
 
     // When
-    const result = await SUT.querySelectorAllFromElements('foobar', [], page);
+    const result = await SUT.querySelectorAllFromElements('foobar', []);
 
     // Then
     expect(Array.isArray(result)).toBe(true);
@@ -61,7 +47,6 @@ describe('query selector all from elements', (): void => {
     const result = await SUT.querySelectorAllFromElements(
       'select[data-test-id="my-select"]',
       rootElements,
-      page,
     );
 
     // Then
@@ -81,7 +66,7 @@ describe('query selector all from elements', (): void => {
 
     // When
     const rootElements = await querySelectorAllInPage('[role="row"]', page);
-    const result = await SUT.querySelectorAllFromElements('foobar', rootElements, page);
+    const result = await SUT.querySelectorAllFromElements('foobar', rootElements);
 
     // Then
     expect(rootElements.length).toBe(3);

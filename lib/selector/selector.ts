@@ -97,11 +97,7 @@ export class SelectorController {
   public find(selector: string): SelectorController {
     this.actions.push(
       async (): Promise<void> => {
-        this.handles = await action.querySelectorAllFromElements(
-          selector,
-          [...this.handles],
-          this.pptc.currentPage,
-        );
+        this.handles = await action.querySelectorAllFromElements(selector, [...this.handles]);
       },
     );
 
