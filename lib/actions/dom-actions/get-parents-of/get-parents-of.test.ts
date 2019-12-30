@@ -17,19 +17,6 @@ describe('get elements with text', (): void => {
       }
     },
   );
-  test('should return an error when page has not been initalized', async (): Promise<void> => {
-    // Given
-    const page: puppeteer.Page | undefined = undefined;
-
-    // When
-    // Then
-    const expectedError = new Error(
-      'Error: cannot get parents because a new page has not been created',
-    );
-    await SUT.getParentsOf([], page).catch((error): void =>
-      expect(error).toMatchObject(expectedError),
-    );
-  });
 
   test('should return an empty array when root elements is empty', async (): Promise<void> => {
     // Given
@@ -37,10 +24,9 @@ describe('get elements with text', (): void => {
       headless: true,
       executablePath: getChromePath(),
     });
-    const page = await browser.newPage();
 
     // When
-    const result = await SUT.getParentsOf([], page);
+    const result = await SUT.getParentsOf([]);
 
     // Then
     expect(Array.isArray(result)).toBe(true);
@@ -58,7 +44,7 @@ describe('get elements with text', (): void => {
 
     // When
     const rootElements = await querySelectorAllInPage('[role="row"]', page);
-    const result = await SUT.getParentsOf(rootElements, page);
+    const result = await SUT.getParentsOf(rootElements);
 
     // Then
     expect(rootElements.length).toBe(3);
@@ -79,7 +65,7 @@ describe('get elements with text', (): void => {
 
     // When
     const rootElements = await querySelectorAllInPage('select[data-test-id="my-select2"]', page);
-    const result = await SUT.getParentsOf(rootElements, page);
+    const result = await SUT.getParentsOf(rootElements);
 
     // Then
     expect(rootElements.length).toBe(1);
@@ -97,7 +83,7 @@ describe('get elements with text', (): void => {
 
     // When
     const rootElements = await querySelectorAllInPage('html', page);
-    const result = await SUT.getParentsOf(rootElements, page);
+    const result = await SUT.getParentsOf(rootElements);
 
     // Then
     expect(rootElements.length).toBe(1);

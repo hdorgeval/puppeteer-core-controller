@@ -123,7 +123,7 @@ export class SelectorController {
   public parent(): SelectorController {
     this.actions.push(
       async (): Promise<void> => {
-        this.handles = await action.getParentsOf([...this.handles], this.pptc.currentPage);
+        this.handles = await action.getParentsOf([...this.handles]);
       },
     );
 
