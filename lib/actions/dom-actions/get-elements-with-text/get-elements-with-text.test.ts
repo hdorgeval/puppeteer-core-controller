@@ -17,19 +17,6 @@ describe('get elements with text', (): void => {
       }
     },
   );
-  test('should return an error when page has not been initalized', async (): Promise<void> => {
-    // Given
-    const page: puppeteer.Page | undefined = undefined;
-
-    // When
-    // Then
-    const expectedError = new Error(
-      "Error: cannot get elements with text 'foobar' because a new page has not been created",
-    );
-    await SUT.getElementsWithText('foobar', [], page).catch((error): void =>
-      expect(error).toMatchObject(expectedError),
-    );
-  });
 
   test('should return an empty array when root elements is empty', async (): Promise<void> => {
     // Given
@@ -37,10 +24,9 @@ describe('get elements with text', (): void => {
       headless: true,
       executablePath: getChromePath(),
     });
-    const page = await browser.newPage();
 
     // When
-    const result = await SUT.getElementsWithText('foobar', [], page);
+    const result = await SUT.getElementsWithText('foobar', []);
 
     // Then
     expect(Array.isArray(result)).toBe(true);
@@ -58,7 +44,7 @@ describe('get elements with text', (): void => {
 
     // When
     const rootElements = await querySelectorAllInPage('[role="row"]', page);
-    const result = await SUT.getElementsWithText('row2', rootElements, page);
+    const result = await SUT.getElementsWithText('row2', rootElements);
 
     // Then
     expect(rootElements.length).toBe(3);
@@ -79,7 +65,7 @@ describe('get elements with text', (): void => {
 
     // When
     const rootElements = await querySelectorAllInPage('[role="row"]', page);
-    const result = await SUT.getElementsWithText('cell3', rootElements, page);
+    const result = await SUT.getElementsWithText('cell3', rootElements);
 
     // Then
     expect(rootElements.length).toBe(3);
@@ -102,7 +88,7 @@ describe('get elements with text', (): void => {
 
     // When
     const rootElements = await querySelectorAllInPage('[role="row"]', page);
-    const result = await SUT.getElementsWithText('foobar', rootElements, page);
+    const result = await SUT.getElementsWithText('foobar', rootElements);
 
     // Then
     expect(rootElements.length).toBe(3);

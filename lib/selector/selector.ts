@@ -114,11 +114,7 @@ export class SelectorController {
   public withText(text: string): SelectorController {
     this.actions.push(
       async (): Promise<void> => {
-        this.handles = await action.getElementsWithText(
-          text,
-          [...this.handles],
-          this.pptc.currentPage,
-        );
+        this.handles = await action.getElementsWithText(text, [...this.handles]);
       },
     );
 
