@@ -1,5 +1,5 @@
 import * as puppeteer from 'puppeteer-core';
-import { hasActiveElement } from '../dom-actions';
+import { hasActiveElement } from '../../dom-actions';
 declare const window: Window;
 
 export async function queryActiveElement(

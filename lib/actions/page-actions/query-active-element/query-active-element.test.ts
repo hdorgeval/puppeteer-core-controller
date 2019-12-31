@@ -1,7 +1,7 @@
 import * as puppeteer from 'puppeteer-core';
 import * as SUT from './index';
-import { launchBrowser } from '../browser-actions';
-import { getChromePath } from '../../utils';
+import { launchBrowser } from '../../browser-actions';
+import { getChromePath } from '../../../utils';
 
 describe('query active element', (): void => {
   let browser: puppeteer.Browser | undefined = undefined;
