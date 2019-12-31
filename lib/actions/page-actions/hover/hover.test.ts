@@ -1,8 +1,8 @@
 import * as puppeteer from 'puppeteer-core';
-import { getChromePath } from '../../utils';
-import { launchBrowser, showMousePosition } from '..';
-import * as SUT from './index';
-import { getClientRectangleOf } from '../dom-actions';
+import { getChromePath } from '../../../utils';
+import { launchBrowser, showMousePosition } from '../..';
+import * as SUT from '../index';
+import { getClientRectangleOf } from '../../dom-actions';
 
 describe('hover', (): void => {
   let browser: puppeteer.Browser | undefined = undefined;

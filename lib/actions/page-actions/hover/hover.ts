@@ -1,6 +1,6 @@
 import * as puppeteer from 'puppeteer-core';
-import { getClientRectangleOf } from '../dom-actions';
-import { waitUntilSelectorIsVisible, waitUntilSelectorDoesNotMove } from '.';
+import { getClientRectangleOf } from '../../dom-actions';
+import { waitUntilSelectorIsVisible, waitUntilSelectorDoesNotMove } from '..';
 
 export interface HoverOptions {
   timeoutInMilliseconds: number;
