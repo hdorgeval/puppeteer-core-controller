@@ -1,6 +1,6 @@
 import * as puppeteer from 'puppeteer-core';
-import { WaitOptions } from '.';
-import { isMoving } from '../dom-actions';
+import { WaitOptions } from '..';
+import { isMoving } from '../../dom-actions';
 
 export async function waitUntilSelectorDoesNotMove(
   selector: string,
