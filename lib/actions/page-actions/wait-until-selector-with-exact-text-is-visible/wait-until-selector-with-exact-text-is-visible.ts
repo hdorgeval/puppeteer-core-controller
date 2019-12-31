@@ -1,5 +1,5 @@
 import * as puppeteer from 'puppeteer-core';
-import { WaitOptions } from '.';
+import { WaitOptions } from '..';
 declare const document: Document;
 
 export async function waitUntilSelectorWithExactTextIsVisible(
