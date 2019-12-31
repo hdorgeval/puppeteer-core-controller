@@ -1,5 +1,5 @@
 import * as puppeteer from 'puppeteer-core';
-import { waitUntilSelectorIsVisible, ClickOptions, waitUntilSelectorDoesNotMove } from '.';
+import { waitUntilSelectorIsVisible, ClickOptions, waitUntilSelectorDoesNotMove } from '../index';
 
 export async function click(
   selector: string,

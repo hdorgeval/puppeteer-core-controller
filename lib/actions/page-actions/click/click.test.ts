@@ -1,5 +1,5 @@
 import * as puppeteer from 'puppeteer-core';
-import * as SUT from '.';
+import * as SUT from '../index';
 
 describe('click', (): void => {
   test('should return an error when page has not been initalized', async (): Promise<void> => {
