@@ -1,6 +1,6 @@
 import * as puppeteer from 'puppeteer-core';
-import { waitUntilSelectorIsVisible, waitUntilSelectorDoesNotMove } from '.';
-import { getAllOptionsOf } from '../dom-actions';
+import { waitUntilSelectorIsVisible, waitUntilSelectorDoesNotMove } from '..';
+import { getAllOptionsOf } from '../../dom-actions';
 
 export interface SelectOptions {
   timeoutInMilliseconds: number;
