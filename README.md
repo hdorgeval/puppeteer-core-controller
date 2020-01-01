@@ -121,6 +121,7 @@ await pptc
   - [initWith([options])](#initWithoptions)
   - [recordFailedRequests()](#recordFailedRequests)
   - [recordPageErrors()](#recordPageErrors)
+  - [recordRequestsTo(url)](#recordRequestsTourl)
   - [withMaxSizeWindow([minViewPort])](#withMaxSizeWindowminViewPort)
   - [withCursor()](#withCursor)
   - [navigateTo(url)](#navigateTourl)
@@ -152,6 +153,7 @@ await pptc
 
   - [cast(any)](#castany)
   - [clearFailedRequests()](#clearFailedRequests)
+  - [clearRequestsTo(url)](#clearRequestsTourl)
   - [clearPageErrors()](#clearPageErrors)
   - [currentPage](#currentPage)
   - [getClientRectangleOf(selector)](#getClientRectangleOfselector)
@@ -163,6 +165,8 @@ await pptc
   - [getPageErrors()](#getPageErrors)
   - [getSelectedOptionOf(selector)](#getSelectedOptionOfselector)
   - [getAllOptionsOf(selector)](#getAllOptionsOfselector)
+  - [getLastRequestTo(url)](#getLastRequestTourl)
+  - [getRequestsTo(url)](#getRequestsTourl)
   - [getValueOf(selector)](#getValueOfselector)
   - [isChecked(selector)](#isCheckedselector)
   - [isDisabled(selector)](#isDisabledselector)
@@ -208,6 +212,20 @@ await pptc
 - track and record failed requests. Should be called after `initWith`.
 - use `getFailedRequests()` helper method on the controller to access errors that have occurred.
 - use `clearFailedRequests()` helper method on the controller to clear all past errors.
+
+---
+
+### recordRequestsTo(url)
+
+- url: `string`
+
+- track and record requests whose url contains the input url. Should be called after `initWith`.
+
+- use `getRequestsTo(url)` helper method on the controller to access all requests that have occurred with this `url`.
+
+- use `getLastRequestTo(url)` helper method on the controller to access the last request that has occurred with this `url`.
+
+- use `clearRequestsTo(url)` helper method on the controller to clear all past requests with this `url`.
 
 ---
 
@@ -752,6 +770,59 @@ const text = await pptc
 ### clearFailedRequests()
 
 - clear failed requests that occurred. Usefull if you want to track failed requests only after a specific context has been setup on the page.
+
+---
+
+### getRequestsTo(url)
+
+- get requests to specific `url` that occurred while executing the test.
+- url : `string`
+- returns: `Request[]`.
+
+  See [Request](https://github.com/puppeteer/puppeteer/blob/master/docs/api.md#class-request)
+
+  ```js
+  await pptc
+      .initWith(launchOptions)
+      .recordRequestsTo('/foobar')
+      .navigateTo(url)
+      ...
+      .close();
+
+  const requests: puppeteer.Request[] = pptc.getRequestsTo('/foobar');
+  // analyse requests by iterating on the returned array
+  // an empty array means that no request has occurred or that you forgot to call the recordRequestsTo(url) method, or you have called this method too early.
+  ```
+
+---
+
+### getLastRequestTo(url)
+
+- get last request to specific `url` that occurred while executing the test.
+- url : `string`
+- returns: `Request`.
+
+  See [Request](https://github.com/puppeteer/puppeteer/blob/master/docs/api.md#class-request)
+
+  ```js
+  await pptc
+      .initWith(launchOptions)
+      .recordRequestsTo('/foobar')
+      .navigateTo(url)
+      ...
+      .close();
+
+  const request: puppeteer.Request = pptc.getLastRequestsTo('/foobar');
+  // an undefined result means that no request has occurred or that you forgot to call the recordRequestsTo(url) method, or you have called this method too early.
+  ```
+
+---
+
+### clearRequestsTo(url)
+
+- url : `string`
+
+- clear requests that occurred to the `url`. Usefull if you want to track requests only after a specific context has been setup on the page.
 
 ---
 
