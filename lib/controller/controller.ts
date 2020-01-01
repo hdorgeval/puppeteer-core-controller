@@ -171,6 +171,18 @@ export class PuppeteerController implements PromiseLike<void> {
     this.failedRequests = [];
   }
 
+  private sentRequests: puppeteer.Request[] = [];
+  public getRequestsTo(url: string): puppeteer.Request[] {
+    return [...this.sentRequests.filter((req) => req.url().includes(url))];
+  }
+  public getLastRequestTo(url: string): puppeteer.Request | undefined {
+    return this.sentRequests.filter((req) => req.url().includes(url)).pop();
+  }
+
+  public clearRequestsTo(url: string): void {
+    this.sentRequests = [...this.sentRequests.filter((req) => !req.url().includes(url))];
+  }
+
   private async executeActions(): Promise<void> {
     try {
       this.isExecutingActions = true;
@@ -252,6 +264,16 @@ export class PuppeteerController implements PromiseLike<void> {
       async (): Promise<void> =>
         await action.recordFailedRequests(this.page, (request) =>
           this.failedRequests.push(request),
+        ),
+    );
+    return this;
+  }
+
+  public recordRequestsTo(partialUrl: string): PuppeteerController {
+    this.actions.push(
+      async (): Promise<void> =>
+        await action.recordRequestsTo(partialUrl, this.page, (request) =>
+          this.sentRequests.push(request),
         ),
     );
     return this;
