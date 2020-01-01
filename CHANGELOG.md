@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html)
 
+## [1.23.0] - 2020-01-01
+
+### Added
+
+- add `recordRequestsTo(url)` to the Fluent API
+- add helper method `getRequestsTo(url)` to the controller
+- add helper method `getLastRequestTo(url)` to the controller
+- add helper method `clearRequestsTo(url)` to the controller
+
 ## [1.22.0] - 2019-12-29
 
 ### Added
