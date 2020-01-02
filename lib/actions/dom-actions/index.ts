@@ -3,6 +3,7 @@ export * from './get-all-options-of';
 export * from './get-client-rectangle-of';
 export * from './get-computed-style-of';
 export * from './get-elements-with-text';
+export * from './get-elements-with-value';
 export * from './get-innertext-of';
 export * from './get-parents-of';
 export * from './get-selected-option-of';

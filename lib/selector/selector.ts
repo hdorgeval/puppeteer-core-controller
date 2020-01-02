@@ -107,6 +107,13 @@ export class SelectorController {
     return this;
   }
 
+  /**
+   * Finds, from previous search, all elements whose innerText contains the specified text
+   *
+   * @param {string} text
+   * @returns {SelectorController}
+   * @memberof SelectorController
+   */
   public withText(text: string): SelectorController {
     this.actions.push(
       async (): Promise<void> => {
@@ -116,6 +123,26 @@ export class SelectorController {
 
     this.chainingHistory = `${this.chainingHistory}
   .withText(${text})`;
+
+    return this;
+  }
+
+  /**
+   * Finds, from previous search, all elements whose value contains the specified text
+   *
+   * @param {string} text
+   * @returns {SelectorController}
+   * @memberof SelectorController
+   */
+  public withValue(text: string): SelectorController {
+    this.actions.push(
+      async (): Promise<void> => {
+        this.handles = await action.getElementsWithValue(text, [...this.handles]);
+      },
+    );
+
+    this.chainingHistory = `${this.chainingHistory}
+  .withValue(${text})`;
 
     return this;
   }
