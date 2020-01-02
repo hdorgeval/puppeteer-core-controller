@@ -881,6 +881,16 @@ const handle = await selector.getFirstHandleOrNull();
 
 - text: `string`
 
+Finds, from previous search, all elements whose innerText contains the specified text.
+
+---
+
+### withValue(text)
+
+- text: `string`
+
+Finds, from previous search, all elements whose value contains the specified text.
+
 ---
 
 ### nth(index)
