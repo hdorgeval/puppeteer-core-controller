@@ -78,6 +78,22 @@ export class SelectorController {
   }
 
   /**
+   * Checks if the selector is disabled.
+   * If the selector targets multiple DOM elements, this check is done only on the first one found.
+   * The result may differ from one execution to another
+   * especially if targeted element is rendered lately because its data is based on some backend response.
+   * So the disability status is the one known when executing this method.
+   *
+   * @returns {Promise<boolean>}
+   * @memberof SelectorController
+   */
+  public async isDisabled(): Promise<boolean> {
+    const handle = await this.getFirstHandleOrNull();
+    const isElementDisabled = await action.isHandleDisabled(handle);
+    return isElementDisabled;
+  }
+
+  /**
    *
    */
   constructor(selector: string, pptc: PuppeteerController) {
