@@ -1,5 +1,5 @@
 import * as puppeteer from 'puppeteer-core';
-import { showMousePosition } from '../dom-actions';
+import { showMousePosition } from '../../dom-actions';
 
 export async function startNewPageInBrowser(
   browser: puppeteer.Browser | undefined,

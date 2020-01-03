@@ -1,5 +1,5 @@
 import * as puppeteer from 'puppeteer-core';
-import * as SUT from './start-new-page-in-browser';
+import * as SUT from './index';
 
 describe('start-new-page-in-browser', (): void => {
   test('should return an error when browser has not been initalized', async (): Promise<void> => {
