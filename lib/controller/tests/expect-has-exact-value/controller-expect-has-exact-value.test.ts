@@ -1,5 +1,5 @@
-import * as SUT from '../controller';
-import { LaunchOptions } from '../../actions';
+import * as SUT from '../../controller';
+import { LaunchOptions } from '../../../actions';
 
 describe('Puppeteer Controller - ExpectThat - hasExactValue', (): void => {
   let pptc: SUT.PuppeteerController;
