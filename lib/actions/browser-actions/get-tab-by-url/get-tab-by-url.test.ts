@@ -1,8 +1,7 @@
 import * as puppeteer from 'puppeteer-core';
-import * as SUT from './get-tab-by-url';
-import { launchBrowser } from '.';
-import { getCurrentUrl } from './get-current-url';
-import { getChromePath } from '../../utils';
+import * as SUT from './index';
+import { getChromePath } from '../../../utils';
+import { launchBrowser, getCurrentUrl } from '..';
 
 describe('get-existing-tab-in-browser', (): void => {
   let browser: puppeteer.Browser | undefined = undefined;

@@ -1,5 +1,5 @@
 import * as puppeteer from 'puppeteer-core';
-import { getCurrentUrl } from './get-current-url';
+import { getCurrentUrl } from '../get-current-url';
 export async function getTabByUrl(
   browser: puppeteer.Browser | undefined,
   url: string,
