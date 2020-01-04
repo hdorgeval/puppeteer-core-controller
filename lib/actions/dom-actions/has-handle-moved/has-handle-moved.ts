@@ -13,12 +13,11 @@ export async function hasHandleMoved(
   }
 
   const threshold = 5;
+
   const distance = getDistanceBetweenClientRectangles(
     currentClientRectangle,
     previousClientRectangle,
   );
 
-  // eslint-disable-next-line no-console
-  console.log(`distance= ${distance}`);
   return distance >= threshold;
 }
