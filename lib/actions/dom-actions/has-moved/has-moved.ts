@@ -1,5 +1,6 @@
 import * as puppeteer from 'puppeteer-core';
 import { getClientRectangleOf } from '../get-client-rectangle-of';
+import { getDistanceBetweenClientRectangles } from '../../../utils';
 
 export const zeroClientRectangle: ClientRect = {
   top: 0,
@@ -22,16 +23,12 @@ export async function hasMoved(
   }
 
   const currentClientRectangle = await getClientRectangleOf(selector, page);
-  const x = currentClientRectangle.left + currentClientRectangle.width / 2;
-  const y = currentClientRectangle.top + currentClientRectangle.height / 2;
-  const currentPosition = Math.sqrt(x * x + y * y);
-
-  const previousX = previousClientRectangle.left + previousClientRectangle.width / 2;
-  const previousY = previousClientRectangle.top + previousClientRectangle.height / 2;
-  const previousPosition = Math.sqrt(previousX * previousX + previousY * previousY);
 
   const threshold = 5;
-  const distance = Math.abs(currentPosition - previousPosition);
+  const distance = getDistanceBetweenClientRectangles(
+    currentClientRectangle,
+    previousClientRectangle,
+  );
 
   return distance >= threshold;
 }
