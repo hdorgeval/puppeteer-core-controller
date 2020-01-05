@@ -56,6 +56,26 @@ describe('Puppeteer Controller - Selector API - count', (): void => {
     expect(result3).toBe(3);
   });
 
+  test('should not embed waiting mechanism', async (): Promise<void> => {
+    // Given
+    const launchOptions: LaunchOptions = {
+      headless: true,
+    };
+    const url = `file:${path.join(__dirname, 'count.test.html')}`;
+    await pptc.initWith(launchOptions).navigateTo(url);
+
+    // When
+    const selector = pptc.selector('[role="row"]');
+
+    const initialCount = await selector.count();
+    await pptc.waitUntil(async () => (await selector.count()) === 6);
+    const finalCount = await selector.count();
+
+    // Then
+    expect(initialCount).toBe(3);
+    expect(finalCount).toBe(6);
+  });
+
   test('should count when selector is transparent', async (): Promise<void> => {
     // Given
     const launchOptions: LaunchOptions = {
