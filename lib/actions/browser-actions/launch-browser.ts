@@ -34,19 +34,28 @@ async function tryLaunchBrowser(options: Partial<LaunchOptions>): Promise<puppet
       if (
         error.message &&
         typeof error.message === 'string' &&
+        (error.message as string).includes('Failed to launch chrome') &&
+        (error.message as string).includes('Inconsistency detected by ld.so')
+      ) {
+        // eslint-disable-next-line no-console
+        console.warn(`an error has occured while launching the browser by puppeteer:`);
+        if (error.message) {
+          // eslint-disable-next-line no-console
+          console.warn(`${error.message}`);
+        }
+        // eslint-disable-next-line no-console
+        console.warn(`retrying to launch the browser ...`);
+        continue;
+      }
+
+      if (
+        error.message &&
+        typeof error.message === 'string' &&
         (error.message as string).includes('Failed to launch chrome')
       ) {
         // no need to retry: path to chrome is incorrect
         throw error;
       }
-      // eslint-disable-next-line no-console
-      console.warn(`an error has occured while launching the browser by puppeteer:`);
-      if (error.message) {
-        // eslint-disable-next-line no-console
-        console.warn(`${error.message}`);
-      }
-      // eslint-disable-next-line no-console
-      console.warn(`retrying to launch the browser ...`);
     }
   }
   throw new Error('Cannot launch browser');
