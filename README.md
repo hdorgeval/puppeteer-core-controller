@@ -791,7 +791,9 @@ const text = await pptc
 
   const requests: puppeteer.Request[] = pptc.getRequestsTo('/foobar');
   // analyse requests by iterating on the returned array
-  // an empty array means that no request has occurred or that you forgot to call the recordRequestsTo(url) method, or you have called this method too early.
+  // an empty array means that no request has occurred
+  // or that you forgot to call the recordRequestsTo(url) method,
+  // or you have called this method too early.
   ```
 
 ---
@@ -813,7 +815,9 @@ const text = await pptc
       .close();
 
   const request: puppeteer.Request = pptc.getLastRequestsTo('/foobar');
-  // an undefined result means that no request has occurred or that you forgot to call the recordRequestsTo(url) method, or you have called this method too early.
+  // an undefined result means that no request has occurred
+  // or that you forgot to call the recordRequestsTo(url) method,
+  // or you have called this method too early.
   ```
 
 ---
@@ -875,6 +879,8 @@ const handle = await selector.getFirstHandleOrNull();
 
 - selector: `string`
 
+Finds all `selector` elements starting from previous found elements.
+
 ---
 
 ### withText(text)
@@ -903,7 +909,7 @@ Finds, from previous search, all elements whose value contains the specified tex
 
 - index: `number` (1-based index)
 
-get parent of each elements found in the previous step.
+Get the parent of each elements found in the previous step.
 
 ---
 
@@ -944,6 +950,16 @@ If the selector targets multiple DOM elements, this check is done only on the fi
 The result may differ from one execution to another especially if targeted element is rendered lately because its data is based on some backend response.
 
 ---
+
+### isDisabled()
+
+- returns: `Promise<boolean>`
+
+Checks if the selector is disabled.
+
+If the selector targets multiple DOM elements, this check is done only on the first one found.
+
+The result may differ from one execution to another especially if targeted element is rendered lately because its data is based on some backend response.
 
 ### count()
 
