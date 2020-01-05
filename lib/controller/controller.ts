@@ -803,6 +803,74 @@ export class PuppeteerController implements PromiseLike<void> {
     );
     return this;
   }
+
+  private async waitForStability(
+    getValue: () => Promise<string | number>,
+    errorMessage: string | (() => Promise<string>),
+    options: WaitUntilOptions = defaultWaitUntilOptions,
+  ): Promise<void> {
+    if (!this.page) {
+      throw new Error('Error: expect statement only works when a page has been opened.');
+    }
+    const timeout = options.timeoutInMilliseconds;
+    const interval = 100;
+    const nbIntervals = timeout / interval;
+    const stabilityCounterMaxValue = options.stabilityInMilliseconds / interval;
+    let stabilityCounterCurrentValue = 0;
+    let previousValue = await getValue();
+
+    for (let index = 0; index < nbIntervals; index++) {
+      await this.page.waitFor(interval);
+
+      const currentValue = await getValue();
+
+      if (currentValue !== previousValue) {
+        previousValue = currentValue;
+        stabilityCounterCurrentValue = 0;
+        continue;
+      }
+
+      if (currentValue === previousValue) {
+        stabilityCounterCurrentValue += 1;
+      }
+
+      if (stabilityCounterCurrentValue >= stabilityCounterMaxValue) {
+        return;
+      }
+    }
+
+    if (!options.throwOnTimeout) {
+      return;
+    }
+
+    if (typeof errorMessage === 'string') {
+      throw new Error(errorMessage);
+    }
+
+    throw new Error(await errorMessage());
+  }
+
+  public waitForStabilityOf(
+    getValue: () => Promise<string | number>,
+    options: Partial<WaitUntilOptions> = defaultWaitUntilOptions,
+    errorMessage?: string | (() => Promise<string>),
+  ): PuppeteerController {
+    const waitUntilOptions: WaitUntilOptions = {
+      ...defaultWaitUntilOptions,
+      ...options,
+    };
+    this.actions.push(
+      async (): Promise<void> => {
+        const defaultErrorMessage = `The value function cannot converge to a stable result after ${waitUntilOptions.timeoutInMilliseconds} ms.`;
+        await this.waitForStability(
+          getValue,
+          errorMessage || defaultErrorMessage,
+          waitUntilOptions,
+        );
+      },
+    );
+    return this;
+  }
   public async takeFullPageScreenshotAsBase64(
     options: puppeteer.ScreenshotOptions = mandatoryFullPageScreenshotOptions,
   ): Promise<string> {
