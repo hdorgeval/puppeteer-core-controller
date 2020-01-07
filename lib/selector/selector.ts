@@ -112,6 +112,23 @@ export class SelectorController {
   }
 
   /**
+   * Checks if selector does not exist.
+   * The result may differ from one execution to another
+   * especially if targeted element is rendered lately because its data is based on some backend response.
+   * So the disability status is the one known when executing this method.
+   *
+   * @returns {Promise<boolean>}
+   * @memberof SelectorController
+   */
+  public async doesNotExist(): Promise<boolean> {
+    const handle = await this.getFirstHandleOrNull();
+    if (handle === null) {
+      return true;
+    }
+
+    return false;
+  }
+  /**
    *
    */
   constructor(selector: string, pptc: PuppeteerController) {
