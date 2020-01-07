@@ -50,10 +50,6 @@ describe('Puppeteer Controller - waitForStabilityOf', (): void => {
         .initWith(launchOptions)
         .navigateTo(url)
         .waitForStabilityOf(() => selector.count(), {
-          timeoutInMilliseconds: 300,
-          throwOnTimeout: true,
-        })
-        .waitUntil(() => selector.isVisible(), {
           stabilityInMilliseconds: 1000,
           timeoutInMilliseconds: 300,
           throwOnTimeout: true,
