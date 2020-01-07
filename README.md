@@ -939,6 +939,26 @@ Get the parent of each elements found in the previous step.
 
 ---
 
+### exists()
+
+- returns: `Promise<boolean>`
+
+Checks if the selector exists.
+
+The result may differ from one execution to another especially if targeted element is rendered lately because its data is based on some backend response.
+
+---
+
+### doesNotExist()
+
+- returns: `Promise<boolean>`
+
+Checks if the selector does not exist.
+
+The result may differ from one execution to another especially if targeted element is rendered lately because its data is based on some backend response.
+
+---
+
 ### isVisible()
 
 - returns: `Promise<boolean>`
