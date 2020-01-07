@@ -34,18 +34,14 @@ describe('Puppeteer Controller - waitForStabilityOf', (): void => {
     expect(finalCountStatus).toBe(6);
   });
 
-  test.skip('should throw default error on timeout', async (): Promise<void> => {
+  test('should throw default error on timeout', async (): Promise<void> => {
     // Given
     const launchOptions: LaunchOptions = {
       headless: true,
     };
-    const url = `file:${path.join(__dirname, 'controller-wait-until.test.html')}`;
+    const url = `file:${path.join(__dirname, 'controller-wait-for-stability-of.test.html')}`;
 
-    const selector = pptc
-      .selector('[role="row"]')
-      .find('td')
-      .withText('hidden, then visible')
-      .find('p'); //only the <p> ... </p> element is hidden first
+    const selector = pptc.selector('[role="row"]');
 
     // When
     let result: Error | undefined = undefined;
@@ -53,7 +49,12 @@ describe('Puppeteer Controller - waitForStabilityOf', (): void => {
       await pptc
         .initWith(launchOptions)
         .navigateTo(url)
+        .waitForStabilityOf(() => selector.count(), {
+          timeoutInMilliseconds: 300,
+          throwOnTimeout: true,
+        })
         .waitUntil(() => selector.isVisible(), {
+          stabilityInMilliseconds: 1000,
           timeoutInMilliseconds: 300,
           throwOnTimeout: true,
         });
@@ -62,7 +63,8 @@ describe('Puppeteer Controller - waitForStabilityOf', (): void => {
     }
 
     // Then
-    const expectedErrorMessage = 'predicate still resolved to false after 300 ms.';
+    const expectedErrorMessage =
+      'The value function cannot converge to a stable result after 300 ms.';
     expect(result && result.message).toContain(expectedErrorMessage);
     expect(pptc.lastError && pptc.lastError.message).toBe(expectedErrorMessage);
   });
@@ -72,13 +74,9 @@ describe('Puppeteer Controller - waitForStabilityOf', (): void => {
     const launchOptions: LaunchOptions = {
       headless: true,
     };
-    const url = `file:${path.join(__dirname, 'controller-wait-until.test.html')}`;
+    const url = `file:${path.join(__dirname, 'controller-wait-for-stability-of.test.html')}`;
 
-    const selector = pptc
-      .selector('[role="row"]')
-      .find('td')
-      .withText('hidden, then visible')
-      .find('p'); //only the <p> ... </p> element is hidden first
+    const selector = pptc.selector('[role="row"]');
 
     // When
     let result: Error | undefined = undefined;
@@ -110,7 +108,7 @@ describe('Puppeteer Controller - waitForStabilityOf', (): void => {
     const launchOptions: LaunchOptions = {
       headless: true,
     };
-    const url = `file:${path.join(__dirname, 'controller-wait-until.test.html')}`;
+    const url = `file:${path.join(__dirname, 'controller-wait-for-stability-of.test.html')}`;
 
     const selector = pptc
       .selector('[role="row"]')
