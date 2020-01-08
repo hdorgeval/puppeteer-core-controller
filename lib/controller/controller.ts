@@ -82,6 +82,14 @@ export interface WaitUntilOptions {
    * @memberof WaitUntilOptions
    */
   throwOnTimeout: boolean;
+  /**
+   * Output to the console all steps of the waiting mechanism.
+   * Defaults to false.
+   * Use this option when the waitUntil() method does not wait as expected.
+   *
+   * @type {boolean}
+   * @memberof WaitUntilOptions
+   */
   verbose: boolean;
 }
 

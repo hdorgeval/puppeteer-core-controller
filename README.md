@@ -390,6 +390,7 @@ interface WaitUntilOptions {
    * @memberof WaitUntilOptions
    */
   timeoutInMilliseconds: number;
+
   /**
    * Time during which the callback must always return true.
    * Defaults to 300 milliseconds.
@@ -398,6 +399,7 @@ interface WaitUntilOptions {
    * @memberof AssertOptions
    */
   stabilityInMilliseconds: number;
+
   /**
    * Throw a timeout exception when the callback still returns false.
    * Defaults to false.
@@ -405,6 +407,16 @@ interface WaitUntilOptions {
    * @memberof WaitUntilOptions
    */
   throwOnTimeout: boolean;
+
+  /**
+   * Output to the console all steps of the waiting mechanism.
+   * Defaults to false.
+   * Use this option when the waitUntil() method does not wait as expected.
+   *
+   * @type {boolean}
+   * @memberof WaitUntilOptions
+   */
+  verbose: boolean;
 }
 ```
 
