@@ -20,7 +20,7 @@ import {
   WaitOptions,
   WindowState,
 } from '../actions';
-import { getChromePath } from '../utils';
+import { getChromePath, report } from '../utils';
 import { SelectorController } from '../selector';
 
 export type Story = (pptc: PuppeteerController) => Promise<void>;
@@ -82,12 +82,14 @@ export interface WaitUntilOptions {
    * @memberof WaitUntilOptions
    */
   throwOnTimeout: boolean;
+  verbose: boolean;
 }
 
 export const defaultWaitUntilOptions: WaitUntilOptions = {
   stabilityInMilliseconds: 300,
   throwOnTimeout: false,
   timeoutInMilliseconds: 30000,
+  verbose: false,
 };
 export const defaultAssertOptions: AssertOptions = {
   timeoutInMilliseconds: 30000,
@@ -755,6 +757,10 @@ export class PuppeteerController implements PromiseLike<void> {
     if (!this.page) {
       throw new Error('Error: expect statement only works when a page has been opened.');
     }
+
+    report('wait options:', options.verbose);
+    report(JSON.stringify(options, null, 2), options.verbose);
+
     const timeout = options.timeoutInMilliseconds;
     const interval = 100;
     const nbIntervals = timeout / interval;
@@ -764,6 +770,11 @@ export class PuppeteerController implements PromiseLike<void> {
     for (let index = 0; index < nbIntervals; index++) {
       await this.page.waitFor(interval);
       const result = await predicate();
+      report(
+        `predicate returned ${result} after waiting ${(index + 1) * interval} ms`,
+        options.verbose,
+      );
+
       if (result === true) {
         stabilityCounterCurrentValue += 1;
       }
@@ -772,11 +783,21 @@ export class PuppeteerController implements PromiseLike<void> {
       }
 
       if (stabilityCounterCurrentValue >= stabilityCounterMaxValue) {
+        report(
+          `predicate always returned ${result} during ${options.stabilityInMilliseconds} ms: no need to wait anymore.`,
+          options.verbose,
+        );
         return;
       }
     }
 
+    report(
+      `predicate could not converge to a stable result or always returned false during ${options.timeoutInMilliseconds} ms.`,
+      options.verbose,
+    );
+
     if (!options.throwOnTimeout) {
+      report('exiting waiting mechanism without throwing', options.verbose);
       return;
     }
 

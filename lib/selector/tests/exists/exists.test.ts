@@ -134,6 +134,26 @@ describe('Puppeteer Controller - Selector API - exists', (): void => {
     expect(finalExistsStatus).toBe(true);
   });
 
+  test('should wait for selector to exists', async (): Promise<void> => {
+    // Given
+    const launchOptions: LaunchOptions = {
+      headless: true,
+    };
+    const url = `file:${path.join(__dirname, 'exists.test.html')}`;
+    await pptc.initWith(launchOptions).navigateTo(url);
+
+    // When
+    const selector = pptc.selector('p').withText('I am dynamically added');
+
+    const initialExistsStatus = await selector.exists();
+    await pptc.waitUntil(() => selector.exists(), { verbose: true });
+    const finalExistsStatus = await selector.exists();
+
+    // Then
+    expect(initialExistsStatus).toBe(false);
+    expect(finalExistsStatus).toBe(true);
+  });
+
   test('should return true, even when selector is created before page is instanciated', async (): Promise<
     void
   > => {
