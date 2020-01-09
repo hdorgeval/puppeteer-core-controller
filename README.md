@@ -959,6 +959,25 @@ Checks if the selector exists.
 
 The result may differ from one execution to another especially if targeted element is rendered lately because its data is based on some backend response.
 
+In order to be able to call this method not too early, use the [waitUntil(predicate[, waitOptions[, errorMessage]])](#waitUntilpredicate-waitOptions-errorMessage) method:
+
+```js
+import { PuppeteerController } from 'puppeteer-core-controller';
+
+const pptc = new PuppeteerController();
+const selector = pptc
+  .selector('[role="row"]') // will get all dom elements, within the current page, with the attribute role="row"
+  .withText('foobar') // will filter only those that contains the text 'foobar'
+  .find('td') // from previous result(s), find all embedded <td> elements
+  .nth(2); // take only the second cell
+
+await pptc.waitUntil(() => selector.exists());
+const selectorExists = await selector.exists();
+if (selectorExists) {
+  // do something only when the selector exists in DOM
+}
+```
+
 ---
 
 ### doesNotExist()
@@ -968,6 +987,25 @@ The result may differ from one execution to another especially if targeted eleme
 Checks if the selector does not exist.
 
 The result may differ from one execution to another especially if targeted element is rendered lately because its data is based on some backend response.
+
+In order to be able to call this method not too early, use the [waitUntil(predicate[, waitOptions[, errorMessage]])](#waitUntilpredicate-waitOptions-errorMessage) method:
+
+```js
+import { PuppeteerController } from 'puppeteer-core-controller';
+
+const pptc = new PuppeteerController();
+const selector = pptc
+  .selector('[role="row"]') // will get all dom elements, within the current page, with the attribute role="row"
+  .withText('foobar') // will filter only those that contains the text 'foobar'
+  .find('td') // from previous result(s), find all embedded <td> elements
+  .nth(2); // take only the second cell
+
+await pptc.waitUntil(() => selector.doesNotExist());
+const isRemoved = await selector.doesNotExist();
+if (isRemoved) {
+  // do something only when the selector is removed from DOM
+}
+```
 
 ---
 
