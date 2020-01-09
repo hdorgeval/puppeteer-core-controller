@@ -56,16 +56,20 @@
       </td>
     </tr>
   </table>
-
-
-
-
   <p id="hidden-then-visible">hidden, then visible</p>
-
+  <p id="visible-then-removed">visible then removed</p>
   <script>
     window.setTimeout(() => {
       const input = document.querySelector('#hidden-then-visible');
       input.style.opacity = 1
+    }, 3000);
+
+    function removeParagraphFromDom() {
+      const paragraph = document.getElementById('visible-then-removed');
+      paragraph.remove();
+    }
+    window.setTimeout(() => {
+      removeParagraphFromDom();
     }, 3000);
   </script>
 </body>

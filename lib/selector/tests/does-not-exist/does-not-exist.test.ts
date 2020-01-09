@@ -134,6 +134,26 @@ describe('Puppeteer Controller - Selector API - doesNotExist', (): void => {
     expect(finalExistsStatus).toBe(false);
   });
 
+  test('should wait for selector to be removed from DOM', async (): Promise<void> => {
+    // Given
+    const launchOptions: LaunchOptions = {
+      headless: true,
+    };
+    const url = `file:${path.join(__dirname, 'does-not-exist.test.html')}`;
+    await pptc.initWith(launchOptions).navigateTo(url);
+
+    // When
+    const selector = pptc.selector('p').withText('visible then removed');
+
+    const initialExistsStatus = await selector.doesNotExist();
+    await pptc.waitUntil(() => selector.doesNotExist(), { verbose: true });
+    const finalExistsStatus = await selector.doesNotExist();
+
+    // Then
+    expect(initialExistsStatus).toBe(false);
+    expect(finalExistsStatus).toBe(true);
+  });
+
   test('should return false, even when selector is created before page is instanciated', async (): Promise<
     void
   > => {
