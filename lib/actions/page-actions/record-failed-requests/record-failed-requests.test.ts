@@ -134,7 +134,7 @@ describe('record failed requests', (): void => {
     await SUT.recordFailedRequests(page, (req) => errors.push(req));
     await recordRequestsTo('foo/bar', page, (req) => requests.push(req));
     await page.goto(`file:${path.join(__dirname, 'record-failed-requests.test.html')}`);
-    await page.waitFor(2000);
+    await page.waitFor(10000);
 
     // Then
     if (requests[0]) {
