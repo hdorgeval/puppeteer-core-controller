@@ -65,7 +65,7 @@ describe('Puppeteer Controller - waitForStabilityOf', (): void => {
     expect(pptc.lastError && pptc.lastError.message).toBe(expectedErrorMessage);
   });
 
-  test.skip('should throw custom error on timeout', async (): Promise<void> => {
+  test('should throw custom error on timeout', async (): Promise<void> => {
     // Given
     const launchOptions: LaunchOptions = {
       headless: true,
@@ -73,17 +73,18 @@ describe('Puppeteer Controller - waitForStabilityOf', (): void => {
     const url = `file:${path.join(__dirname, 'controller-wait-for-stability-of.test.html')}`;
 
     const selector = pptc.selector('[role="row"]');
+    const errorMessage = 'custom error message';
 
     // When
     let result: Error | undefined = undefined;
-    const errorMessage = `The following selector is not visible: ${selector.toString()}`;
     try {
       await pptc
         .initWith(launchOptions)
         .navigateTo(url)
-        .waitUntil(
-          () => selector.isVisible(),
+        .waitForStabilityOf(
+          () => selector.count(),
           {
+            stabilityInMilliseconds: 1000,
             timeoutInMilliseconds: 300,
             throwOnTimeout: true,
           },
@@ -94,34 +95,29 @@ describe('Puppeteer Controller - waitForStabilityOf', (): void => {
     }
 
     // Then
-    const expectedErrorMessage = 'The following selector is not visible:';
-    expect(result && result.message).toContain(expectedErrorMessage);
-    expect(pptc.lastError && pptc.lastError.message).toContain(expectedErrorMessage);
+    expect(result && result.message).toContain(errorMessage);
   });
 
-  test.skip('should throw custom function error on timeout', async (): Promise<void> => {
+  test('should throw custom function error on timeout', async (): Promise<void> => {
     // Given
     const launchOptions: LaunchOptions = {
       headless: true,
     };
     const url = `file:${path.join(__dirname, 'controller-wait-for-stability-of.test.html')}`;
 
-    const selector = pptc
-      .selector('[role="row"]')
-      .find('td')
-      .withText('hidden, then visible')
-      .find('p'); //only the <p> ... </p> element is hidden first
+    const selector = pptc.selector('[role="row"]');
+    const errorMessage = 'custom error message';
 
     // When
     let result: Error | undefined = undefined;
-    const errorMessage = `The following selector is not visible: ${selector.toString()}`;
     try {
       await pptc
         .initWith(launchOptions)
         .navigateTo(url)
-        .waitUntil(
-          () => selector.isVisible(),
+        .waitForStabilityOf(
+          () => selector.count(),
           {
+            stabilityInMilliseconds: 1000,
             timeoutInMilliseconds: 300,
             throwOnTimeout: true,
           },
@@ -132,8 +128,6 @@ describe('Puppeteer Controller - waitForStabilityOf', (): void => {
     }
 
     // Then
-    const expectedErrorMessage = 'The following selector is not visible:';
-    expect(result && result.message).toContain(expectedErrorMessage);
-    expect(pptc.lastError && pptc.lastError.message).toContain(expectedErrorMessage);
+    expect(result && result.message).toContain(errorMessage);
   });
 });
