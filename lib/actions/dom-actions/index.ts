@@ -28,4 +28,5 @@ export * from './query-selector-all-from-elements';
 export * from './query-selector-all-in-page';
 export * from './query-selector-with-exact-text';
 export * from './query-selector-with-text';
+export * from './scroll-to';
 export * from './show-mouse-position';

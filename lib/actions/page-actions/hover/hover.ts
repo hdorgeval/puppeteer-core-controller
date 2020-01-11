@@ -1,5 +1,5 @@
 import * as puppeteer from 'puppeteer-core';
-import { getClientRectangleOf } from '../../dom-actions';
+import { getClientRectangleOf, scrollTo } from '../../dom-actions';
 import { waitUntilSelectorIsVisible, waitUntilSelectorDoesNotMove } from '..';
 
 export interface HoverOptions {
@@ -33,8 +33,21 @@ export async function hover(
     page,
   );
 
-  const clientRectangle = await getClientRectangleOf(selector, page);
-  const x = clientRectangle.left + clientRectangle.width / 2;
-  const y = clientRectangle.top + clientRectangle.height / 2;
-  await page.mouse.move(x, y, { steps: options.steps });
+  await scrollTo(selector, page);
+
+  await waitUntilSelectorDoesNotMove(
+    selector,
+    {
+      timeoutInMilliseconds: options.timeoutInMilliseconds,
+    },
+    page,
+  );
+
+  for (let index = 0; index < 3; index++) {
+    await page.waitFor(50);
+    const clientRectangle = await getClientRectangleOf(selector, page);
+    const x = clientRectangle.left + clientRectangle.width / 2;
+    const y = clientRectangle.top + clientRectangle.height / 2;
+    await page.mouse.move(x, y, { steps: options.steps });
+  }
 }
