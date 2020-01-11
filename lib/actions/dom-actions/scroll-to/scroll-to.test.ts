@@ -5,6 +5,8 @@ import { getChromePath } from '../../../utils';
 import * as path from 'path';
 import { getClientRectangleOf } from '../get-client-rectangle-of';
 import { showMousePosition } from '../show-mouse-position';
+import { getViewportRectangleOf } from '../../page-actions/get-viewport-rectangle-of';
+import { isVisible } from '../is-visible';
 
 describe('scroll to', (): void => {
   let browser: puppeteer.Browser | undefined = undefined;
@@ -60,13 +62,97 @@ describe('scroll to', (): void => {
     await page.goto(`file:${path.join(__dirname, 'scroll-to.test.html')}`);
     await page.waitFor(1000);
     const selector = '#out-of-view-port';
+    const previousClientRectangle = await getClientRectangleOf(selector, page);
+    const previousViewportRectangle = await getViewportRectangleOf(page);
+    const isSelectorVisible = await isVisible(selector, page);
 
     // When
-    const previousClientRectangle = await getClientRectangleOf(selector, page);
     await SUT.scrollTo(selector, page);
+    await page.waitFor(2000);
     const currentClientRectangle = await getClientRectangleOf(selector, page);
+    const currentViewportRectangle = await getViewportRectangleOf(page);
+
+    // Then
+    expect(isSelectorVisible).toBe(true);
+    expect(previousClientRectangle.top).toBeGreaterThan(currentClientRectangle.top);
+    expect(previousViewportRectangle?.pageTop).toBe(0);
+    expect(currentViewportRectangle?.pageTop).toBeGreaterThan(1000);
+  });
+
+  test('should not scroll to a hidden selector', async (): Promise<void> => {
+    // Given
+    browser = await launchBrowser({
+      headless: true,
+      executablePath: getChromePath(),
+    });
+    const page = await browser.newPage();
+    await showMousePosition(page);
+    await page.goto(`file:${path.join(__dirname, 'scroll-to.test.html')}`);
+    await page.waitFor(2000);
+    const selector = '#hidden';
+    const previousClientRectangle = await getClientRectangleOf(selector, page);
+    const previousViewportRectangle = await getViewportRectangleOf(page);
+
+    // When
+    await SUT.scrollTo(selector, page);
+    await page.waitFor(2000);
+    const currentClientRectangle = await getClientRectangleOf(selector, page);
+    const currentViewportRectangle = await getViewportRectangleOf(page);
 
     // Then
     expect(previousClientRectangle).toMatchObject(currentClientRectangle);
+    expect(previousViewportRectangle?.pageTop).toBe(0);
+    expect(currentViewportRectangle).toMatchObject(previousViewportRectangle || {});
+  });
+
+  test('should scroll to a transparent selector', async (): Promise<void> => {
+    // Given
+    browser = await launchBrowser({
+      headless: true,
+      executablePath: getChromePath(),
+    });
+    const page = await browser.newPage();
+    await showMousePosition(page);
+    await page.goto(`file:${path.join(__dirname, 'scroll-to.test.html')}`);
+    await page.waitFor(2000);
+    const selector = '#transparent';
+    const previousClientRectangle = await getClientRectangleOf(selector, page);
+    const previousViewportRectangle = await getViewportRectangleOf(page);
+
+    // When
+    await SUT.scrollTo(selector, page);
+    await page.waitFor(2000);
+    const currentClientRectangle = await getClientRectangleOf(selector, page);
+    const currentViewportRectangle = await getViewportRectangleOf(page);
+
+    // Then
+    expect(previousClientRectangle.top).toBeGreaterThan(currentClientRectangle.top);
+    expect(previousViewportRectangle?.pageTop).toBe(0);
+    expect(currentViewportRectangle?.pageTop).toBeGreaterThan(1000);
+  });
+
+  test.skip('scrolling to a near-to-be-removed selector', async (): Promise<void> => {
+    // Given
+    browser = await launchBrowser({
+      headless: true,
+      executablePath: getChromePath(),
+    });
+    const page = await browser.newPage();
+    await showMousePosition(page);
+    await page.goto(`file:${path.join(__dirname, 'scroll-to.test.html')}`);
+    const selector = '#visible-then-removed';
+    const previousClientRectangle = await getClientRectangleOf(selector, page);
+    const previousViewportRectangle = await getViewportRectangleOf(page);
+
+    // When
+    await SUT.scrollTo(selector, page);
+    await page.waitFor(2000);
+    const currentClientRectangle = await getClientRectangleOf(selector, page);
+    const currentViewportRectangle = await getViewportRectangleOf(page);
+
+    // Then
+    expect(previousClientRectangle.top).toBeGreaterThan(currentClientRectangle.top);
+    expect(previousViewportRectangle?.pageTop).toBe(0);
+    expect(currentViewportRectangle?.pageTop).toBeGreaterThan(1000);
   });
 });
