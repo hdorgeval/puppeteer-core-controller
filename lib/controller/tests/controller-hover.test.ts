@@ -4,7 +4,7 @@ import { LaunchOptions } from '../../actions';
 describe('Puppeteer Controller', (): void => {
   let pptc: SUT.PuppeteerController;
   beforeEach((): void => {
-    jest.setTimeout(30000);
+    jest.setTimeout(40000);
     pptc = new SUT.PuppeteerController();
   });
   afterEach(
@@ -30,14 +30,13 @@ describe('Puppeteer Controller', (): void => {
       .initWith(launchOptions)
       .withCursor()
       .navigateTo(url)
-      .hover(emailInputSelector, { steps: 100 })
+      .hover(emailInputSelector)
       .click(emailInputSelector)
       .typeText('foo@bar.com')
       .hover(passwordInputSelector)
       .click(passwordInputSelector)
       .typeText('dont tell!')
       .hover(customSelect)
-      .click(customSelect)
       .select(option)
       .in(customSelect)
       .hover(checkMeOutSelector)
