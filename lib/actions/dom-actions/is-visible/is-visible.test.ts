@@ -113,7 +113,7 @@ describe('selector is visible', (): void => {
     expect(result).toBe(false);
   });
 
-  test.skip('should return false when selector is removed from DOM', async (): Promise<void> => {
+  test('should return false when selector is removed from DOM', async (): Promise<void> => {
     // Given
     browser = await launchBrowser({
       headless: true,
@@ -123,9 +123,12 @@ describe('selector is visible', (): void => {
     await page.goto(`file:${path.join(__dirname, 'is-visible.test1.html')}`);
 
     // When
-    const result = await SUT.isVisible('#visible-then-removed', page);
+    const previousVisibilityStatus = await SUT.isVisible('#visible-then-removed', page);
+    await page.waitFor(1000);
+    const currentVisibilityStatus = await SUT.isVisible('#visible-then-removed', page);
 
     // Then
-    expect(result).toBe(false);
+    expect(previousVisibilityStatus).toBe(true);
+    expect(currentVisibilityStatus).toBe(false);
   });
 });
