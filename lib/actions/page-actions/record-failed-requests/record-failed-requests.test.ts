@@ -2,8 +2,9 @@ import * as puppeteer from 'puppeteer-core';
 import * as SUT from './record-failed-requests';
 import * as path from 'path';
 import { launchBrowser } from '../../browser-actions';
-import { getChromePath } from '../../../utils';
+import { getChromePath, stringifyRequest } from '../../../utils';
 import { FakeServer } from 'simple-fake-server';
+import { recordRequestsTo } from '..';
 
 describe('record failed requests', (): void => {
   let browser: puppeteer.Browser | undefined = undefined;
@@ -127,13 +128,22 @@ describe('record failed requests', (): void => {
     });
     const page = await browser.newPage();
     const errors: puppeteer.Request[] = [];
+    const requests: puppeteer.Request[] = [];
 
     // When
     await SUT.recordFailedRequests(page, (req) => errors.push(req));
+    await recordRequestsTo('foo/bar', page, (req) => requests.push(req));
     await page.goto(`file:${path.join(__dirname, 'record-failed-requests.test.html')}`);
     await page.waitFor(2000);
 
     // Then
+    if (requests[0]) {
+      // eslint-disable-next-line no-console
+      console.log('the following request should be processed as failed:');
+      // eslint-disable-next-line no-console
+      console.log(await stringifyRequest(requests[0]));
+    }
+
     expect(errors.length).toBeGreaterThanOrEqual(1);
     const failedRequest = errors[0];
     const response = failedRequest.response();
