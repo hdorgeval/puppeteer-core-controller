@@ -1,3 +1,4 @@
+export * from './are-options-available-in';
 export * from './exists';
 export * from './get-all-options-of';
 export * from './get-client-rectangle-of-handle';
@@ -23,6 +24,7 @@ export * from './is-disabled';
 export * from './is-handle-disabled';
 export * from './is-handle-visible';
 export * from './is-moving';
+export * from './is-option-available-in';
 export * from './is-visible';
 export * from './query-selector-all-from-elements';
 export * from './query-selector-all-in-page';
