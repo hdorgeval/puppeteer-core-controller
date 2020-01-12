@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+
+  <title>select option</title>
+</head>
+
+<body>
+  <select id="disabledSelect" disabled="disabled">
+    <option value="1">label 1</option>
+    <option value="2">label 2</option>
+  </select>
+  <select id="enabledSelect">
+    <option value="" selected></option>
+    <option value="value 1">label 1</option>
+    <option value="value 2">label 2</option>
+  </select>
+  <select id="multiSelect" multiple>
+    <option value="value 1">label 1</option>
+    <option value="value 2">label 2</option>
+  </select>
+  <select id="no-options"> </select>
+  <input id="emptyInput"></input>
+
+  <script>
+    window.setTimeout(() => {
+      const select = document.querySelector('#enabledSelect');
+      addOptionInSelect(select, 'foo', 'label foo');
+
+      const select2 = document.querySelector('#multiSelect');
+      addOptionInSelect(select2, 'foo', 'label foo');
+    }, 1000);
+
+    window.setTimeout(() => {
+      const select = document.querySelector('#enabledSelect');
+      addOptionInSelect(select, 'bar', 'label bar');
+
+      const select2 = document.querySelector('#multiSelect');
+      addOptionInSelect(select2, 'bar', 'label bar');
+    }, 2000);
+
+    function addOptionInSelect(select, value, label) {
+      const option = document.createElement('option');
+      option.setAttribute('value', value);
+      const newContent = document.createTextNode(label);
+      option.appendChild(newContent);
+      select.appendChild(option);
+    }
+  </script>
+</body>
+
+</html>

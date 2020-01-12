@@ -16,3 +16,4 @@ export * from './wait-until-selector-is-visible';
 export * from './wait-until-selector-with-exact-text-is-visible';
 export * from './wait-until-selector-with-text-is-visible';
 export * from './wait';
+export * from './wait-until-options-are-available';

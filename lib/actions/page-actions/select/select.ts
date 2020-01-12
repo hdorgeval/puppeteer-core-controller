@@ -1,5 +1,9 @@
 import * as puppeteer from 'puppeteer-core';
-import { waitUntilSelectorIsVisible, waitUntilSelectorDoesNotMove } from '..';
+import {
+  waitUntilSelectorIsVisible,
+  waitUntilSelectorDoesNotMove,
+  waitUntilOptionsAreAvailable,
+} from '..';
 import { getAllOptionsOf } from '../../dom-actions';
 
 export interface SelectOptions {
@@ -10,13 +14,13 @@ export const defaultSelectOptions: SelectOptions = {
 };
 export async function select(
   selector: string,
-  values: string[],
+  labels: string[],
   options: SelectOptions,
   page: puppeteer.Page | undefined,
 ): Promise<void> {
   if (!page) {
     throw new Error(
-      `Error: cannot select option(s) '${values}' in '${selector}' because a new page has not been created`,
+      `Error: cannot select option(s) '${labels}' in '${selector}' because a new page has not been created`,
     );
   }
 
@@ -34,8 +38,17 @@ export async function select(
     page,
   );
 
+  await waitUntilOptionsAreAvailable(
+    selector,
+    labels,
+    {
+      timeoutInMilliseconds: options.timeoutInMilliseconds,
+    },
+    page,
+  );
+
   const availableOptions = await getAllOptionsOf(selector, page);
-  const tobeSelectedOptions = [...values];
+  const tobeSelectedOptions = [...labels];
 
   const canSelect = tobeSelectedOptions.every((tobeSelectedOption) => {
     const match = availableOptions.find(
@@ -57,10 +70,10 @@ export async function select(
     );
   }
 
-  const optionValues = values.map((value) => {
-    const match = availableOptions.find((availableOption) => availableOption.label === value);
+  const optionValues = labels.map((optionLabel) => {
+    const match = availableOptions.find((availableOption) => availableOption.label === optionLabel);
     if (match === undefined) {
-      return value;
+      return optionLabel;
     }
     return match.value;
   });

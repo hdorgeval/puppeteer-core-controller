@@ -50,14 +50,13 @@ describe('Puppeteer Controller', (): void => {
         .initWith(launchOptions)
         .navigateTo(url)
         .select('foobar')
-        .in(selector);
+        .in(selector, { timeoutInMilliseconds: 5000 });
     } catch (error) {
       result = error;
     }
 
     // Then
-    const expectedErrorMessage =
-      "Cannot select 'foobar' in list '#select1' because it does not match available options: 'value1,value2,value3'";
+    const expectedErrorMessage = "option(s) [foobar] is still missing in '#select1' after 5000 ms";
     expect(result && result.message).toContain(expectedErrorMessage);
   });
 
@@ -78,14 +77,14 @@ describe('Puppeteer Controller', (): void => {
         .initWith(launchOptions)
         .navigateTo(url)
         .select('value3')
-        .in(selector);
+        .in(selector, { timeoutInMilliseconds: 5000 });
     } catch (error) {
       result = error;
     }
 
     // Then
     const expectedErrorMessage =
-      "Cannot select 'value3' in list '#select2' because it does not match available options: 'value 1,value 2,value 3'";
+      "Error: option(s) [value3] is still missing in '#select2' after 5000 ms";
     expect(result && result.message).toContain(expectedErrorMessage);
   });
 
@@ -105,7 +104,7 @@ describe('Puppeteer Controller', (): void => {
         .initWith(launchOptions)
         .navigateTo(url)
         .select('foobar')
-        .in(selector);
+        .in(selector, { timeoutInMilliseconds: 5000 });
     } catch (error) {
       // empty catch for testing purposes
     }
