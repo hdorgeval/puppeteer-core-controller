@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+
+  <title>has focus</title>
+  <style type="text/css">
+    #uppercase {
+      text-transform: uppercase;
+    }
+  </style>
+</head>
+
+<body>
+
+  <input id="input1" value="1"></input>
+  <input id="input2" value="2"></input>
+  <input id="input3" value="3"></input>
+
+  <script>
+    window.setTimeout(() => {
+      const el = document.querySelector('#input3');
+      el.focus();
+    }, 3000);
+  </script>
+</body>
+
+</html>
