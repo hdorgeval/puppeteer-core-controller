@@ -172,6 +172,7 @@ await pptc
   - [isDisabled(selector)](#isDisabledselector)
   - [isVisible(selector)](#isVisibleselector)
   - [isNotVisible(selector)](#isNotVisibleselector)
+  - [stringifyRequest(request)](#stringifyRequestrequest)
   - [takeFullPageScreenshotAsBase64([options])](#takeFullPageScreenshotAsBase64options)
 
 ## Chainable Methods
@@ -826,7 +827,7 @@ const text = await pptc
       ...
       .close();
 
-  const request: puppeteer.Request = pptc.getLastRequestsTo('/foobar');
+  const request: puppeteer.Request = pptc.getLastRequestTo('/foobar');
   // an undefined result means that no request has occurred
   // or that you forgot to call the recordRequestsTo(url) method,
   // or you have called this method too early.
@@ -839,6 +840,54 @@ const text = await pptc
 - url : `string`
 
 - clear requests that occurred to the `url`. Usefull if you want to track requests only after a specific context has been setup on the page.
+
+---
+
+### stringifyRequest(request)
+
+Transforms the Puppeteer request object into a stringified JSON object.
+
+- request : `Request` (See [Request](https://github.com/puppeteer/puppeteer/blob/master/docs/api.md#class-request))
+- returns: `string`
+
+The stringified result can be converted back to a JSON of type `RequestInfo`
+
+```js
+interface RequestInfo {
+  url: string;
+  method: string;
+  error: {
+    errorText: string,
+  } | null;
+  headers: { [key: string]: string };
+  postData: string | unknown | undefined;
+  response: ResponseInfo | null;
+}
+
+interface ResponseInfo {
+  headers: { [key: string]: string };
+  status: number;
+  payload: string | unknown | undefined;
+}
+```
+
+```js
+import {RequestInfo} from 'puppeteer-core-controller';
+
+await pptc
+    .initWith(launchOptions)
+    .recordRequestsTo('/foobar')
+    .navigateTo(url)
+    ...
+
+const request: puppeteer.Request = pptc.getLastRequestTo('/foobar');
+
+const stringifiedRequest = await pptc.stringifyRequest(request);
+console.log(stringifiedRequest);
+
+const requestInfo = JSON.parse(stringifiedRequest) as RequestInfo
+// now you can safely examine all parts of the request and the response
+```
 
 ---
 
