@@ -7,31 +7,31 @@ export interface RequestInfo {
     errorText: string;
   } | null;
   headers: { [key: string]: string };
-  postData: string | undefined;
+  postData: string | unknown | undefined;
   response: ResponseInfo | null;
 }
 
 export interface ResponseInfo {
   headers: { [key: string]: string };
   status: number;
-  payload: string | undefined;
+  payload: string | unknown | undefined;
 }
 
-function toFormattedJsonOrDefault(data: string | undefined): string | undefined {
+function toJsonOrDefault(data: string | undefined): string | undefined | unknown {
   try {
     if (!data) {
       return data;
     }
-    return JSON.stringify(JSON.parse(data), null, 2);
+    return JSON.parse(data);
   } catch (error) {
     return data;
   }
 }
 
-async function toFormattedJsonOrText(response: puppeteer.Response): Promise<string> {
+async function toJsonOrText(response: puppeteer.Response): Promise<string | unknown> {
   try {
-    const payload = (await response.json()) as string;
-    return JSON.stringify(JSON.parse(payload), null, 2);
+    const payload = await response.json();
+    return payload;
   } catch (error) {
     return await response.text();
   }
@@ -42,7 +42,7 @@ export async function stringifyRequest(request: puppeteer.Request): Promise<stri
     method: request.method(),
     error: request.failure(),
     headers: request.headers(),
-    postData: toFormattedJsonOrDefault(request.postData()),
+    postData: toJsonOrDefault(request.postData()),
     response: null,
   };
 
@@ -52,9 +52,9 @@ export async function stringifyRequest(request: puppeteer.Request): Promise<stri
     return result;
   }
 
-  let body: string | undefined = undefined;
+  let responseBody: string | unknown | undefined = undefined;
   try {
-    body = await toFormattedJsonOrText(response);
+    responseBody = await toJsonOrText(response);
   } catch (error) {
     // ignore error
   }
@@ -62,7 +62,7 @@ export async function stringifyRequest(request: puppeteer.Request): Promise<stri
   const responseInfo: ResponseInfo = {
     status: response.status(),
     headers: response.headers(),
-    payload: body,
+    payload: responseBody,
   };
 
   requestInfo.response = responseInfo;

@@ -20,7 +20,7 @@ import {
   WaitOptions,
   WindowState,
 } from '../actions';
-import { getChromePath, report } from '../utils';
+import { getChromePath, report, stringifyRequest } from '../utils';
 import { SelectorController } from '../selector';
 
 export type Story = (pptc: PuppeteerController) => Promise<void>;
@@ -119,6 +119,8 @@ export {
   WindowState,
 } from '../actions';
 export { SelectorController } from '../selector';
+
+export { RequestInfo, ResponseInfo } from '../utils';
 
 export class PuppeteerController implements PromiseLike<void> {
   /**
@@ -517,6 +519,11 @@ export class PuppeteerController implements PromiseLike<void> {
 
   public async getClientRectangleOf(selector: string): Promise<ClientRect> {
     const result = await action.getClientRectangleOf(selector, this.page);
+    return result;
+  }
+
+  public async stringifyRequest(request: puppeteer.Request): Promise<string> {
+    const result = await stringifyRequest(request);
     return result;
   }
 
