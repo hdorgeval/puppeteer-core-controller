@@ -1,18 +1,22 @@
 import * as puppeteer from 'puppeteer-core';
 import * as action from '../actions';
 import { PuppeteerController } from '../controller';
+export type Action = (
+  handles: puppeteer.ElementHandle<Element>[],
+) => Promise<puppeteer.ElementHandle<Element>[]>;
+
 export class SelectorController {
   private chainingHistory = '';
   private pptc: PuppeteerController;
 
-  private actions: (() => Promise<void>)[] = [];
-  private handles: puppeteer.ElementHandle<Element>[] = [];
+  private actions: Action[] = [];
 
-  private async executeActions(): Promise<void> {
-    this.handles = [];
+  private async executeActions(): Promise<puppeteer.ElementHandle<Element>[]> {
+    let handles: puppeteer.ElementHandle<Element>[] = [];
     for (let index = 0; index < this.actions.length; index++) {
-      await this.actions[index]();
+      handles = await this.actions[index]([...handles]);
     }
+    return handles;
   }
 
   /**
@@ -24,8 +28,8 @@ export class SelectorController {
    * @memberof SelectorController
    */
   public async getHandles(): Promise<puppeteer.ElementHandle<Element>[]> {
-    await this.executeActions();
-    return [...this.handles];
+    const handles = await this.executeActions();
+    return handles;
   }
 
   /**
@@ -37,11 +41,11 @@ export class SelectorController {
    * @memberof SelectorController
    */
   public async getFirstHandleOrNull(): Promise<puppeteer.ElementHandle<Element> | null> {
-    await this.executeActions();
-    if (this.handles.length === 0) {
+    const handles = await this.executeActions();
+    if (handles.length === 0) {
       return null;
     }
-    return this.handles[0];
+    return handles[0];
   }
 
   /**
@@ -53,8 +57,8 @@ export class SelectorController {
    * @memberof SelectorController
    */
   public async count(): Promise<number> {
-    await this.executeActions();
-    return this.handles.length;
+    const handles = await this.executeActions();
+    return handles.length;
   }
 
   /**
@@ -134,11 +138,7 @@ export class SelectorController {
   constructor(selector: string, pptc: PuppeteerController) {
     this.pptc = pptc;
     this.chainingHistory = `selector(${selector})`;
-    this.actions.push(
-      async (): Promise<void> => {
-        this.handles = await action.querySelectorAllInPage(selector, this.pptc.currentPage);
-      },
-    );
+    this.actions.push(() => action.querySelectorAllInPage(selector, this.pptc.currentPage));
   }
 
   public toString(): string {
@@ -146,11 +146,7 @@ export class SelectorController {
   }
 
   public find(selector: string): SelectorController {
-    this.actions.push(
-      async (): Promise<void> => {
-        this.handles = await action.querySelectorAllFromElements(selector, [...this.handles]);
-      },
-    );
+    this.actions.push((handles) => action.querySelectorAllFromElements(selector, [...handles]));
 
     this.chainingHistory = `${this.chainingHistory}
   .find(${selector})`;
@@ -166,11 +162,7 @@ export class SelectorController {
    * @memberof SelectorController
    */
   public withText(text: string): SelectorController {
-    this.actions.push(
-      async (): Promise<void> => {
-        this.handles = await action.getElementsWithText(text, [...this.handles]);
-      },
-    );
+    this.actions.push((handles) => action.getElementsWithText(text, [...handles]));
 
     this.chainingHistory = `${this.chainingHistory}
   .withText(${text})`;
@@ -186,11 +178,7 @@ export class SelectorController {
    * @memberof SelectorController
    */
   public withValue(text: string): SelectorController {
-    this.actions.push(
-      async (): Promise<void> => {
-        this.handles = await action.getElementsWithValue(text, [...this.handles]);
-      },
-    );
+    this.actions.push((handles) => action.getElementsWithValue(text, [...handles]));
 
     this.chainingHistory = `${this.chainingHistory}
   .withValue(${text})`;
@@ -199,11 +187,7 @@ export class SelectorController {
   }
 
   public parent(): SelectorController {
-    this.actions.push(
-      async (): Promise<void> => {
-        this.handles = await action.getParentsOf([...this.handles]);
-      },
-    );
+    this.actions.push((handles) => action.getParentsOf([...handles]));
 
     this.chainingHistory = `${this.chainingHistory}
   .parent()`;
@@ -222,35 +206,34 @@ export class SelectorController {
    * nth(-1): take the last element found at previous step.
    */
   public nth(index: number): SelectorController {
-    this.actions.push(
-      async (): Promise<void> => {
-        if (index === 0) {
-          throw new Error('Index is one-based');
-        }
-        if (Math.abs(index) > this.handles.length) {
-          this.handles = [];
-          return;
-        }
+    this.actions.push(async (handles) => {
+      if (index === 0) {
+        throw new Error('Index is one-based');
+      }
+      if (Math.abs(index) > handles.length) {
+        return [];
+      }
 
-        if (index > 0) {
-          let nthHandle: puppeteer.ElementHandle<Element> | undefined;
-          for (let i = 1; i <= index; i++) {
-            nthHandle = this.handles.shift();
-          }
-          nthHandle ? (this.handles = [nthHandle]) : (this.handles = []);
-          return;
-        }
+      const currentHandles = [...handles];
 
-        if (index < 0) {
-          let nthHandle: puppeteer.ElementHandle<Element> | undefined;
-          for (let i = 1; i <= -index; i++) {
-            nthHandle = this.handles.pop();
-          }
-          nthHandle ? (this.handles = [nthHandle]) : (this.handles = []);
-          return;
+      if (index > 0) {
+        let nthHandle: puppeteer.ElementHandle<Element> | undefined;
+        for (let i = 1; i <= index; i++) {
+          nthHandle = currentHandles.shift();
         }
-      },
-    );
+        return nthHandle ? [nthHandle] : [];
+      }
+
+      if (index < 0) {
+        let nthHandle: puppeteer.ElementHandle<Element> | undefined;
+        for (let i = 1; i <= -index; i++) {
+          nthHandle = currentHandles.pop();
+        }
+        return nthHandle ? [nthHandle] : [];
+      }
+
+      return [];
+    });
 
     this.chainingHistory = `${this.chainingHistory}
   .nth(${index})`;
