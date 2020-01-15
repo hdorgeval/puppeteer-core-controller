@@ -135,6 +135,7 @@ await pptc
   - [find(selector[, waitOptions]).withExactText(text).click([clickOptions])](#findselector-waitOptionswithExactTexttextclickclickOptions)
   - [runStory(story)](#runStorystory)
   - [wait(duration)](#waitduration)
+  - [waitForStabilityOf(func[, waitOptions[, errorMessage]])](#waitForStabilityOffunc-waitOptions-errorMessage)
   - [waitUntil(predicate[, waitOptions[, errorMessage]])](#waitUntilpredicate-waitOptions-errorMessage)
 
 - Chainable Assertions
@@ -434,6 +435,67 @@ await pptc
   .initWith(launchOptions)
   .navigateTo(url)
   .waitUntil(() => selector.isVisible());
+```
+
+---
+
+### waitForStabilityOf(func[, waitOptions[, errorMessage]])
+
+- func: `() => Promise<string | number>`
+- waitOptions: `Partial<WaitUntilOptions>`
+- errorMessage: `string | (() => Promise<string>`
+
+Waits until the function `func()` returns the same result during a specified period of time.
+
+```js
+interface WaitUntilOptions {
+  /**
+   * Defaults to 30000 milliseconds.
+   *
+   * @type {number}
+   * @memberof WaitUntilOptions
+   */
+  timeoutInMilliseconds: number;
+
+  /**
+   * Time during which the callback must always return true.
+   * Defaults to 300 milliseconds.
+   * You must not setup a duration < 100 milliseconds.
+   * @type {number}
+   * @memberof AssertOptions
+   */
+  stabilityInMilliseconds: number;
+
+  /**
+   * Throw a timeout exception when the callback still returns false.
+   * Defaults to false.
+   * @type {boolean}
+   * @memberof WaitUntilOptions
+   */
+  throwOnTimeout: boolean;
+
+  /**
+   * Output to the console all steps of the waiting mechanism.
+   * Defaults to false.
+   * Use this option when the waitUntil() method does not wait as expected.
+   *
+   * @type {boolean}
+   * @memberof WaitUntilOptions
+   */
+  verbose: boolean;
+}
+```
+
+Usage example:
+
+```js
+const selector = pptc
+  .selector('[role="row"]'); // will select all rows in a grid
+
+await pptc
+  .initWith(launchOptions)
+  .navigateTo(url)
+  .waitForStabilityOf(() => selector.count()); // waits until the number of rows is stable
 ```
 
 ---

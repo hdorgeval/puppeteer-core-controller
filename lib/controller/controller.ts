@@ -886,6 +886,15 @@ export class PuppeteerController implements PromiseLike<void> {
     throw new Error(await errorMessage());
   }
 
+  /**
+   * Waits until the function getValue() returns the same result during a specified period of time.
+   *
+   * @param {(() => Promise<string | number>)} getValue async function that should return either a string or or number.
+   * @param {Partial<WaitUntilOptions>} [options=defaultWaitUntilOptions]
+   * @param {(string | (() => Promise<string>))} [errorMessage] error message to be returned when the throw option is activated
+   * @returns {PuppeteerController}
+   * @memberof PuppeteerController
+   */
   public waitForStabilityOf(
     getValue: () => Promise<string | number>,
     options: Partial<WaitUntilOptions> = defaultWaitUntilOptions,
