@@ -23,15 +23,16 @@ module.exports = {
   // An array of glob patterns indicating a set of files for which coverage information should be collected
   collectCoverageFrom: [
     'lib/**/*.ts',
-    '!lib/actions/**/get*.ts',
-    '!lib/actions/**/is-*.ts',
-    '!lib/actions/**/has-*.ts',
-    '!lib/actions/**/show-*.ts',
-    '!lib/actions/**/exists.ts',
-    '!lib/actions/**/query-*.ts',
-    '!lib/actions/**/wait-*.ts',
-    '!lib/actions/**/scroll-to.ts',
     '!lib/**/index.ts',
+    '!lib/**/paste-*.ts',
+    '!lib/actions/**/exists.ts',
+    '!lib/actions/**/get*.ts',
+    '!lib/actions/**/has-*.ts',
+    '!lib/actions/**/is-*.ts',
+    '!lib/actions/**/query-*.ts',
+    '!lib/actions/**/scroll-to.ts',
+    '!lib/actions/**/show-*.ts',
+    '!lib/actions/**/wait-*.ts',
   ],
 
   // The directory where Jest should output its coverage files
