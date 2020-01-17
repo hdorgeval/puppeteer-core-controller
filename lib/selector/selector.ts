@@ -118,12 +118,11 @@ export class SelectorController {
    * @memberof SelectorController
    */
   public async isVisible(): Promise<boolean> {
-    const handles = await this.getHandles();
-    if (handles.length === 0) {
+    const handle = await this.getFirstHandleOrNull();
+    if (handle === null) {
       return false;
     }
 
-    const handle = handles[0];
     const isElementVisible = await action.isHandleVisible(handle);
     return isElementVisible;
   }
