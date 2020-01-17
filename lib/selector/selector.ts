@@ -5,11 +5,58 @@ export type Action = (
   handles: puppeteer.ElementHandle<Element>[],
 ) => Promise<puppeteer.ElementHandle<Element>[]>;
 
+export interface ActionInfoWithoutParam {
+  name: 'parent';
+}
+export interface ActionInfoWithSelector {
+  name: 'querySelectorAllInPage' | 'find';
+  selector: string;
+}
+export interface ActionInfoWithText {
+  name: 'withText' | 'withValue';
+  text: string;
+}
+export interface ActionInfoWithIndex {
+  name: 'nth';
+  index: number;
+}
+
+export type ActionInfo =
+  | ActionInfoWithoutParam
+  | ActionInfoWithSelector
+  | ActionInfoWithText
+  | ActionInfoWithIndex;
+
 export class SelectorController {
   private chainingHistory = '';
   private pptc: PuppeteerController;
 
   private actions: Action[] = [];
+  private actionInfos: ActionInfo[] = [];
+
+  // private getAction(actionInfo: ActionInfo): Action {
+  //   switch (actionInfo.name) {
+  //     case 'querySelectorAllInPage':
+  //       // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+  //       return () => action.querySelectorAllInPage(actionInfo.selector, this.pptc.currentPage);
+
+  //     case 'find':
+  //       // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+  //       return (handles) => action.querySelectorAllFromElements(actionInfo.selector, [...handles]);
+
+  //     case 'withText':
+  //       // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+  //       return (handles) => action.getElementsWithText(actionInfo.text, [...handles]);
+
+  //     case 'withValue':
+  //       // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+  //       return (handles) => action.getElementsWithValue(actionInfo.text, [...handles]);
+
+  //     case 'nth':
+  //     default:
+  //       throw new Error(`Action '${actionInfo.name}' is not yet implemented`);
+  //   }
+  // }
 
   private async executeActions(): Promise<puppeteer.ElementHandle<Element>[]> {
     let handles: puppeteer.ElementHandle<Element>[] = [];
@@ -139,6 +186,7 @@ export class SelectorController {
     this.pptc = pptc;
     this.chainingHistory = `selector(${selector})`;
     this.actions.push(() => action.querySelectorAllInPage(selector, this.pptc.currentPage));
+    this.actionInfos.push({ name: 'querySelectorAllInPage', selector });
   }
 
   public toString(): string {
@@ -147,6 +195,7 @@ export class SelectorController {
 
   public find(selector: string): SelectorController {
     this.actions.push((handles) => action.querySelectorAllFromElements(selector, [...handles]));
+    this.actionInfos.push({ name: 'find', selector });
 
     this.chainingHistory = `${this.chainingHistory}
   .find(${selector})`;
@@ -163,6 +212,7 @@ export class SelectorController {
    */
   public withText(text: string): SelectorController {
     this.actions.push((handles) => action.getElementsWithText(text, [...handles]));
+    this.actionInfos.push({ name: 'withText', text });
 
     this.chainingHistory = `${this.chainingHistory}
   .withText(${text})`;
@@ -179,6 +229,7 @@ export class SelectorController {
    */
   public withValue(text: string): SelectorController {
     this.actions.push((handles) => action.getElementsWithValue(text, [...handles]));
+    this.actionInfos.push({ name: 'withValue', text });
 
     this.chainingHistory = `${this.chainingHistory}
   .withValue(${text})`;
@@ -188,6 +239,7 @@ export class SelectorController {
 
   public parent(): SelectorController {
     this.actions.push((handles) => action.getParentsOf([...handles]));
+    this.actionInfos.push({ name: 'parent' });
 
     this.chainingHistory = `${this.chainingHistory}
   .parent()`;
@@ -206,34 +258,8 @@ export class SelectorController {
    * nth(-1): take the last element found at previous step.
    */
   public nth(index: number): SelectorController {
-    this.actions.push(async (handles) => {
-      if (index === 0) {
-        throw new Error('Index is one-based');
-      }
-      if (Math.abs(index) > handles.length) {
-        return [];
-      }
-
-      const currentHandles = [...handles];
-
-      if (index > 0) {
-        let nthHandle: puppeteer.ElementHandle<Element> | undefined;
-        for (let i = 1; i <= index; i++) {
-          nthHandle = currentHandles.shift();
-        }
-        return nthHandle ? [nthHandle] : [];
-      }
-
-      if (index < 0) {
-        let nthHandle: puppeteer.ElementHandle<Element> | undefined;
-        for (let i = 1; i <= -index; i++) {
-          nthHandle = currentHandles.pop();
-        }
-        return nthHandle ? [nthHandle] : [];
-      }
-
-      return [];
-    });
+    this.actions.push((handles) => action.getNthElement(index, [...handles]));
+    this.actionInfos.push({ name: 'nth', index });
 
     this.chainingHistory = `${this.chainingHistory}
   .nth(${index})`;

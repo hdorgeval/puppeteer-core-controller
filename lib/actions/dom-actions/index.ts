@@ -7,6 +7,7 @@ export * from './get-computed-style-of';
 export * from './get-elements-with-text';
 export * from './get-elements-with-value';
 export * from './get-innertext-of';
+export * from './get-nth-element';
 export * from './get-parents-of';
 export * from './get-selected-option-of';
 export * from './get-value-of';
