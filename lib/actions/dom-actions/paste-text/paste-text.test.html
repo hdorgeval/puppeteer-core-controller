@@ -9,8 +9,7 @@
 
 <body>
   <input id="emptyInput"></input>
-  <input id="undefinedInput"></input>
-  <input id="nullInput"></input>
+  <input id="targetInput" value="paste your text"></input>
   <p id="target" contenteditable="true">paste your text</p>
 
   <script>
@@ -21,9 +20,6 @@
         event.target.value = content.toUpperCase();
         event.preventDefault();
       })
-
-
-
     }, 0);
   </script>
 

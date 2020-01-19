@@ -1,8 +1,17 @@
 import * as puppeteer from 'puppeteer-core';
 declare const window: Window;
+
+export interface PasteOptions {
+  handlePasteEvent: boolean;
+}
+
+export const defaultPasteOptions: PasteOptions = {
+  handlePasteEvent: false,
+};
 export async function pasteText(
   selector: string,
   text: string,
+  options: PasteOptions,
   page: puppeteer.Page | undefined,
 ): Promise<void> {
   if (!page) {
@@ -13,7 +22,28 @@ export async function pasteText(
 
   await page.$eval(
     selector,
-    (el: Element, content: string): void => {
+    (el: Element, content: string, handlePasteEvent: boolean): void => {
+      function attachPasteEvent(el: Element): void {
+        el.addEventListener('paste', (event: Event | InputEvent | ClipboardEvent) => {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          const content = ((event as any).clipboardData || (window as any).clipboardData).getData(
+            'text',
+          ) as string;
+          const input = event.target as HTMLInputElement;
+          if (event.target && input && input.tagName === 'INPUT') {
+            input.value = content;
+            event.preventDefault();
+            return;
+          }
+          (event.target as HTMLElement).innerText = content;
+          event.preventDefault();
+        });
+      }
+
+      if (handlePasteEvent) {
+        attachPasteEvent(el);
+      }
+
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       (window as any).clipboardData = { getData: (): string => content };
       // eslint-disable-next-line no-undef
@@ -25,9 +55,8 @@ export async function pasteText(
       el.dispatchEvent(event);
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       (window as any).clipboardData = undefined;
-
-      // TODO: auto add 'paste' event listener if needed
     },
     text,
+    options.handlePasteEvent,
   );
 }
