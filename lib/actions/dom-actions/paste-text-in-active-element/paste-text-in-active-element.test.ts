@@ -1,5 +1,5 @@
 import * as puppeteer from 'puppeteer-core';
-import * as SUT from './index';
+import * as SUT from '../index';
 import { launchBrowser } from '../../browser-actions';
 import { getChromePath } from '../../../utils';
 import * as path from 'path';

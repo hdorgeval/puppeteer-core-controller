@@ -27,6 +27,8 @@ export * from './is-handle-visible';
 export * from './is-moving';
 export * from './is-option-available-in';
 export * from './is-visible';
+export * from './paste-text-in-active-element';
+export * from './paste-text';
 export * from './query-selector-all-from-elements';
 export * from './query-selector-all-in-page';
 export * from './query-selector-with-exact-text';

@@ -19,6 +19,8 @@ import {
   TypeTextOptions,
   WaitOptions,
   WindowState,
+  PasteOptions,
+  defaultPasteOptions,
 } from '../actions';
 import { getChromePath, report, stringifyRequest } from '../utils';
 import { SelectorController } from '../selector';
@@ -112,6 +114,7 @@ export {
   LaunchOptions,
   mandatoryFullPageScreenshotOptions,
   MinViewPort,
+  PasteOptions,
   SelectOptionInfo,
   SelectOptions,
   TypeTextOptions,
@@ -375,6 +378,23 @@ export class PuppeteerController implements PromiseLike<void> {
     options: TypeTextOptions = defaultTypeTextOptions,
   ): PuppeteerController {
     this.actions.push(async (): Promise<void> => await action.typeText(text, options, this.page));
+    return this;
+  }
+
+  /**
+   * Paste text in the element that is currently active (that has the focus) on the page.
+   * If the element does not handle the 'paste' event through an explicit event handler,
+   * then you must set the option {handlePasteEvent: true}.
+   * When you set this option to true, the controller will automatically attach a basic 'paste' event handler.
+   * @param {string} text
+   * @param {PasteOptions} [options=defaultPasteOptions]
+   * @returns {PuppeteerController}
+   * @memberof PuppeteerController
+   */
+  public pasteText(text: string, options: PasteOptions = defaultPasteOptions): PuppeteerController {
+    this.actions.push(
+      async (): Promise<void> => await action.pasteTextInActiveElement(text, options, this.page),
+    );
     return this;
   }
 

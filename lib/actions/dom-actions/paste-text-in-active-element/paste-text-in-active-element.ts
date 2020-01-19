@@ -3,9 +3,6 @@ import { PasteOptions } from '../paste-text';
 import { hasActiveElement } from '../has-active-element';
 declare const window: Window;
 
-export const defaultPasteOptions: PasteOptions = {
-  handlePasteEvent: false,
-};
 export async function pasteTextInActiveElement(
   text: string,
   options: PasteOptions,
