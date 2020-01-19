@@ -5,7 +5,7 @@ import * as path from 'path';
 describe('Puppeteer Controller', (): void => {
   let pptc: SUT.PuppeteerController;
   beforeEach((): void => {
-    jest.setTimeout(35000);
+    jest.setTimeout(60000);
     pptc = new SUT.PuppeteerController();
   });
   afterEach(
