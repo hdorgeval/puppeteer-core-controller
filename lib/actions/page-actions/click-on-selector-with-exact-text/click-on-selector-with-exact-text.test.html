@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <style type="text/css">
+    #hidden {
+      width: 20px;
+      display: none;
+    }
+
+    #transparent {
+      opacity: 0;
+      color: black;
+    }
+
+    #out-of-screen {
+      position: absolute;
+      top: -100px;
+    }
+
+    #hidden-then-visible {
+      opacity: 0;
+      color: black;
+    }
+  </style>
+
+  <title>click on selector with exact text</title>
+</head>
+
+<body>
+  <div class="form-group">
+    <label for="email" class="">Email</label>
+    <input name="email" id="email" placeholder="type your email" type="email" class="form-control">
+  </div>
+  <table>
+    <tr role="row">
+      <td>
+        <p id="hidden">I am hidden</p>
+      </td>
+    </tr>
+    <tr role="row">
+      <td>
+        <p id="visible">I am visible</p>
+      </td>
+    </tr>
+    <tr role="row">
+      <td>
+        <p id="transparent">I am transparent</p>
+      </td>
+    </tr>
+    <tr role="row">
+      <td>
+        <p id="out-of-screen">I am out of screen</p>
+      </td>
+    </tr>
+    <tr role="row">
+      <td>
+        <p id="hidden-then-visible">hidden, then visible</p>
+      </td>
+    </tr>
+  </table>
+
+  <p id="hidden-then-visible">hidden, then visible</p>
+
+  <fieldset class="form-group">
+    <legend>Radio Buttons</legend>
+    <div class="form-check">
+      <label class="form-check-label">
+        <input id="radio1" name="radio1" type="radio" class="form-check-input">
+        Option one</label></div>
+    <div class="form-check">
+      <label class="form-check-label">
+        <input id="radio2" name="radio1" type="radio" class="form-check-input">
+        Option two</label></div>
+    <div class="form-check disabled">
+      <label class="form-check-label">
+        <input id="radio3" name="radio1" disabled="" type="radio" class="form-check-input"> Option three is
+        disabled</label></div>
+  </fieldset>
+
+  <script>
+    window.setTimeout(() => {
+      const input = document.querySelector('#hidden-then-visible');
+      input.style.opacity = 1;
+    }, 3000);
+
+    function addParagraphInDom() {
+      const paragraph = document.createElement('p');
+      paragraph.setAttribute('data-e2e', 'dynamycally-added');
+      paragraph.setAttribute('contenteditable', 'true');
+      const newContent = document.createTextNode('I am dynamically added in DOM');
+      paragraph.appendChild(newContent);
+
+      const body = document.querySelector('body');
+      body.appendChild(paragraph);
+    }
+
+    window.setTimeout(() => {
+      addParagraphInDom();
+    }, 3000);
+  </script>
+</body>
+
+</html>

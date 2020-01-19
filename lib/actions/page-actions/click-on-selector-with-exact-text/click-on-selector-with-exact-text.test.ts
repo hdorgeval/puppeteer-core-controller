@@ -1,7 +1,9 @@
 import * as puppeteer from 'puppeteer-core';
 import * as SUT from '../index';
-import { launchBrowser, getCurrentUrl } from '../../browser-actions';
+import { launchBrowser } from '../../browser-actions';
 import { getChromePath } from '../../../utils';
+import * as path from 'path';
+import { hasFocus } from '../../dom-actions';
 
 describe('click on selector with exact text', (): void => {
   let browser: puppeteer.Browser | undefined = undefined;
@@ -63,16 +65,16 @@ describe('click on selector with exact text', (): void => {
       executablePath: getChromePath(),
     });
     const page = await browser.newPage();
+    await page.goto(`file:${path.join(__dirname, 'click-on-selector-with-exact-text.test.html')}`);
 
     // When
-
     // Then
     const expectedError = new Error(
-      "Error: waiting for selector 'a.btn' with exact text 'Components!' failed: timeout 5000ms exceeded",
+      "Error: waiting for selector 'label' with exact text 'foobar' failed: timeout 5000ms exceeded",
     );
     await SUT.clickOnSelectorWithExactText(
-      'a.btn',
-      'Components!',
+      'label',
+      'foobar',
       { timeoutInMilliseconds: 5000 },
       page,
     ).catch((error): void => expect(error.message).toBe(expectedError.message));
@@ -87,15 +89,36 @@ describe('click on selector with exact text', (): void => {
       executablePath: getChromePath(),
     });
     const page = await browser.newPage();
-    const url = 'https://reactstrap.github.io/';
-    await page.goto(url);
+    await page.goto(`file:${path.join(__dirname, 'click-on-selector-with-exact-text.test.html')}`);
 
     // When
-    await SUT.clickOnSelectorWithExactText('a.btn', 'Components', SUT.defaultClickOptions, page);
+    await SUT.clickOnSelectorWithExactText('label', 'Email', SUT.defaultClickOptions, page);
+    const hasInputEmailFocus = await hasFocus('input#email', page);
 
     // Then
-    const currentUrl = await getCurrentUrl(page);
-    expect(currentUrl).toBe('https://reactstrap.github.io/components/alerts/');
+    expect(hasInputEmailFocus).toBe(true);
+  });
+
+  test('should wait for the selector to be visible', async (): Promise<void> => {
+    // Given
+    browser = await launchBrowser({
+      headless: true,
+      executablePath: getChromePath(),
+    });
+    const page = await browser.newPage();
+    await page.goto(`file:${path.join(__dirname, 'click-on-selector-with-exact-text.test.html')}`);
+
+    // When
+    await SUT.clickOnSelectorWithExactText(
+      'p',
+      'I am dynamically added in DOM',
+      SUT.defaultClickOptions,
+      page,
+    );
+    const hasInputTextFocus = await hasFocus('p[data-e2e="dynamycally-added"]', page);
+
+    // Then
+    expect(hasInputTextFocus).toBe(true);
   });
 
   test('should return an error when timeout is too small', async (): Promise<void> => {
@@ -105,18 +128,16 @@ describe('click on selector with exact text', (): void => {
       executablePath: getChromePath(),
     });
     const page = await browser.newPage();
-    const url = 'https://reactstrap.github.io/';
-    await page.goto(url);
-
+    await page.goto(`file:${path.join(__dirname, 'click-on-selector-with-exact-text.test.html')}`);
     // When
     // Then
     const expectedError = new Error(
-      "Error: waiting for selector 'a.btn' with exact text 'Components' failed: timeout 1ms exceeded",
+      "Error: waiting for selector 'p' with exact text 'I am dynamically added in DOM' failed: timeout 1000ms exceeded",
     );
     await SUT.clickOnSelectorWithExactText(
-      'a.btn',
-      'Components',
-      { timeoutInMilliseconds: 1 },
+      'p',
+      'I am dynamically added in DOM',
+      { timeoutInMilliseconds: 1000 },
       page,
     ).catch((error): void => expect(error.message).toBe(expectedError.message));
   });
