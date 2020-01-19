@@ -5,7 +5,7 @@ import * as path from 'path';
 describe('Puppeteer Controller', (): void => {
   let pptc: SUT.PuppeteerController;
   beforeEach((): void => {
-    jest.setTimeout(30000);
+    jest.setTimeout(35000);
     pptc = new SUT.PuppeteerController();
   });
   afterEach(
@@ -44,6 +44,7 @@ describe('Puppeteer Controller', (): void => {
     const selector = '#select1';
 
     // When
+    const startTime = new Date().getTime();
     let result: Error | undefined = undefined;
     try {
       await pptc
@@ -54,8 +55,12 @@ describe('Puppeteer Controller', (): void => {
     } catch (error) {
       result = error;
     }
+    const endTime = new Date().getTime();
 
     // Then
+    const duration = endTime - startTime;
+    // eslint-disable-next-line no-console
+    console.log(`test duration: ${duration} ms`);
     const expectedErrorMessage = "option(s) [foobar] is still missing in '#select1' after 5000 ms";
     expect(result && result.message).toContain(expectedErrorMessage);
   });
