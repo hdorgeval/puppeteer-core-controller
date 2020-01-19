@@ -128,6 +128,7 @@ await pptc
   - [hover(selector[, options])](#hoverselector-options)
   - [clear(selector[, options])](#clearselector-options)
   - [click(selector[, options])](#clickselector-options)
+  - [pasteText(text[, options])](#pasteTexttext-options)
   - [typeText(text[, options])](#typeTexttext-options)
   - [pressKey(key[, options])](#pressKeykey-options)
   - [select(values).in(selector[, options])](#selectvaluesinselector-options)
@@ -252,6 +253,32 @@ await pptc
 - options: {steps: number, timeoutInMilliseconds: number }
 
   `timeoutInMilliseconds` option enables the hover method to wait for the selector to appear in the DOM before attempting to move the mouse on it. Defaults to 30000 (30 seconds). Pass 0 to disable this timeout.
+
+---
+
+### pasteText(text[, options])
+
+- text: `string`
+- options: `PasteOptions`
+
+Paste text in the element that is currently active (that has the focus) on the page.
+If the element does not handle the 'paste' event through an explicit event handler, then you must set the option {handlePasteEvent: true}.
+When you set this option to true, the controller will automatically attach a basic 'paste' event handler.
+
+```js
+interface PasteOptions {
+  handlePasteEvent: boolean;
+}
+```
+
+```js
+await pptc
+  .initWith(launchOptions)
+  .navigateTo(url)
+  .click(selector)
+  .clear(selector)
+  .pasteText('foo bar');
+```
 
 ---
 
