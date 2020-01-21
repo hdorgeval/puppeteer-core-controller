@@ -1,5 +1,6 @@
 import * as SUT from '../../controller';
 import { LaunchOptions } from '../../../actions';
+import * as path from 'path';
 
 describe('Puppeteer Controller', (): void => {
   let pptc: SUT.PuppeteerController;
@@ -18,20 +19,16 @@ describe('Puppeteer Controller', (): void => {
     const launchOptions: LaunchOptions = {
       headless: true,
     };
-    const url = 'https://reactstrap.github.io/components/form';
-    const emailInputSelector = 'input#exampleEmail';
-    const foobarSelector = 'foobar';
-
+    const url = `file:${path.join(__dirname, 'controller-expect-has-class.test.html')}`;
+    const selector = 'foobar';
     // When
     let result: Error | undefined = undefined;
     try {
       await pptc
         .initWith(launchOptions)
         .navigateTo(url)
-        .click(emailInputSelector)
-        .expectThat(foobarSelector)
-        .hasClass('yo', { timeoutInMilliseconds: 5000 })
-        .typeText('foo.bar@baz.com');
+        .expectThat(selector)
+        .hasClass('yo', { timeoutInMilliseconds: 5000 });
     } catch (error) {
       result = error;
     }
@@ -49,8 +46,8 @@ describe('Puppeteer Controller', (): void => {
     const launchOptions: LaunchOptions = {
       headless: true,
     };
-    const url = 'https://reactstrap.github.io/components/form';
-    const validInput = 'input[type="text"].is-valid.form-control';
+    const url = `file:${path.join(__dirname, 'controller-expect-has-class.test.html')}`;
+    const selector = 'input#input1';
 
     // When
     let result: Error | undefined = undefined;
@@ -58,31 +55,32 @@ describe('Puppeteer Controller', (): void => {
       await pptc
         .initWith(launchOptions)
         .navigateTo(url)
-        .click(validInput)
+        .click(selector)
+        .clear(selector)
         .typeText('foo.bar@baz.com')
         .pressKey('Tab')
-        .expectThat(validInput)
+        .expectThat(selector)
         .hasClass('is-invalid', { timeoutInMilliseconds: 5000 });
     } catch (error) {
       result = error;
     }
 
     // Then
-    const expectedErrorMessage = `Error: selector '${validInput}' does not have the class 'is-invalid'.`;
+    const expectedErrorMessage = `Error: selector '${selector}' does not have the class 'is-invalid'.`;
     expect(result && result.message).toContain(expectedErrorMessage);
     expect(pptc.lastError && pptc.lastError.message).toBe(expectedErrorMessage);
   });
 
   test('should throw an error when page is not created', async (): Promise<void> => {
     // Given
-    const validInput = 'input[type="text"].is-valid.form-control';
+    const selector = 'foobar';
 
     // When
     let result: Error | undefined = undefined;
     try {
       // prettier-ignore
       await pptc
-        .expectThat(validInput)
+        .expectThat(selector)
         .hasClass('is-valid', { timeoutInMilliseconds: 5000 });
     } catch (error) {
       result = error;
@@ -98,22 +96,68 @@ describe('Puppeteer Controller', (): void => {
     const launchOptions: LaunchOptions = {
       headless: true,
     };
-    const url = 'https://reactstrap.github.io/components/form';
-    const validInput = 'input[type="text"].is-valid.form-control';
+    const url = `file:${path.join(__dirname, 'controller-expect-has-class.test.html')}`;
+    const selector = 'input#input1';
 
     // When
     await pptc
       .initWith(launchOptions)
       .navigateTo(url)
-      .click(validInput)
-      .typeText('foo.bar@baz.com')
-      .pressKey('Tab')
-      .expectThat(validInput)
-      .hasClass('is-valid');
+      .click(selector)
+      .expectThat(selector)
+      .hasClass('foo');
 
     // Then
-    const isInvalid = await pptc.hasClass(validInput, 'is-invalid');
-    expect(isInvalid).toBe(false);
+    const hasClass = await pptc.hasClass(selector, 'foo');
+    expect(hasClass).toBe(true);
+    expect(pptc.lastError).toBe(undefined);
+  });
+
+  test('should expect className among many', async (): Promise<void> => {
+    // Given
+    const launchOptions: LaunchOptions = {
+      headless: true,
+    };
+    const url = `file:${path.join(__dirname, 'controller-expect-has-class.test.html')}`;
+    const selector = 'input#input2';
+
+    // When
+    await pptc
+      .initWith(launchOptions)
+      .navigateTo(url)
+      .click(selector)
+      .expectThat(selector)
+      .hasClass('foo')
+      .expectThat(selector)
+      .hasClass('bar');
+
+    // Then
+    const hasClass = await pptc.hasClass(selector, 'foobar');
+    expect(hasClass).toBe(false);
+    expect(pptc.lastError).toBe(undefined);
+  });
+
+  test('should wait for the className', async (): Promise<void> => {
+    // Given
+    const launchOptions: LaunchOptions = {
+      headless: true,
+    };
+    const url = `file:${path.join(__dirname, 'controller-expect-has-class.test.html')}`;
+    const selector = 'input#input3';
+
+    // When
+    await pptc
+      .initWith(launchOptions)
+      .navigateTo(url)
+      .click(selector);
+
+    const previousStatus = await pptc.hasClass(selector, 'foobar');
+    await pptc.expectThat(selector).hasClass('foobar');
+
+    // Then
+    const currentStatus = await pptc.hasClass(selector, 'foobar');
+    expect(previousStatus).toBe(false);
+    expect(currentStatus).toBe(true);
     expect(pptc.lastError).toBe(undefined);
   });
 });
