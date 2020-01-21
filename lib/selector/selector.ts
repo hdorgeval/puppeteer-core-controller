@@ -27,6 +27,11 @@ export type ActionInfo =
   | ActionInfoWithText
   | ActionInfoWithIndex;
 
+export interface SelectorState {
+  actions: ActionInfo[];
+  chainingHistory: string;
+}
+
 export class SelectorController {
   private chainingHistory = '';
   private pptc: PuppeteerController;
@@ -188,8 +193,16 @@ export class SelectorController {
   /**
    *
    */
-  constructor(selector: string, pptc: PuppeteerController) {
+  constructor(selector: string, pptc: PuppeteerController, stringifiedState?: string) {
     this.pptc = pptc;
+
+    if (stringifiedState) {
+      const state = JSON.parse(stringifiedState) as SelectorState;
+      this.chainingHistory = state.chainingHistory;
+      this.actionInfos = state.actions;
+      return;
+    }
+
     this.chainingHistory = `selector(${selector})`;
     this.actionInfos.push({ name: 'querySelectorAllInPage', selector });
   }
@@ -198,13 +211,26 @@ export class SelectorController {
     return this.chainingHistory;
   }
 
-  public find(selector: string): SelectorController {
-    this.actionInfos.push({ name: 'find', selector });
+  private createSelectorFrom(
+    selector: string,
+    actions: ActionInfo[],
+    chainingHistory: string,
+  ): SelectorController {
+    const state: SelectorState = {
+      actions,
+      chainingHistory,
+    };
 
-    this.chainingHistory = `${this.chainingHistory}
+    return new SelectorController(selector, this.pptc, JSON.stringify(state));
+  }
+  public find(selector: string): SelectorController {
+    const actions = [...this.actionInfos];
+    actions.push({ name: 'find', selector });
+
+    const chainingHistory = `${this.chainingHistory}
   .find(${selector})`;
 
-    return this;
+    return this.createSelectorFrom(selector, actions, chainingHistory);
   }
 
   /**
@@ -215,12 +241,13 @@ export class SelectorController {
    * @memberof SelectorController
    */
   public withText(text: string): SelectorController {
-    this.actionInfos.push({ name: 'withText', text });
+    const actions = [...this.actionInfos];
+    actions.push({ name: 'withText', text });
 
-    this.chainingHistory = `${this.chainingHistory}
+    const chainingHistory = `${this.chainingHistory}
   .withText(${text})`;
 
-    return this;
+    return this.createSelectorFrom(text, actions, chainingHistory);
   }
 
   /**
@@ -231,21 +258,23 @@ export class SelectorController {
    * @memberof SelectorController
    */
   public withValue(text: string): SelectorController {
-    this.actionInfos.push({ name: 'withValue', text });
+    const actions = [...this.actionInfos];
+    actions.push({ name: 'withValue', text });
 
-    this.chainingHistory = `${this.chainingHistory}
+    const chainingHistory = `${this.chainingHistory}
   .withValue(${text})`;
 
-    return this;
+    return this.createSelectorFrom(text, actions, chainingHistory);
   }
 
   public parent(): SelectorController {
-    this.actionInfos.push({ name: 'parent' });
+    const actions = [...this.actionInfos];
+    actions.push({ name: 'parent' });
 
-    this.chainingHistory = `${this.chainingHistory}
+    const chainingHistory = `${this.chainingHistory}
   .parent()`;
 
-    return this;
+    return this.createSelectorFrom('', actions, chainingHistory);
   }
 
   /**
@@ -259,11 +288,12 @@ export class SelectorController {
    * nth(-1): take the last element found at previous step.
    */
   public nth(index: number): SelectorController {
-    this.actionInfos.push({ name: 'nth', index });
+    const actions = [...this.actionInfos];
+    actions.push({ name: 'nth', index });
 
-    this.chainingHistory = `${this.chainingHistory}
+    const chainingHistory = `${this.chainingHistory}
   .nth(${index})`;
 
-    return this;
+    return this.createSelectorFrom('', actions, chainingHistory);
   }
 }
