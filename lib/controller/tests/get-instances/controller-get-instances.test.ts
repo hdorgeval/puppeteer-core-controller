@@ -1,6 +1,6 @@
-import * as SUT from '../controller';
-import { LaunchOptions, launchBrowser } from '../../actions';
-import { getChromePath } from '../../utils';
+import * as SUT from '../../controller';
+import { LaunchOptions, launchBrowser } from '../../../actions';
+import { getChromePath } from '../../../utils';
 
 describe('Puppeteer Controller', (): void => {
   let pptc: SUT.PuppeteerController;
