@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html)
 
+## [1.32.0] - 2020-01-22
+
+### Added
+
+- make the Selector API immutable : each time you invoke a chainable method (like `find`, `withText`, `withValue`, ...) you get a new Selector instance: now you can build a selector from another selector that acts as a container.
+
+```js
+const container = pptc.selector('[role="row"]').find('td'); // get all cells in a table
+const cell1 = container.withText('foo'); // get the cell that contain the text 'foo'
+const cell2 = container.withText('bar'); // get the cell that contain the text 'bar'
+const cell3 = container.withText('baz'); // get the cell that contain the text 'baz'
+```
+
 ## [1.31.0] - 2020-01-19
 
 ### Added
