@@ -1,6 +1,7 @@
 export * from './are-options-available-in';
 export * from './exists';
 export * from './get-all-options-of';
+export * from './get-class-list-of-handle';
 export * from './get-client-rectangle-of-handle';
 export * from './get-client-rectangle-of';
 export * from './get-computed-style-of';

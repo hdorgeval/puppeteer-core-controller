@@ -156,6 +156,22 @@ export class SelectorController {
   }
 
   /**
+   * Checks if selector has specified class.
+   * If the selector targets multiple DOM elements, this check is done only on the first one found.
+   * The result may differ from one execution to another
+   * especially if targeted element is rendered lately because its data is based on some backend response.
+   * @param {string} className
+   * @returns {Promise<boolean>}
+   * @memberof SelectorController
+   */
+  public async hasClass(className: string): Promise<boolean> {
+    const handle = await this.getFirstHandleOrNull();
+    const classList = await action.getClassListOfHandle(handle);
+    const hasClass = classList.filter((c) => c === className).length > 0;
+    return hasClass;
+  }
+
+  /**
    * Checks if selector exists.
    * The result may differ from one execution to another
    * especially if targeted element is rendered lately because its data is based on some backend response.
