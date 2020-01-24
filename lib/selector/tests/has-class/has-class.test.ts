@@ -91,4 +91,26 @@ describe('Puppeteer Controller - Selector API - hasClass', (): void => {
     expect(result2).toBe(true);
     expect(result3).toBe(false);
   });
+
+  test('should wait for the selector to have class', async (): Promise<void> => {
+    // Given
+    const launchOptions: LaunchOptions = {
+      headless: true,
+    };
+    const url = `file:${path.join(__dirname, 'has-class.test.html')}`;
+    await pptc.initWith(launchOptions).navigateTo(url);
+
+    const selector = pptc.selector('p').withText('with dynamic class');
+    const previousClassStatus = await selector.hasClass('bar');
+
+    // When
+    await pptc.waitUntil(() => selector.hasClass('bar'));
+
+    const currentClassStatus = await selector.hasClass('bar');
+
+    // Then
+    expect(await selector.getFirstHandleOrNull()).not.toBe(null);
+    expect(previousClassStatus).toBe(false);
+    expect(currentClassStatus).toBe(true);
+  });
 });

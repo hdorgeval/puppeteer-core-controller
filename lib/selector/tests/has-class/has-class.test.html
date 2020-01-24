@@ -13,6 +13,15 @@
   <p id="with-no-class">with no class</p>
   <p id="with-one-class" class="foo">with one class</p>
   <p id="with-two-classes" class="foo bar">with two classes</p>
+  <p id="with-dynamic-class" class="foo">with dynamic class</p>
+
+  <script>
+    window.setTimeout(() => {
+      const element = document.querySelector('#with-dynamic-class');
+      element.classList.add('bar')
+    }, 3000);
+  </script>
 </body>
+
 
 </html>
