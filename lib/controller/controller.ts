@@ -1,29 +1,30 @@
 import * as puppeteer from 'puppeteer-core';
 import * as action from '../actions';
 import {
+  allKnownDevices,
   ClickOptions,
   defaultClickOptions,
   defaultHoverOptions,
   defaultKeyboardPressOptions,
+  defaultNavigationOptions,
+  defaultPasteOptions,
   defaultSelectOptions,
   defaultTypeTextOptions,
   defaultWaitOptions,
+  DeviceName,
+  getDevice,
   HoverOptions,
   KeyboardKey,
   KeyboardPressOptions,
   LaunchOptions,
   mandatoryFullPageScreenshotOptions,
   MinViewPort,
+  PasteOptions,
   SelectOptionInfo,
   SelectOptions,
   TypeTextOptions,
   WaitOptions,
   WindowState,
-  PasteOptions,
-  defaultPasteOptions,
-  DeviceName,
-  getDevice,
-  allKnownDevices,
 } from '../actions';
 import { getChromePath, report, stringifyRequest } from '../utils';
 import { SelectorController } from '../selector';
@@ -125,6 +126,9 @@ export {
   WaitOptions,
   WindowState,
 } from '../actions';
+
+export { NavigationOptions } from 'puppeteer-core';
+
 export { SelectorController } from '../selector';
 
 export { RequestInfo, ResponseInfo } from '../utils';
@@ -301,8 +305,11 @@ export class PuppeteerController implements PromiseLike<void> {
     return this;
   }
 
-  public navigateTo(url: string): PuppeteerController {
-    this.actions.push(async (): Promise<void> => await action.navigateTo(url, this.page));
+  public navigateTo(
+    url: string,
+    options: Partial<puppeteer.NavigationOptions> = defaultNavigationOptions,
+  ): PuppeteerController {
+    this.actions.push(async (): Promise<void> => await action.navigateTo(url, options, this.page));
     return this;
   }
 
