@@ -5,3 +5,4 @@ export * from './get-value-of-handle';
 export * from './has-handle-moved';
 export * from './has-handle-value';
 export * from './is-handle-disabled';
+export * from './get-nth-element';
