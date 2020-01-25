@@ -3,7 +3,7 @@ import * as SUT from '../index';
 import { launchBrowser } from '../../browser-actions';
 import { getChromePath } from '../../../utils';
 import * as path from 'path';
-import { zeroClientRectangle } from '../index';
+import { zeroClientRectangle } from '../../dom-actions/index';
 
 describe('selector has moved', (): void => {
   let browser: puppeteer.Browser | undefined = undefined;

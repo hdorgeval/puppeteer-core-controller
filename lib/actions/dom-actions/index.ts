@@ -1,8 +1,6 @@
 export * from './are-options-available-in';
 export * from './exists';
 export * from './get-all-options-of';
-export * from './get-class-list-of-handle';
-export * from './get-client-rectangle-of-handle';
 export * from './get-client-rectangle-of';
 export * from './get-computed-style-of';
 export * from './get-elements-with-text';
@@ -18,7 +16,6 @@ export * from './has-attribute';
 export * from './has-class';
 export * from './has-exact-value';
 export * from './has-focus';
-export * from './has-handle-moved';
 export * from './has-moved';
 export * from './has-text';
 export * from './is-checked';

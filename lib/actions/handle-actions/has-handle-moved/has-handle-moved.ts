@@ -1,6 +1,6 @@
 import * as puppeteer from 'puppeteer-core';
-import { getClientRectangleOfHandle } from '..';
 import { getDistanceBetweenClientRectangles } from '../../../utils';
+import { getClientRectangleOfHandle } from '..';
 
 export async function hasHandleMoved(
   selector: puppeteer.ElementHandle<Element> | null | undefined,
