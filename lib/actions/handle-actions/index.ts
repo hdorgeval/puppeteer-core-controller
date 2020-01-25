@@ -10,3 +10,4 @@ export * from './has-handle-value';
 export * from './is-handle-disabled';
 export * from './is-handle-visible';
 export * from './query-selector-all-from-elements';
+export * from './query-selector-all-in-page';
