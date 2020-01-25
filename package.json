@@ -10,6 +10,7 @@
     "!*.test.d.ts"
   ],
   "scripts": {
+    "build-device-names": "ts-node ./lib/actions/page-actions/emulate-device/device-names-builder.ts",
     "build": "rimraf build && npm run format && npm run lint && npm run tsc",
     "check-format": "prettier --list-different \"lib/**/*.ts\" ",
     "eslint-init": "eslint --init",
@@ -17,10 +18,10 @@
     "jest-init": "jest --init",
     "lint": "eslint . --ext .js,.ts --format visualstudio --no-color --max-warnings 10 --report-unused-disable-directives --ignore-pattern 'build/*' --ignore-pattern 'package/*' --ignore-pattern 'coverage/*' --ignore-pattern 'node_modules/*'",
     "package": "rimraf package && rm -f puppeteer-core-controller*.tgz && npm pack",
-    "test": "jest --config=jest.config.js --runInBand",
     "test-with-no-coverage": "jest --config=jest-no-coverage.config.js --runInBand",
-    "tsc": " tsc --listEmittedFiles",
-    "tsc-init": "tsc --init"
+    "test": "jest --config=jest.config.js --runInBand",
+    "tsc-init": "tsc --init",
+    "tsc": " tsc --listEmittedFiles"
   },
   "author": "Henri d'Orgeval",
   "license": "MIT",

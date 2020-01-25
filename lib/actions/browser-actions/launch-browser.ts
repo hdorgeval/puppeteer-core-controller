@@ -1,5 +1,6 @@
 import * as puppeteer from 'puppeteer-core';
 import { getCurrentBrowserWindowState } from './get-current-browser-window-state';
+import { DeviceName } from '../page-actions/emulate-device';
 
 export interface MinViewPort {
   /**
@@ -18,6 +19,7 @@ export interface LaunchOptions extends puppeteer.LaunchOptions {
   minViewPort?: MinViewPort;
   recordFailedRequests?: boolean;
   recordPageErrors?: boolean;
+  emulateDevice?: DeviceName;
 }
 
 async function tryLaunchBrowser(options: Partial<LaunchOptions>): Promise<puppeteer.Browser> {
