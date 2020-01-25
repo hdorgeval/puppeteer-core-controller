@@ -5,7 +5,6 @@ export * from './get-client-rectangle-of';
 export * from './get-computed-style-of';
 export * from './get-elements-with-text';
 export * from './get-innertext-of';
-export * from './get-parents-of';
 export * from './get-selected-option-of';
 export * from './get-value-of';
 export * from './has-active-element';
