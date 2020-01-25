@@ -4,3 +4,4 @@ export * from './get-elements-with-value';
 export * from './get-value-of-handle';
 export * from './has-handle-moved';
 export * from './has-handle-value';
+export * from './is-handle-disabled';
