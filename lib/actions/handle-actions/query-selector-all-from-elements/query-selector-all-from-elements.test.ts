@@ -3,7 +3,7 @@ import * as SUT from './index';
 import { launchBrowser } from '../../browser-actions';
 import { getChromePath } from '../../../utils';
 import * as path from 'path';
-import { querySelectorAllInPage } from '../query-selector-all-in-page';
+import { querySelectorAllInPage } from '../../dom-actions/query-selector-all-in-page';
 
 describe('query selector all from elements', (): void => {
   let browser: puppeteer.Browser | undefined = undefined;
