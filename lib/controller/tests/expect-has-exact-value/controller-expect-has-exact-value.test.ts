@@ -1,5 +1,6 @@
 import * as SUT from '../../controller';
 import { LaunchOptions } from '../../../actions';
+import * as path from 'path';
 
 describe('Puppeteer Controller - ExpectThat - hasExactValue', (): void => {
   let pptc: SUT.PuppeteerController;
@@ -18,9 +19,8 @@ describe('Puppeteer Controller - ExpectThat - hasExactValue', (): void => {
     const launchOptions: LaunchOptions = {
       headless: true,
     };
-    const url = 'https://reactstrap.github.io/components/form';
-    const emailInputSelector = 'input#exampleEmail';
-    const foobarSelector = 'foobar';
+    const url = `file:${path.join(__dirname, 'controller-expect-has-exact-value.test.html')}`;
+    const selector = 'foobar';
 
     // When
     let result: Error | undefined = undefined;
@@ -28,10 +28,8 @@ describe('Puppeteer Controller - ExpectThat - hasExactValue', (): void => {
       await pptc
         .initWith(launchOptions)
         .navigateTo(url)
-        .click(emailInputSelector)
-        .expectThat(foobarSelector)
-        .hasExactValue('')
-        .typeText('foo.bar@baz.com');
+        .expectThat(selector)
+        .hasExactValue('');
     } catch (error) {
       result = error;
     }
@@ -49,8 +47,8 @@ describe('Puppeteer Controller - ExpectThat - hasExactValue', (): void => {
     const launchOptions: LaunchOptions = {
       headless: true,
     };
-    const url = 'https://reactstrap.github.io/components/form';
-    const emailInputSelector = 'input#exampleEmail';
+    const url = `file:${path.join(__dirname, 'controller-expect-has-exact-value.test.html')}`;
+    const selector = '#input2';
 
     // When
     let result: Error | undefined = undefined;
@@ -58,9 +56,10 @@ describe('Puppeteer Controller - ExpectThat - hasExactValue', (): void => {
       await pptc
         .initWith(launchOptions)
         .navigateTo(url)
-        .click(emailInputSelector)
+        .click(selector)
+        .clear(selector)
         .typeText('foo.bar@baz.com')
-        .expectThat(emailInputSelector)
+        .expectThat(selector)
         .hasExactValue('foobar', { timeoutInMilliseconds: 5000 });
     } catch (error) {
       result = error;
@@ -68,22 +67,19 @@ describe('Puppeteer Controller - ExpectThat - hasExactValue', (): void => {
 
     // Then
     const expectedErrorMessage =
-      "Error: Selector 'input#exampleEmail' current value is: 'foo.bar@baz.com', but this does not match the expected value: 'foobar'";
+      "Error: Selector '#input2' current value is: 'foo.bar@baz.com', but this does not match the expected value: 'foobar'";
     expect(result && result.message).toContain(expectedErrorMessage);
     expect(pptc.lastError && pptc.lastError.message).toBe(expectedErrorMessage);
   });
 
   test('should throw an error when page is not created', async (): Promise<void> => {
     // Given
-    const passwordInputSelector = 'input#examplePassword';
+    const selector = 'foobar';
 
     // When
     let result: Error | undefined = undefined;
     try {
-      await pptc
-        .expectThat(passwordInputSelector)
-        .hasExactValue('', { timeoutInMilliseconds: 5000 })
-        .typeText('foo.bar@baz.com');
+      await pptc.expectThat(selector).hasExactValue('', { timeoutInMilliseconds: 5000 });
     } catch (error) {
       result = error;
     }
@@ -98,8 +94,8 @@ describe('Puppeteer Controller - ExpectThat - hasExactValue', (): void => {
     const launchOptions: LaunchOptions = {
       headless: true,
     };
-    const url = 'https://reactstrap.github.io/components/form';
-    const emailInputSelector = 'input#exampleEmail';
+    const url = `file:${path.join(__dirname, 'controller-expect-has-exact-value.test.html')}`;
+    const selector = '#input1';
 
     // When
     let result: Error | undefined = undefined;
@@ -107,10 +103,62 @@ describe('Puppeteer Controller - ExpectThat - hasExactValue', (): void => {
       await pptc
         .initWith(launchOptions)
         .navigateTo(url)
-        .click(emailInputSelector)
+        .expectThat(selector)
+        .hasExactValue('foo')
+        .click(selector)
+        .clear(selector)
         .typeText('foo.bar@baz.com')
-        .expectThat(emailInputSelector)
+        .expectThat(selector)
         .hasExactValue('foo.bar@baz.com');
+    } catch (error) {
+      result = error;
+    }
+
+    // Then
+    expect(result).toBeUndefined();
+  });
+  test('should wait for the expected value', async (): Promise<void> => {
+    // Given
+    const launchOptions: LaunchOptions = {
+      headless: true,
+    };
+    const url = `file:${path.join(__dirname, 'controller-expect-has-exact-value.test.html')}`;
+    const selector = '#input3';
+
+    // When
+    let result: Error | undefined = undefined;
+    try {
+      await pptc
+        .initWith(launchOptions)
+        .navigateTo(url)
+        .expectThat(selector)
+        .hasExactValue('foobar');
+    } catch (error) {
+      result = error;
+    }
+
+    // Then
+    expect(result).toBeUndefined();
+  });
+
+  test('should wait for the expected selector and value', async (): Promise<void> => {
+    // Given
+    const launchOptions: LaunchOptions = {
+      headless: true,
+    };
+    const url = `file:${path.join(__dirname, 'controller-expect-has-exact-value.test.html')}`;
+    const selector = '#input4';
+
+    // When
+    let result: Error | undefined = undefined;
+    try {
+      await pptc
+        .initWith(launchOptions)
+        .navigateTo(url)
+        .expectThat(selector)
+        .isVisible()
+        .expectThat(selector)
+        .hasExactValue('foo bar');
     } catch (error) {
       result = error;
     }

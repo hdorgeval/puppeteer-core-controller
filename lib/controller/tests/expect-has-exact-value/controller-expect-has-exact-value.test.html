@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+
+  <title>has exact value</title>
+  <style type="text/css">
+    .uppercase {
+      text-transform: uppercase;
+    }
+  </style>
+</head>
+
+<body>
+  <input id="input1" value="foo" ></input>
+  <input id="input2" value="bar" ></input>
+  <input id="input3" value="" ></input>
+
+  <script>
+    window.setTimeout(() => {
+      const el = document.querySelector('#input3');
+      el.value = 'foobar'
+    }, 3000);
+
+    function addInput() {
+    const input = document.createElement('input');
+    input.setAttribute('value', 'foo bar');
+    input.setAttribute('id', 'input4');
+    const body = document.querySelector('body');
+    body.appendChild(input);
+    }
+
+    window.setTimeout(() => {
+    addInput();
+    }, 3000);
+  </script>
+</body>
+
+</html>
