@@ -21,6 +21,9 @@ import {
   WindowState,
   PasteOptions,
   defaultPasteOptions,
+  DeviceName,
+  getDevice,
+  allKnownDevices,
 } from '../actions';
 import { getChromePath, report, stringifyRequest } from '../utils';
 import { SelectorController } from '../selector';
@@ -108,6 +111,7 @@ export const defaultAssertOptions: AssertOptions = {
 
 export {
   ClickOptions,
+  DeviceName,
   HoverOptions,
   KeyboardKey,
   KeyboardPressOptions,
@@ -242,6 +246,9 @@ export class PuppeteerController implements PromiseLike<void> {
     }
     if (this.launchOptions.recordPageErrors) {
       await action.recordPageErrors(this.page, (err) => this.pageErrors.push(err));
+    }
+    if (this.launchOptions.emulateDevice) {
+      await action.emulateDevice(this.launchOptions.emulateDevice, this.page);
     }
   }
 
@@ -462,6 +469,21 @@ export class PuppeteerController implements PromiseLike<void> {
 
   public withCursor(): PuppeteerController {
     this.launchOptions.showCursor = true;
+    return this;
+  }
+
+  public emulateDevice(deviceName: DeviceName): PuppeteerController {
+    this.launchOptions.emulateDevice = deviceName;
+    const device = getDevice(deviceName);
+    if (!device) {
+      throw new Error(
+        `device '${deviceName}' is unknown. It must be one of : [${allKnownDevices
+          .map((d) => d.name)
+          .join(';')}] `,
+      );
+    }
+    this.windowSize.width = device.viewport.width;
+    this.windowSize.height = device.viewport.height + 100;
     return this;
   }
 
