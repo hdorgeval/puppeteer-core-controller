@@ -11,7 +11,7 @@
   ],
   "scripts": {
     "build-device-names": "ts-node ./lib/actions/page-actions/emulate-device/device-names-builder.ts",
-    "build": "rimraf build && npm run format && npm run lint && npm run tsc",
+    "build": "rimraf build && npm run format && npm run lint && tsc",
     "check-format": "prettier --list-different \"lib/**/*.ts\" ",
     "eslint-init": "eslint --init",
     "format": "prettier --write \"lib/**/*.ts\" ",
