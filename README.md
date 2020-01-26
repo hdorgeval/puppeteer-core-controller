@@ -124,7 +124,8 @@ await pptc
   - [recordRequestsTo(url)](#recordRequestsTourl)
   - [withMaxSizeWindow([minViewPort])](#withMaxSizeWindowminViewPort)
   - [withCursor()](#withCursor)
-  - [navigateTo(url)](#navigateTourl)
+  - [emulateDevice(deviceName)](#emulateDevicedeviceName)
+  - [navigateTo(url[, options])](#navigateTourl-options)
   - [hover(selector[, options])](#hoverselector-options)
   - [clear(selector[, options])](#clearselector-options)
   - [click(selector[, options])](#clickselector-options)
@@ -202,6 +203,14 @@ await pptc
 
 ---
 
+### emulateDevice(deviceName)
+
+Emulates a mobile device.
+
+- deviceName: `DeviceName`. See the [list of all known devices](lib/actions/page-actions/emulate-device/device-names.ts).
+
+---
+
 ### recordPageErrors()
 
 - track and record page errors. Should be called after `initWith`.
@@ -232,10 +241,12 @@ await pptc
 
 ---
 
-### navigateTo(url)
+### navigateTo(url[, options])
 
-- navigate to the specified url
+Navigate to the specified url
 
+- url: `string`
+- options: same object as [page.goto(url[, options])](https://github.com/puppeteer/puppeteer/blob/v2.0.0/docs/api.md#pagegotourl-options)
 ---
 
 ### click(selector[, options])
@@ -994,6 +1005,25 @@ const pptc = cast(this.context.pptc);
 
 # Selector API Documentation
 
+- Chainable Methods
+
+  - [find(selector)](#findselector)
+  - [nth(index)](#nthindex)
+  - [parent()](#parent)
+  - [withText(text)](#withTexttext)
+  - [withValue(text)](#withValuetext)
+
+- Helper Methods
+
+  - [count()](#count)
+  - [doesNotExist()](#doesNotExist)
+  - [exists()](#exists)
+  - [getFirstHandleOrNull()](#getFirstHandleOrNull)
+  - [getHandles()](#getHandles)
+  - [hasClass(className)](#hasClassclassName)
+  - [isDisabled()](#isDisabled)
+  - [isVisible()](#isVisible)
+
 ## Usage
 
 The Selector API enables to find and target a DOM element or a collection of DOM elements that is embedded in complex DOM Hierarchy.
@@ -1177,4 +1207,27 @@ Gets the number of found elements.
 
 The result may differ from one execution to another especially if targeted element is rendered lately because its data is based on some backend response.
 
+---
+
+### hasClass(className)
+
+- className : `string`
+- returns: `Promise<boolean>`
+
+Checks if selector has specified class.
+If the selector targets multiple DOM elements, this check is done only on the first one found.
+
+The result may differ from one execution to another especially if targeted element is rendered lately because its data is based on some backend response.
+
+In order to be able to call this method not too early, use the [waitUntil(predicate[, waitOptions[, errorMessage]])](#waitUntilpredicate-waitOptions-errorMessage) method:
+
+```js
+import { PuppeteerController } from 'puppeteer-core-controller';
+
+const pptc = new PuppeteerController();
+const selector = pptc.selector('p').withText('lorem ipsum ...');
+
+await pptc.waitUntil(() => selector.hasClass('foobar'))
+const hasClass = await selector.hasClass('foobar');
+```
 ---
