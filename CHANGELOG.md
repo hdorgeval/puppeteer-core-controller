@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html)
 
+## [1.33.0] - 2020-01-26
+
+### Added
+
+- add `emulateDevice(deviceName)` to the Fluent API
+- add `NavigationOptions` options to the `navigateTo(url)` method
+- add helper method `hasClass(className)` on the Selector API
+
 ## [1.32.0] - 2020-01-22
 
 ### Added
