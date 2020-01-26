@@ -4,11 +4,11 @@ import { getClientRectangleOfHandle } from '..';
 
 export async function hasHandleMoved(
   selector: puppeteer.ElementHandle<Element> | null | undefined,
-  previousClientRectangle: ClientRect,
+  previousClientRectangle: ClientRect | null,
 ): Promise<boolean> {
   const currentClientRectangle = await getClientRectangleOfHandle(selector);
 
-  if (currentClientRectangle === null) {
+  if (previousClientRectangle === null || currentClientRectangle === null) {
     return false;
   }
 
