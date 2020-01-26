@@ -12,6 +12,6 @@ describe('sleep N milliseconds', (): void => {
 
     // Then
     const duration = endTime - startTime;
-    expect(duration).toBeGreaterThan(wait);
+    expect(Math.abs(duration - wait)).toBeLessThan(20);
   });
 });
