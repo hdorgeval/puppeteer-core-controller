@@ -29,7 +29,7 @@ describe('Puppeteer Controller - ExpectThat - hasExactValue', (): void => {
         .initWith(launchOptions)
         .navigateTo(url)
         .expectThat(selector)
-        .hasExactValue('');
+        .hasExactValue('', { timeoutInMilliseconds: 5000 });
     } catch (error) {
       result = error;
     }
@@ -155,8 +155,6 @@ describe('Puppeteer Controller - ExpectThat - hasExactValue', (): void => {
       await pptc
         .initWith(launchOptions)
         .navigateTo(url)
-        .expectThat(selector)
-        .isVisible()
         .expectThat(selector)
         .hasExactValue('foo bar');
     } catch (error) {

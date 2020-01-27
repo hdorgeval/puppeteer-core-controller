@@ -66,7 +66,36 @@ describe('Puppeteer Controller', (): void => {
     }
 
     // Then
-    const expectedErrorMessage = `Error: selector '${selector}' does not have the class 'is-invalid'.`;
+    const expectedErrorMessage = `Error: Selector '${selector}' current class list is: [foo, foo1, foo2], but this list does not contain the expected value: 'is-invalid'.`;
+    expect(result && result.message).toContain(expectedErrorMessage);
+    expect(pptc.lastError && pptc.lastError.message).toBe(expectedErrorMessage);
+  });
+  test('should throw an error when selector has no class', async (): Promise<void> => {
+    // Given
+    const launchOptions: LaunchOptions = {
+      headless: true,
+    };
+    const url = `file:${path.join(__dirname, 'controller-expect-has-class.test.html')}`;
+    const selector = 'input#input0';
+
+    // When
+    let result: Error | undefined = undefined;
+    try {
+      await pptc
+        .initWith(launchOptions)
+        .navigateTo(url)
+        .click(selector)
+        .clear(selector)
+        .typeText('foo.bar@baz.com')
+        .pressKey('Tab')
+        .expectThat(selector)
+        .hasClass('is-invalid', { timeoutInMilliseconds: 5000 });
+    } catch (error) {
+      result = error;
+    }
+
+    // Then
+    const expectedErrorMessage = `Error: Selector '${selector}' current class list is: [], but this list does not contain the expected value: 'is-invalid'.`;
     expect(result && result.message).toContain(expectedErrorMessage);
     expect(pptc.lastError && pptc.lastError.message).toBe(expectedErrorMessage);
   });
@@ -158,6 +187,25 @@ describe('Puppeteer Controller', (): void => {
     const currentStatus = await pptc.hasClass(selector, 'foobar');
     expect(previousStatus).toBe(false);
     expect(currentStatus).toBe(true);
+    expect(pptc.lastError).toBe(undefined);
+  });
+
+  test('should wait for the selector and the className', async (): Promise<void> => {
+    // Given
+    const launchOptions: LaunchOptions = {
+      headless: true,
+    };
+    const url = `file:${path.join(__dirname, 'controller-expect-has-class.test.html')}`;
+    const selector = 'input#input4';
+
+    // When
+    await pptc
+      .initWith(launchOptions)
+      .navigateTo(url)
+      .expectThat(selector)
+      .hasClass('foobar');
+
+    // Then
     expect(pptc.lastError).toBe(undefined);
   });
 });

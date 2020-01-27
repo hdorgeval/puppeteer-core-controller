@@ -23,6 +23,20 @@
       const el = document.querySelector('#changing-content');
       el.innerText = 'yo!'
     }, 3000);
+
+    function addParagraphInDom() {
+      const paragraph = document.createElement('p');
+      paragraph.setAttribute('data-e2e', 'dynamically-added');
+      const newContent = document.createTextNode('I am dynamically added in DOM');
+      paragraph.appendChild(newContent);
+
+      const body = document.querySelector('body');
+      body.appendChild(paragraph);
+    }
+
+    window.setTimeout(() => {
+      addParagraphInDom();
+    }, 3000);
   </script>
 </body>
 

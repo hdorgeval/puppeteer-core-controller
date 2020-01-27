@@ -507,6 +507,11 @@ export class PuppeteerController implements PromiseLike<void> {
     return result;
   }
 
+  public async getClassListOf(selector: string): Promise<string[]> {
+    const result = await action.getClassListOf(selector, this.page);
+    return result;
+  }
+
   public async getInnerTextOf(selector: string): Promise<string> {
     const result = await action.getInnerTextOf(selector, this.page);
     return result;
@@ -576,6 +581,14 @@ export class PuppeteerController implements PromiseLike<void> {
     return result;
   }
 
+  private async safeExecutePredicate(predicate: () => Promise<boolean>): Promise<boolean> {
+    try {
+      const result = await predicate();
+      return result;
+    } catch (error) {
+      return false;
+    }
+  }
   private async assertFor(
     predicate: () => Promise<boolean>,
     errorMessage: string | (() => Promise<string>),
@@ -592,7 +605,7 @@ export class PuppeteerController implements PromiseLike<void> {
 
     for (let index = 0; index < nbIntervals; index++) {
       await this.page.waitFor(interval);
-      const result = await predicate();
+      const result = await this.safeExecutePredicate(predicate);
       if (result === true) {
         stabilityCounterCurrentValue += 1;
       }
@@ -681,10 +694,14 @@ export class PuppeteerController implements PromiseLike<void> {
         };
         this.actions.push(
           async (): Promise<void> => {
-            const errorMessage = `Error: selector '${selector}' does not have the class '${className}'.`;
             await this.assertFor(
               async (): Promise<boolean> => await this.hasClass(selector, className),
-              errorMessage,
+              async (): Promise<string> => {
+                const currentClassList = await this.getClassListOf(selector);
+                const currentClassListAsString = `[${currentClassList.join(', ')}]`;
+                const errorMessage = `Error: Selector '${selector}' current class list is: ${currentClassListAsString}, but this list does not contain the expected value: '${className}'.`;
+                return errorMessage;
+              },
               assertOptions,
             );
           },

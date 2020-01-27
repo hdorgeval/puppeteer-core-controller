@@ -14,7 +14,8 @@
 
 <body>
 
-  <input id="input1" value="1" class="foo"></input>
+  <input id="input0" value="1"></input>
+  <input id="input1" value="1" class="foo foo1 foo2"></input>
   <input id="input2" value="2" class="foo bar"></input>
   <input id="input3" value="3" class=""></input>
 
@@ -22,6 +23,19 @@
     window.setTimeout(() => {
       const el = document.querySelector('#input3');
       el.setAttribute('class', 'foobar');
+    }, 3000);
+
+    function addInput() {
+      const input = document.createElement('input');
+      input.setAttribute('class', 'foobar');
+      input.setAttribute('id', 'input4');
+      input.setAttribute('value', 'dynamically added input');
+      const body = document.querySelector('body');
+      body.appendChild(input);
+    }
+
+    window.setTimeout(() => {
+      addInput();
     }, 3000);
   </script>
 </body>

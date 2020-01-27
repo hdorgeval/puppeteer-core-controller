@@ -29,7 +29,7 @@ describe('Puppeteer Controller - ExpectThat - hasText', (): void => {
         .initWith(launchOptions)
         .navigateTo(url)
         .expectThat(selector)
-        .hasText('YO');
+        .hasText('YO', { timeoutInMilliseconds: 5000 });
     } catch (error) {
       result = error;
     }
@@ -138,5 +138,24 @@ describe('Puppeteer Controller - ExpectThat - hasText', (): void => {
     // Then
     expect(initialContent).toBe('foobar!');
     expect(finalContent).toBe('yo!');
+  });
+
+  test('should wait for the expected selector and text', async (): Promise<void> => {
+    // Given
+    const launchOptions: LaunchOptions = {
+      headless: true,
+    };
+    const url = `file:${path.join(__dirname, 'controller-expect-has-text.test.html')}`;
+    const selector = 'p[data-e2e="dynamically-added"]';
+
+    // When
+    await pptc
+      .initWith(launchOptions)
+      .navigateTo(url)
+      .expectThat(selector)
+      .hasText('I am dynamically added in DOM');
+
+    // Then
+    expect(pptc.lastError).toBe(undefined);
   });
 });
