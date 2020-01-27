@@ -1199,6 +1199,8 @@ If the selector targets multiple DOM elements, this check is done only on the fi
 
 The result may differ from one execution to another especially if targeted element is rendered lately because its data is based on some backend response.
 
+---
+
 ### count()
 
 - returns: `Promise<number>`
