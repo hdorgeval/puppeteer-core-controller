@@ -61,7 +61,7 @@ describe('Puppeteer Controller - assertion API - isEnabled', (): void => {
     }
 
     // Then
-    const expectedErrorMessage = "Error: selector 'input#exampleCustomCheckbox3' is disabled.";
+    const expectedErrorMessage = "Error: Selector 'input#exampleCustomCheckbox3' is disabled.";
     expect(result && result.message).toContain(expectedErrorMessage);
     expect(pptc.lastError && pptc.lastError.message).toBe(expectedErrorMessage);
   });
@@ -156,7 +156,7 @@ describe('Puppeteer Controller - assertion API - isEnabled', (): void => {
 
     // Then
     expect(wasInitiallyDisabled).toBe(true);
-    const expectedErrorMessage = "Error: selector 'input#disabledInput' is disabled.";
+    const expectedErrorMessage = "Error: Selector 'input#disabledInput' is disabled.";
     expect(result && result.message).toContain(expectedErrorMessage);
   });
 });
