@@ -763,10 +763,17 @@ export class PuppeteerController implements PromiseLike<void> {
         };
         this.actions.push(
           async (): Promise<void> => {
-            const errorMessage = `Error: selector '${selector}' is not disabled.`;
             await this.assertFor(
               async (): Promise<boolean> => await this.isDisabled(selector),
-              errorMessage,
+              async (): Promise<string> => {
+                const isDisabled = await this.isDisabled(selector);
+                if (isDisabled) {
+                  const unexpectedError = `Error: selector '${selector}' was disabled after provided timeout. You should increase the timeout value`;
+                  return unexpectedError;
+                }
+                const errorMessage = `Error: Selector '${selector}' is not disabled.`;
+                return errorMessage;
+              },
               assertOptions,
             );
           },

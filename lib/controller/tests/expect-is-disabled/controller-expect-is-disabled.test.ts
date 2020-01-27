@@ -19,8 +19,8 @@ describe('Puppeteer Controller - assertion API - isDisabled', (): void => {
     const launchOptions: LaunchOptions = {
       headless: true,
     };
-    const url = 'https://reactstrap.github.io/components/form';
-    const foobarSelector = 'foobar';
+    const url = `file:${path.join(__dirname, 'controller-expect-is-disabled.test.html')}`;
+    const selector = 'foobar';
 
     // When
     let result: Error | undefined = undefined;
@@ -28,7 +28,7 @@ describe('Puppeteer Controller - assertion API - isDisabled', (): void => {
       await pptc
         .initWith(launchOptions)
         .navigateTo(url)
-        .expectThat(foobarSelector)
+        .expectThat(selector)
         .isDisabled({ timeoutInMilliseconds: 5000 });
     } catch (error) {
       result = error;
@@ -61,7 +61,7 @@ describe('Puppeteer Controller - assertion API - isDisabled', (): void => {
     }
 
     // Then
-    const expectedErrorMessage = "Error: selector 'input#exampleCustomCheckbox' is not disabled.";
+    const expectedErrorMessage = "Error: Selector 'input#exampleCustomCheckbox' is not disabled.";
     expect(result && result.message).toContain(expectedErrorMessage);
     expect(pptc.lastError && pptc.lastError.message).toBe(expectedErrorMessage);
   });
@@ -156,7 +156,7 @@ describe('Puppeteer Controller - assertion API - isDisabled', (): void => {
 
     // Then
     expect(wasInitiallyDisabled).toBe(false);
-    const expectedErrorMessage = "Error: selector 'input#enabledInput' is not disabled.";
+    const expectedErrorMessage = "Error: Selector 'input#enabledInput' is not disabled.";
     expect(result && result.message).toContain(expectedErrorMessage);
   });
 });
