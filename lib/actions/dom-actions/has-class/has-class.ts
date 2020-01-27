@@ -1,4 +1,5 @@
 import * as puppeteer from 'puppeteer-core';
+import { getClassListOf } from '../index';
 export async function hasClass(
   selector: string,
   className: string,
@@ -10,12 +11,8 @@ export async function hasClass(
     );
   }
 
-  const stringifiedClassList = await page.$eval(selector, (el: Element): string => {
-    const classList = Array.from(el.classList);
-    return JSON.stringify(classList);
-  });
+  const classList = await getClassListOf(selector, page);
 
-  const classList: string[] = JSON.parse(stringifiedClassList);
   if (!Array.isArray(classList)) {
     return false;
   }
