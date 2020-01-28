@@ -715,10 +715,17 @@ export class PuppeteerController implements PromiseLike<void> {
         };
         this.actions.push(
           async (): Promise<void> => {
-            const errorMessage = `Error: selector '${selector}' does not have the focus.`;
             await this.assertFor(
               async (): Promise<boolean> => await this.hasFocus(selector),
-              errorMessage,
+              async (): Promise<string> => {
+                const hasCurrentFocus = await this.hasFocus(selector);
+                if (hasCurrentFocus) {
+                  const unexpectedError = `Error: selector '${selector}' got focus after provided timeout. You should increase the timeout value`;
+                  return unexpectedError;
+                }
+                const errorMessage = `Error: selector '${selector}' does not have the focus.`;
+                return errorMessage;
+              },
               assertOptions,
             );
           },
