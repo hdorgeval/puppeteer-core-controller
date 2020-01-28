@@ -30,7 +30,7 @@ describe('Puppeteer Controller - ExpectThat - hasAttribute', (): void => {
         .navigateTo(url)
         .expectThat(selector)
         .hasAttribute('foo')
-        .withValue('bar');
+        .withValue('bar', { timeoutInMilliseconds: 5000 });
     } catch (error) {
       result = error;
     }
@@ -143,5 +143,27 @@ describe('Puppeteer Controller - ExpectThat - hasAttribute', (): void => {
     // Then
     expect(initialHasAttribute).toBe(false);
     expect(finalHasAttribute).toBe(true);
+  });
+
+  test('should wait for the selector and the expected attribute and value', async (): Promise<
+    void
+  > => {
+    // Given
+    const launchOptions: LaunchOptions = {
+      headless: true,
+    };
+    const url = `file:${path.join(__dirname, 'controller-expect-has-attribute.test.html')}`;
+    const selector = 'p#dynamically-added';
+
+    // When
+    await pptc
+      .initWith(launchOptions)
+      .navigateTo(url)
+      .expectThat(selector)
+      .hasAttribute('data-e2e')
+      .withValue('foobar');
+
+    // Then
+    expect(pptc.lastError).toBe(undefined);
   });
 });

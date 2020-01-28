@@ -639,11 +639,22 @@ export class PuppeteerController implements PromiseLike<void> {
             };
             this.actions.push(
               async (): Promise<void> => {
-                const errorMessage = `Error: Selector '${selector}' does not have the attribute '${attributeName}' with the value '${attributeValue}'.`;
                 await this.assertFor(
                   async (): Promise<boolean> =>
                     await this.hasAttributeWithValue(selector, attributeName, attributeValue),
-                  errorMessage,
+                  async (): Promise<string> => {
+                    const hasAttributeWithValue = await this.hasAttributeWithValue(
+                      selector,
+                      attributeName,
+                      attributeValue,
+                    );
+                    if (hasAttributeWithValue) {
+                      const unexpectedError = `Error: selector '${selector}' got the attribute '${attributeName}' with the value '${attributeValue}' after provided timeout. You should increase the timeout value`;
+                      return unexpectedError;
+                    }
+                    const errorMessage = `Error: Selector '${selector}' does not have the attribute '${attributeName}' with the value '${attributeValue}'.`;
+                    return errorMessage;
+                  },
                   assertOptions,
                 );
               },

@@ -17,6 +17,21 @@
         const el = document.querySelector('#changing-attr');
         el.setAttribute('foo', 'bar');
       }, 3000);
+
+      function addParagraph() {
+        const paragraph = document.createElement('p');
+        paragraph.setAttribute('id', 'dynamically-added');
+        paragraph.setAttribute('data-e2e', 'foobar');
+
+        const newContent = document.createTextNode('I am dynamically added in DOM');
+        paragraph.appendChild(newContent);
+        const body = document.querySelector('body');
+        body.appendChild(paragraph);
+      }
+
+      window.setTimeout(() => {
+        addParagraph();
+      }, 3000);
     </script>
   </body>
 </html>
