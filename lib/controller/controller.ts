@@ -112,6 +112,7 @@ export const defaultAssertOptions: AssertOptions = {
 
 export {
   ClickOptions,
+  Device,
   DeviceName,
   HoverOptions,
   KeyboardKey,
@@ -154,10 +155,6 @@ export class PuppeteerController implements PromiseLike<void> {
 
   private browser: puppeteer.Browser | undefined;
   private page: puppeteer.Page | undefined;
-  private windowSize: { height: number; width: number } = {
-    width: 800,
-    height: 600,
-  };
 
   public get currentPage(): puppeteer.Page | undefined {
     return this.page;
@@ -168,15 +165,7 @@ export class PuppeteerController implements PromiseLike<void> {
   }
   private isExecutingActions = false;
   private actions: (() => Promise<void>)[] = [];
-  private launchOptions: Partial<LaunchOptions> = {
-    defaultViewport: {
-      width: this.windowSize.width,
-      height: this.windowSize.height,
-      deviceScaleFactor: 1,
-      isLandscape: false,
-    },
-    args: [`--window-size=${this.windowSize.width},${this.windowSize.height}`],
-  };
+  private launchOptions: Partial<LaunchOptions> = {};
 
   private pageErrors: Error[] = [];
   public getPageErrors(): Error[] {
@@ -235,11 +224,6 @@ export class PuppeteerController implements PromiseLike<void> {
       ...options,
     };
     this.launchOptions.executablePath = this.launchOptions.executablePath || getChromePath();
-    this.launchOptions.args = this.launchOptions.args || [];
-    this.launchOptions.args.push(
-      `--window-size=${this.windowSize.width},${this.windowSize.height}`,
-    );
-
     this.browser = await action.launchBrowser(this.launchOptions);
   }
 
@@ -480,7 +464,6 @@ export class PuppeteerController implements PromiseLike<void> {
   }
 
   public emulateDevice(deviceName: DeviceName): PuppeteerController {
-    this.launchOptions.emulateDevice = deviceName;
     const device = getDevice(deviceName);
     if (!device) {
       throw new Error(
@@ -489,8 +472,7 @@ export class PuppeteerController implements PromiseLike<void> {
           .join(';')}] `,
       );
     }
-    this.windowSize.width = device.viewport.width;
-    this.windowSize.height = device.viewport.height + 100;
+    this.launchOptions.emulateDevice = device;
     return this;
   }
 

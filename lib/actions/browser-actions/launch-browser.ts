@@ -1,27 +1,26 @@
 import * as puppeteer from 'puppeteer-core';
 import { getCurrentBrowserWindowState } from './get-current-browser-window-state';
-import { DeviceName } from '../page-actions/emulate-device';
+import { defaultDevice, Device } from '../page-actions/emulate-device';
 
 export interface MinViewPort {
   /**
    * min page width in pixels.
    */
-  minWidth?: number;
+  minWidth: number;
   /**
    * min page height in pixels.
    */
-  minHeight?: number;
+  minHeight: number;
 }
 
 export interface LaunchOptions extends puppeteer.LaunchOptions {
   browserWindowShouldBeMaximized?: boolean;
-  showCursor?: boolean;
+  emulateDevice?: Device;
   minViewPort?: MinViewPort;
   recordFailedRequests?: boolean;
   recordPageErrors?: boolean;
-  emulateDevice?: DeviceName;
+  showCursor?: boolean;
 }
-
 async function tryLaunchBrowser(options: Partial<LaunchOptions>): Promise<puppeteer.Browser> {
   const maxRetries = 3;
 
@@ -62,11 +61,9 @@ async function tryLaunchBrowser(options: Partial<LaunchOptions>): Promise<puppet
   }
   throw new Error('Cannot launch browser');
 }
-
-export async function launchBrowser(options: Partial<LaunchOptions>): Promise<puppeteer.Browser> {
-  if (!options.browserWindowShouldBeMaximized) {
-    return await tryLaunchBrowser(options);
-  }
+export async function launchBrowserWithMaxSizeWindow(
+  options: Partial<LaunchOptions>,
+): Promise<puppeteer.Browser> {
   const isHeadless = options.headless;
   const newOptions = {
     ...options,
@@ -76,6 +73,7 @@ export async function launchBrowser(options: Partial<LaunchOptions>): Promise<pu
   const page = await browser.newPage();
   const windowState = await getCurrentBrowserWindowState(page);
 
+  newOptions.headless = isHeadless || false;
   newOptions.args = newOptions.args || [];
   newOptions.args = newOptions.args.filter(
     (arg: string): boolean => !arg.startsWith('--window-size'),
@@ -83,28 +81,59 @@ export async function launchBrowser(options: Partial<LaunchOptions>): Promise<pu
   newOptions.args.push(
     `--window-size=${windowState.screen.availWidth},${windowState.screen.availHeight}`,
   );
-  newOptions.defaultViewport = newOptions.defaultViewport || {};
-  newOptions.defaultViewport.width = windowState.screen.availWidth;
-  newOptions.defaultViewport.height = windowState.screen.availHeight;
-  newOptions.headless = isHeadless || false;
 
   if (
     options.minViewPort &&
     typeof options.minViewPort.minWidth === 'number' &&
-    windowState.screen.availWidth < options.minViewPort.minWidth
+    typeof options.minViewPort.minHeight === 'number'
   ) {
-    newOptions.defaultViewport.width = options.minViewPort.minWidth;
-  }
+    const width =
+      windowState.screen.availWidth < options.minViewPort.minWidth
+        ? options.minViewPort.minWidth
+        : windowState.screen.availWidth;
 
-  if (
-    options.minViewPort &&
-    typeof options.minViewPort.minHeight === 'number' &&
-    windowState.screen.availHeight < options.minViewPort.minHeight
-  ) {
-    newOptions.defaultViewport.height = options.minViewPort.minHeight;
+    const height =
+      windowState.screen.availHeight < options.minViewPort.minHeight
+        ? options.minViewPort.minHeight
+        : windowState.screen.availHeight;
+
+    newOptions.defaultViewport = {
+      width,
+      height,
+    };
   }
 
   await browser.close();
   const maximizedBrowser = await require('puppeteer-core').launch(newOptions);
   return maximizedBrowser;
+}
+
+export async function launchBrowserWithEmulatedDevice(
+  options: Partial<LaunchOptions>,
+): Promise<puppeteer.Browser> {
+  const newOptions = {
+    ...options,
+  };
+  const device = options.emulateDevice || defaultDevice;
+
+  newOptions.args = newOptions.args || [];
+  newOptions.args = newOptions.args.filter(
+    (arg: string): boolean => !arg.startsWith('--window-size'),
+  );
+  newOptions.args.push(`--window-size=${device.viewport.width},${device.viewport.height + 100}`);
+
+  const emulatedDeviceBrowser = await require('puppeteer-core').launch(newOptions);
+  return emulatedDeviceBrowser;
+}
+
+export async function launchBrowser(options: Partial<LaunchOptions>): Promise<puppeteer.Browser> {
+  if (options.browserWindowShouldBeMaximized) {
+    return await launchBrowserWithMaxSizeWindow(options);
+  }
+
+  if (options.emulateDevice) {
+    return await launchBrowserWithEmulatedDevice(options);
+  }
+
+  return await tryLaunchBrowser(options);
 }
