@@ -30,7 +30,7 @@ module.exports = {
     '!lib/actions/**/has-*.ts',
     '!lib/actions/**/is-*.ts',
     '!lib/actions/**/query-*.ts',
-    '!lib/actions/**/scroll-to.ts',
+    '!lib/actions/**/scroll-to*.ts',
     '!lib/actions/**/show-*.ts',
     '!lib/actions/**/wait-*.ts',
   ],
