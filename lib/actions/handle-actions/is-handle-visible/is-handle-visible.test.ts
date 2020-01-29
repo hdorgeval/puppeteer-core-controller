@@ -32,6 +32,21 @@ describe('handle is visible', (): void => {
     expect(result).toBe(false);
   });
 
+  test('should return false when handle is null', async (): Promise<void> => {
+    // Given
+    browser = await launchBrowser({
+      headless: true,
+      executablePath: getChromePath(),
+    });
+    const handle: puppeteer.ElementHandle<Element> | null = null;
+
+    // When
+    const result = await SUT.isHandleVisible(handle);
+
+    // Then
+    expect(result).toBe(false);
+  });
+
   test('should return false when selector is hidden', async (): Promise<void> => {
     // Given
     browser = await launchBrowser({

@@ -1,9 +1,9 @@
 import * as puppeteer from 'puppeteer-core';
 declare const window: Window;
 export async function isHandleVisible(
-  selector: puppeteer.ElementHandle<Element> | undefined,
+  selector: puppeteer.ElementHandle<Element> | undefined | null,
 ): Promise<boolean> {
-  if (selector === undefined) {
+  if (selector === undefined || selector === null) {
     return false;
   }
 

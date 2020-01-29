@@ -1,6 +1,8 @@
 import * as puppeteer from 'puppeteer-core';
 import * as action from '../actions';
-import { PuppeteerController } from '../controller';
+import { PuppeteerController, ClickOptions } from '../controller';
+import { defaultClickOptions, defaultHoverOptions } from '../actions';
+import { sleep } from '../utils';
 export type Action = (
   handles: puppeteer.ElementHandle<Element>[],
 ) => Promise<puppeteer.ElementHandle<Element>[]>;
@@ -311,5 +313,47 @@ export class SelectorController {
   .nth(${index})`;
 
     return this.createSelectorFrom('', actions, chainingHistory);
+  }
+
+  public async click(options: ClickOptions = defaultClickOptions): Promise<void> {
+    await this.pptc.waitUntil(
+      () => this.exists(),
+      {
+        timeoutInMilliseconds: options.timeoutInMilliseconds,
+        throwOnTimeout: true,
+      },
+      `Cannot click on selector ${this.toString()} because it was not found in DOM}`,
+    );
+
+    const handle = await this.getFirstHandleOrNull();
+    await action.scrollToHandle(handle);
+
+    await this.pptc.waitUntil(
+      () => this.isVisible(),
+      {
+        timeoutInMilliseconds: options.timeoutInMilliseconds,
+        throwOnTimeout: true,
+      },
+      `Cannot click on selector ${this.toString()} because it is not visible}`,
+    );
+
+    await action.waitUntilHandleDoesNotMove(handle, this.toString(), {
+      timeoutInMilliseconds: options.timeoutInMilliseconds,
+    });
+
+    for (let index = 0; index < 3; index++) {
+      await sleep(50);
+      const clientRectangle = await action.getClientRectangleOfHandle(handle);
+      if (clientRectangle === null) {
+        continue;
+      }
+      const x = clientRectangle.left + clientRectangle.width / 2;
+      const y = clientRectangle.top + clientRectangle.height / 2;
+      this.pptc &&
+        this.pptc.currentPage &&
+        (await this.pptc.currentPage.mouse.move(x, y, { steps: defaultHoverOptions.steps }));
+    }
+
+    await handle?.click(options);
   }
 }

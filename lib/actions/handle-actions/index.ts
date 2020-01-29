@@ -12,3 +12,5 @@ export * from './is-handle-moving';
 export * from './is-handle-visible';
 export * from './query-selector-all-from-elements';
 export * from './query-selector-all-in-page';
+export * from './scroll-to-handle';
+export * from './wait-until-handle-does-not-move';
