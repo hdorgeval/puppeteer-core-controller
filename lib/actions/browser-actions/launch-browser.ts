@@ -52,9 +52,9 @@ async function tryLaunchBrowser(options: Partial<LaunchOptions>): Promise<puppet
       if (
         error.message &&
         typeof error.message === 'string' &&
-        (error.message as string).includes('Failed to launch chrome')
+        (error.message as string).includes('Failed to launch the browser process')
       ) {
-        // no need to retry: path to chrome is incorrect
+        // no need to retry: path to chrome or firefox is incorrect
         throw error;
       }
     }

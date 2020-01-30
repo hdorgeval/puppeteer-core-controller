@@ -28,7 +28,8 @@ describe('Puppeteer Controller', (): void => {
     }
 
     // Then
-    expect(result && result.message).toContain('Failed to launch chrome');
+    expect(result && result.message).toContain('Failed to launch the browser process');
+    expect(result && result.message).toContain('yo.app');
   });
 
   test('should give back an error on navigating to an url without doing an init', async (): Promise<
