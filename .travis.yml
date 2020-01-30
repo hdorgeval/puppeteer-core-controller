@@ -1,5 +1,6 @@
 addons:
   chrome: stable
+  firefox: latest
   apt:
     packages:
       - libnss3
@@ -23,6 +24,8 @@ before_install:
   - npx --version
   # Launch XVFB
   - if [[ `uname` = "Linux" ]]; then export DISPLAY=:99.0; fi
+  # Info about firefox
+  - where firefox
 
 script:
   - node --version
