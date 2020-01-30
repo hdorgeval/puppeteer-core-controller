@@ -35,27 +35,36 @@ describe('Puppeteer Controller - Selector API - click', (): void => {
     await selector.click();
 
     // Then
-    expect(true).toBe(true);
+    await pptc.expectThat('#dynamically-added').hasFocus();
   });
 
-  test.skip('should return false when selector is transparent', async (): Promise<void> => {
+  test('should not click on a transparent selector', async (): Promise<void> => {
     // Given
     const launchOptions: LaunchOptions = {
       headless: true,
     };
-    const url = `file:${path.join(__dirname, 'is-visible.test.html')}`;
-    await pptc.initWith(launchOptions).navigateTo(url);
 
-    // When
     const selector = pptc
       .selector('[role="row"]')
       .find('p')
       .withText('I am transparent');
 
-    const result = await selector.isVisible();
+    const url = `file:${path.join(__dirname, 'click.test.html')}`;
+    await pptc.initWith(launchOptions).navigateTo(url);
+
+    // When
+    let result: Error | undefined = undefined;
+    try {
+      await selector.click({ timeoutInMilliseconds: 5000 });
+    } catch (error) {
+      result = error;
+    }
 
     // Then
-    expect(result).toBe(false);
+    const expectedErrorMessage = `Cannot click on selector([role="row"])
+  .find(p)
+  .withText(I am transparent) because this selector is not visible`;
+    expect(result && result.message).toContain(expectedErrorMessage);
   });
 
   test.skip('should return false when selector is out of screen', async (): Promise<void> => {

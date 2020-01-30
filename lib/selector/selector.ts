@@ -315,6 +315,15 @@ export class SelectorController {
     return this.createSelectorFrom('', actions, chainingHistory);
   }
 
+  /**
+   * Click on the selector.
+   * This method automatically waits for the selector to appear in the DOM;
+   * Then hover over the selector;
+   * Then clicks on the selector.
+   * @param {ClickOptions} [options=defaultClickOptions]
+   * @returns {Promise<void>}
+   * @memberof SelectorController
+   */
   public async click(options: ClickOptions = defaultClickOptions): Promise<void> {
     await this.pptc.waitUntil(
       () => this.exists(),
@@ -322,7 +331,7 @@ export class SelectorController {
         timeoutInMilliseconds: options.timeoutInMilliseconds,
         throwOnTimeout: true,
       },
-      `Cannot click on selector ${this.toString()} because it was not found in DOM}`,
+      `Cannot click on ${this.toString()} because this selector was not found in DOM`,
     );
 
     const handle = await this.getFirstHandleOrNull();
@@ -334,7 +343,7 @@ export class SelectorController {
         timeoutInMilliseconds: options.timeoutInMilliseconds,
         throwOnTimeout: true,
       },
-      `Cannot click on selector ${this.toString()} because it is not visible}`,
+      `Cannot click on ${this.toString()} because this selector is not visible`,
     );
 
     await action.waitUntilHandleDoesNotMove(handle, this.toString(), {
