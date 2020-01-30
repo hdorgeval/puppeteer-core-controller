@@ -28,6 +28,7 @@ before_install:
   - where firefox
 
 script:
+  - where firefox
   - node --version
   - npm --version
   - npx --version
