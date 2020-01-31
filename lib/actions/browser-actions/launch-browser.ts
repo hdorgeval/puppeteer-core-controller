@@ -82,6 +82,8 @@ export async function launchBrowserWithMaxSizeWindow(
     `--window-size=${windowState.screen.availWidth},${windowState.screen.availHeight}`,
   );
 
+  newOptions.defaultViewport = null;
+
   if (
     options.minViewPort &&
     typeof options.minViewPort.minWidth === 'number' &&
