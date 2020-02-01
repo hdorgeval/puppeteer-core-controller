@@ -38,6 +38,30 @@ describe('Puppeteer Controller - Selector API - click', (): void => {
     await pptc.expectThat('#dynamically-added').hasFocus();
   });
 
+  test('should wait for editability before clicking', async (): Promise<void> => {
+    // Given
+    const launchOptions: LaunchOptions = {
+      headless: true,
+    };
+
+    const selector = pptc
+      .selector('[role="row"]')
+      .find('input')
+      .withValue('I am dynamically added');
+
+    const url = `file:${path.join(__dirname, 'click.test.html')}`;
+    await pptc
+      .initWith(launchOptions)
+      .withCursor()
+      .navigateTo(url);
+
+    // When
+    await selector.click();
+
+    // Then
+    await pptc.expectThat('#dynamically-added-input').hasFocus();
+  });
+
   test('should not click on a transparent selector', async (): Promise<void> => {
     // Given
     const launchOptions: LaunchOptions = {
@@ -50,7 +74,10 @@ describe('Puppeteer Controller - Selector API - click', (): void => {
       .withText('I am transparent');
 
     const url = `file:${path.join(__dirname, 'click.test.html')}`;
-    await pptc.initWith(launchOptions).navigateTo(url);
+    await pptc
+      .initWith(launchOptions)
+      .withCursor()
+      .navigateTo(url);
 
     // When
     let result: Error | undefined = undefined;
@@ -67,69 +94,35 @@ describe('Puppeteer Controller - Selector API - click', (): void => {
     expect(result && result.message).toContain(expectedErrorMessage);
   });
 
-  test.skip('should return false when selector is out of screen', async (): Promise<void> => {
+  test('should not click when selector is out of screen', async (): Promise<void> => {
     // Given
     const launchOptions: LaunchOptions = {
       headless: true,
     };
-    const url = `file:${path.join(__dirname, 'is-visible.test.html')}`;
-    await pptc.initWith(launchOptions).navigateTo(url);
 
-    // When
     const selector = pptc
       .selector('[role="row"]')
       .find('p')
       .withText('I am out of screen');
 
-    const result = await selector.isVisible();
-
-    // Then
-    expect(result).toBe(false);
-  });
-  test.skip('should return false when selector is first hidden', async (): Promise<void> => {
-    // Given
-    const launchOptions: LaunchOptions = {
-      headless: true,
-    };
-    const url = `file:${path.join(__dirname, 'is-visible.test.html')}`;
-    await pptc.initWith(launchOptions).navigateTo(url);
+    const url = `file:${path.join(__dirname, 'click.test.html')}`;
+    await pptc
+      .initWith(launchOptions)
+      .withCursor()
+      .navigateTo(url);
 
     // When
-    const selector = pptc
-      .selector('[role="row"]')
-      .find('td')
-      .withText('hidden, then visible')
-      .find('p'); //only the <p> ... </p> element is hidden first
-
-    const initialVisibleStatus = await selector.isVisible();
-    await pptc.wait(5000);
-    const finalVisibleStatus = await selector.isVisible();
+    let result: Error | undefined = undefined;
+    try {
+      await selector.click({ timeoutInMilliseconds: 5000 });
+    } catch (error) {
+      result = error;
+    }
 
     // Then
-    expect(initialVisibleStatus).toBe(false);
-    expect(finalVisibleStatus).toBe(true);
-  });
-
-  test.skip('should return true, even when selector is created before page is instanciated', async (): Promise<
-    void
-  > => {
-    // Given
-    const launchOptions: LaunchOptions = {
-      headless: true,
-    };
-
-    const selector = pptc
-      .selector('[role="row"]')
-      .find('p')
-      .withText('I am visible');
-
-    const url = `file:${path.join(__dirname, 'is-visible.test.html')}`;
-    await pptc.initWith(launchOptions).navigateTo(url);
-
-    // When
-    const result = await selector.isVisible();
-
-    // Then
-    expect(result).toBe(true);
+    const expectedErrorMessage = `Cannot click on selector([role="row"])
+  .find(p)
+  .withText(I am out of screen) because this selector is not visible`;
+    expect(result && result.message).toContain(expectedErrorMessage);
   });
 });

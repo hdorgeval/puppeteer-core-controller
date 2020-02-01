@@ -158,6 +158,22 @@ export class SelectorController {
   }
 
   /**
+   * Checks if the selector is enabled.
+   * If the selector targets multiple DOM elements, this check is done only on the first one found.
+   * The result may differ from one execution to another
+   * especially if targeted element is rendered lately because its data is based on some backend response.
+   * So the enability status is the one known when executing this method.
+   *
+   * @returns {Promise<boolean>}
+   * @memberof SelectorController
+   */
+  public async isEnabled(): Promise<boolean> {
+    const handle = await this.getFirstHandleOrNull();
+    const isElementEnabled = await action.isHandleEnabled(handle);
+    return isElementEnabled;
+  }
+
+  /**
    * Checks if selector has specified class.
    * If the selector targets multiple DOM elements, this check is done only on the first one found.
    * The result may differ from one execution to another
@@ -362,6 +378,15 @@ export class SelectorController {
         this.pptc.currentPage &&
         (await this.pptc.currentPage.mouse.move(x, y, { steps: defaultHoverOptions.steps }));
     }
+
+    await this.pptc.waitUntil(
+      () => this.isEnabled(),
+      {
+        timeoutInMilliseconds: options.timeoutInMilliseconds,
+        throwOnTimeout: true,
+      },
+      `Cannot click on ${this.toString()} because this selector is disabled`,
+    );
 
     await handle?.click(options);
   }
