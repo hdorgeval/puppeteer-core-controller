@@ -35,7 +35,7 @@ async function tryLaunchBrowser(options: Partial<LaunchOptions>): Promise<puppet
       if (
         error.message &&
         typeof error.message === 'string' &&
-        (error.message as string).includes('Failed to launch chrome') &&
+        (error.message as string).includes('Failed to launch the browser') &&
         (error.message as string).includes('Inconsistency detected by ld.so')
       ) {
         // eslint-disable-next-line no-console
