@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html)
 
+## [1.34.0] - 2020-02-01
+
+### Added
+
+- add helper method `click()` on the Selector API
+- add helper method `isEnabled()` on the Selector API
+
+### Fixed
+
+- update of the `puppeteer-core` dependency to latest version 2.1.0
+- fix(controller): manage viewport in the right way.
+
 ## [1.33.2] - 2020-01-30
 
 ### Fixed
