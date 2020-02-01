@@ -182,7 +182,7 @@ await pptc
 
 ### initWith([options])
 
-- options: same object as [puppeteer.launch([options])](https://github.com/puppeteer/puppeteer/blob/v2.0.0/docs/api.md#puppeteerlaunchoptions)
+- options: same object as [puppeteer.launch([options])](https://github.com/puppeteer/puppeteer/blob/v2.1.0/docs/api.md#puppeteerlaunchoptions)
 
 ---
 
@@ -246,13 +246,14 @@ Emulates a mobile device.
 Navigate to the specified url
 
 - url: `string`
-- options: same object as [page.goto(url[, options])](https://github.com/puppeteer/puppeteer/blob/v2.0.0/docs/api.md#pagegotourl-options)
+- options: same object as [page.goto(url[, options])](https://github.com/puppeteer/puppeteer/blob/v2.1.0/docs/api.md#pagegotourl-options)
+
 ---
 
 ### click(selector[, options])
 
 - selector: `string`
-- options: same object as [page.click(selector[, options])](https://github.com/puppeteer/puppeteer/blob/v2.0.0/docs/api.md#pageclickselector-options)
+- options: same object as [page.click(selector[, options])](https://github.com/puppeteer/puppeteer/blob/v2.1.0/docs/api.md#pageclickselector-options)
 
   with an additional property: `timeoutInMilliseconds`. This option enables the click method to wait for the selector to appear in the DOM before attempting to click on it. Defaults to 30000 (30 seconds). Pass 0 to disable this timeout.
 
@@ -296,7 +297,7 @@ await pptc
 ### typeText(text[, options])
 
 - text: `string`
-- options: same object as [keyboard.type(text[, options])](https://github.com/puppeteer/puppeteer/blob/v2.0.0/docs/api.md#keyboardtypetext-options)
+- options: same object as [keyboard.type(text[, options])](https://github.com/puppeteer/puppeteer/blob/v2.1.0/docs/api.md#keyboardtypetext-options)
 
   except that `delay` defaults to 50 milliseconds. Set the `delay` value to `0` to disable the delay.
 
@@ -307,7 +308,7 @@ await pptc
 Clear text in an input box.
 
 - selector: `string`
-- options: same object as [page.click(selector[, options])](https://github.com/puppeteer/puppeteer/blob/v2.0.0/docs/api.md#pageclickselector-options)
+- options: same object as [page.click(selector[, options])](https://github.com/puppeteer/puppeteer/blob/v2.1.0/docs/api.md#pageclickselector-options)
 
 This method does not wait for the selector to be in the DOM.
 In some cases you might have to wait that the input field is visible before clearing it's value:
@@ -325,7 +326,7 @@ const value = await pptc
 ### pressKey(key[, options])
 
 - key: 'Tab' | 'Backspace' | 'Enter'
-- options: same object as [keyboard.press(key[, options])](https://github.com/puppeteer/puppeteer/blob/v2.0.0/docs/api.md#keyboardpresskey-options)
+- options: same object as [keyboard.press(key[, options])](https://github.com/puppeteer/puppeteer/blob/v2.1.0/docs/api.md#keyboardpresskey-options)
 
   except that `delay` defaults to 50 milliseconds. Set the `delay` value to `0` to disable the delay.
 
@@ -337,7 +338,7 @@ const value = await pptc
 
   There is a major difference between the `select` method of the Puppeteer API and this `select` method: You should pass the labels of the select DOM element (ie: what you see on the screen) instead of the value of the `value` attribute found on the `option` element.
 
-- selector: same as [page.select(selector, ...values)](https://github.com/puppeteer/puppeteer/blob/v2.0.0/docs/api.md#pageselectselector-values)
+- selector: same as [page.select(selector, ...values)](https://github.com/puppeteer/puppeteer/blob/v2.1.0/docs/api.md#pageselectselector-values)
 
 - options: {timeoutInMilliseconds}. This option enables the select method to wait for the selector to appear in the DOM before attempting to select the option(s). Defaults to 30000 (30 seconds). Pass 0 to disable this timeout.
 
@@ -373,7 +374,7 @@ await pptc
 - waitOptions: {timeoutInMilliseconds: number}.
   The find method will wait for the selector to to be visible until `timeoutInMilliseconds` expires. Defaults to 30000 (30 seconds).
 - withText(text)
-- clickOptions: same object as [page.click(selector[, options])](https://github.com/puppeteer/puppeteer/blob/v2.0.0/docs/api.md#pageclickselector-options)
+- clickOptions: same object as [page.click(selector[, options])](https://github.com/puppeteer/puppeteer/blob/v2.1.0/docs/api.md#pageclickselector-options)
 
 ---
 
@@ -395,7 +396,7 @@ await pptc
 - waitOptions: {timeoutInMilliseconds: number}.
   The find method will wait for the selector to to be visible until `timeoutInMilliseconds` expires. Defaults to 30000 (30 seconds).
 - withExactText(text)
-- clickOptions: same object as [page.click(selector[, options])](https://github.com/puppeteer/puppeteer/blob/v2.0.0/docs/api.md#pageclickselector-options)
+- clickOptions: same object as [page.click(selector[, options])](https://github.com/puppeteer/puppeteer/blob/v2.1.0/docs/api.md#pageclickselector-options)
 
 ---
 
@@ -527,8 +528,7 @@ interface WaitUntilOptions {
 Usage example:
 
 ```js
-const selector = pptc
-  .selector('[role="row"]'); // will select all rows in a grid
+const selector = pptc.selector('[role="row"]'); // will select all rows in a grid
 
 await pptc
   .initWith(launchOptions)
@@ -793,7 +793,7 @@ const text = await pptc
 
 ### takeFullPageScreenshotAsBase64([options])
 
-- options: same object as [page.screenshot([options])](https://github.com/puppeteer/puppeteer/blob/v2.0.0/docs/api.md#pagescreenshotoptions)
+- options: same object as [page.screenshot([options])](https://github.com/puppeteer/puppeteer/blob/v2.1.0/docs/api.md#pagescreenshotoptions)
 
   ```js
   const screenshot = await pptc.takeFullPageScreenshotAsBase64();
@@ -1015,6 +1015,7 @@ const pptc = cast(this.context.pptc);
 
 - Helper Methods
 
+  - [click([options])](#clickoptions)
   - [count()](#count)
   - [doesNotExist()](#doesNotExist)
   - [exists()](#exists)
@@ -1022,6 +1023,7 @@ const pptc = cast(this.context.pptc);
   - [getHandles()](#getHandles)
   - [hasClass(className)](#hasClassclassName)
   - [isDisabled()](#isDisabled)
+  - [isEnabled()](#isEnabled)
   - [isVisible()](#isVisible)
 
 ## Usage
@@ -1201,6 +1203,36 @@ The result may differ from one execution to another especially if targeted eleme
 
 ---
 
+### isEnabled()
+
+- returns: `Promise<boolean>`
+
+Checks if the selector is enabled.
+
+If the selector targets multiple DOM elements, this check is done only on the first one found.
+
+The result may differ from one execution to another especially if targeted element is rendered lately because its data is based on some backend response.
+
+In order to be able to call this method not too early, use the [waitUntil(predicate[, waitOptions[, errorMessage]])](#waitUntilpredicate-waitOptions-errorMessage) method:
+
+```js
+import { PuppeteerController } from 'puppeteer-core-controller';
+
+const pptc = new PuppeteerController();
+const selector = pptc
+  .selector('[role="row"]') // will get all dom elements, within the current page, with the attribute role="row"
+  .find('input') // from previous result(s), find all embedded <input> elements
+  .nth(2); // take only the second input
+
+await pptc.waitUntil(() => selector.isEnabled());
+const isEnabled = await selector.isEnabled();
+if (isEnabled) {
+  // do something only when the selector is enabled
+}
+```
+
+---
+
 ### count()
 
 - returns: `Promise<number>`
@@ -1208,6 +1240,19 @@ The result may differ from one execution to another especially if targeted eleme
 Gets the number of found elements.
 
 The result may differ from one execution to another especially if targeted element is rendered lately because its data is based on some backend response.
+
+---
+
+### click([options])
+
+- options: same object as [page.click(selector[, options])](https://github.com/puppeteer/puppeteer/blob/v2.1.0/docs/api.md#pageclickselector-options)
+
+  with an additional property: `timeoutInMilliseconds`. This option enables the click method to wait for the selector to appear in the DOM before attempting to click on it. Defaults to 30000 (30 seconds).
+
+- This method automatically waits for the selector to appear in the DOM:
+  - then hover over the selector;
+  - then waits for the selector to be enabled (ie: no disabled attribute)
+  - then clicks on the selector.
 
 ---
 
@@ -1229,7 +1274,8 @@ import { PuppeteerController } from 'puppeteer-core-controller';
 const pptc = new PuppeteerController();
 const selector = pptc.selector('p').withText('lorem ipsum ...');
 
-await pptc.waitUntil(() => selector.hasClass('foobar'))
+await pptc.waitUntil(() => selector.hasClass('foobar'));
 const hasClass = await selector.hasClass('foobar');
 ```
+
 ---
