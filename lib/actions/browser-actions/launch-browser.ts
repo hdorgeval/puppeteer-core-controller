@@ -24,6 +24,10 @@ export interface LaunchOptions extends puppeteer.LaunchOptions {
 async function tryLaunchBrowser(options: Partial<LaunchOptions>): Promise<puppeteer.Browser> {
   const maxRetries = 3;
 
+  if (options.defaultViewport === undefined) {
+    options.defaultViewport = null;
+  }
+
   for (let index = 0; index <= maxRetries; index++) {
     try {
       const browser = await require('puppeteer-core').launch(options);
