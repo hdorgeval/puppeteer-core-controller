@@ -1022,6 +1022,7 @@ const pptc = cast(this.context.pptc);
   - [getFirstHandleOrNull()](#getFirstHandleOrNull)
   - [getHandles()](#getHandles)
   - [hasClass(className)](#hasClassclassName)
+  - [hover([options])](#hoveroptions)
   - [isDisabled()](#isDisabled)
   - [isEnabled()](#isEnabled)
   - [isVisible()](#isVisible)
@@ -1253,6 +1254,16 @@ The result may differ from one execution to another especially if targeted eleme
   - then hover over the selector;
   - then waits for the selector to be enabled (ie: no disabled attribute)
   - then clicks on the selector.
+
+---
+
+### hover([options])
+
+- options: {steps: number, timeoutInMilliseconds: number }
+
+  `timeoutInMilliseconds` option enables the hover method to wait for the selector to appear in the DOM before attempting to move the mouse on it. Defaults to 30000 (30 seconds). Pass 0 to disable this timeout.
+
+  with an additional property: `timeoutInMilliseconds`. This option enables the click method to wait for the selector to appear in the DOM before attempting to click on it. Defaults to 30000 (30 seconds).
 
 ---
 
