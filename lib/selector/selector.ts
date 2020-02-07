@@ -1,7 +1,7 @@
 import * as puppeteer from 'puppeteer-core';
 import * as action from '../actions';
 import { PuppeteerController, ClickOptions } from '../controller';
-import { defaultClickOptions, defaultHoverOptions } from '../actions';
+import { defaultClickOptions, defaultHoverOptions, HoverOptions } from '../actions';
 import { sleep } from '../utils';
 export type Action = (
   handles: puppeteer.ElementHandle<Element>[],
@@ -389,5 +389,49 @@ export class SelectorController {
     );
 
     await handle?.click(options);
+  }
+
+  public async hover(options: Partial<HoverOptions> = defaultHoverOptions): Promise<void> {
+    const hooverOptions = {
+      ...defaultHoverOptions,
+      ...options,
+    };
+    await this.pptc.waitUntil(
+      () => this.exists(),
+      {
+        timeoutInMilliseconds: hooverOptions.timeoutInMilliseconds,
+        throwOnTimeout: true,
+      },
+      `Cannot hover on ${this.toString()} because this selector was not found in DOM`,
+    );
+
+    const handle = await this.getFirstHandleOrNull();
+    await action.scrollToHandle(handle);
+
+    await this.pptc.waitUntil(
+      () => this.isVisible(),
+      {
+        timeoutInMilliseconds: hooverOptions.timeoutInMilliseconds,
+        throwOnTimeout: true,
+      },
+      `Cannot hover on ${this.toString()} because this selector is not visible`,
+    );
+
+    await action.waitUntilHandleDoesNotMove(handle, this.toString(), {
+      timeoutInMilliseconds: hooverOptions.timeoutInMilliseconds,
+    });
+
+    for (let index = 0; index < 3; index++) {
+      await sleep(50);
+      const clientRectangle = await action.getClientRectangleOfHandle(handle);
+      if (clientRectangle === null) {
+        continue;
+      }
+      const x = clientRectangle.left + clientRectangle.width / 2;
+      const y = clientRectangle.top + clientRectangle.height / 2;
+      this.pptc &&
+        this.pptc.currentPage &&
+        (await this.pptc.currentPage.mouse.move(x, y, { steps: hooverOptions.steps }));
+    }
   }
 }
