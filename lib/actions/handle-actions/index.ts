@@ -1,3 +1,4 @@
+export * from './get-all-options-of-handle';
 export * from './get-class-list-of-handle';
 export * from './get-client-rectangle-of-handle';
 export * from './get-elements-with-text';
