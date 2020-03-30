@@ -61,7 +61,7 @@ describe('record requests to', (): void => {
         .willFail(500);
 
     // When
-    await recordFailedRequests(page, (req) => errors.push(req));
+    await recordFailedRequests(page, [], (req) => errors.push(req));
     await SUT.recordRequestsTo('/500', page, (req) => requests.push(req));
     await page.goto(`file:${path.join(__dirname, 'record-failed-requests-500.test.html')}`);
     await page.waitFor(2000);

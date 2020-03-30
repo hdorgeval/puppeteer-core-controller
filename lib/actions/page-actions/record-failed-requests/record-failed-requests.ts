@@ -1,9 +1,10 @@
 import * as puppeteer from 'puppeteer-core';
 
-const failedStatus = [500, 503, 400, 401, 403, 307];
+const failedStatus = [500, 503, 400, 401, 403, 404, 307];
 
 export async function recordFailedRequests(
   page: puppeteer.Page | undefined,
+  additionalFailedStatus: number[],
   callback: (request: puppeteer.Request) => void,
 ): Promise<void> {
   if (!page) {
@@ -19,6 +20,11 @@ export async function recordFailedRequests(
 
     const status = response.status();
     if (failedStatus.includes(status)) {
+      callback(request);
+      return;
+    }
+
+    if (additionalFailedStatus.includes(status)) {
       callback(request);
       return;
     }

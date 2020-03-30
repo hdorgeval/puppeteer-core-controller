@@ -18,6 +18,7 @@ export interface LaunchOptions extends puppeteer.LaunchOptions {
   emulateDevice?: Device;
   minViewPort?: MinViewPort;
   recordFailedRequests?: boolean;
+  additionalFailedStatus?: number[];
   recordPageErrors?: boolean;
   showCursor?: boolean;
 }

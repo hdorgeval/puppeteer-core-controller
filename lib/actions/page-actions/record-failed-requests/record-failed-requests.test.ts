@@ -39,7 +39,7 @@ describe('record failed requests', (): void => {
     const expectedError = new Error(
       'Error: cannot record failed requests because a new page has not been created',
     );
-    await SUT.recordFailedRequests(page, (req) => errors.push(req)).catch((error): void =>
+    await SUT.recordFailedRequests(page, [], (req) => errors.push(req)).catch((error): void =>
       expect(error).toMatchObject(expectedError),
     );
   });
@@ -60,7 +60,7 @@ describe('record failed requests', (): void => {
         .willFail(500);
 
     // When
-    await SUT.recordFailedRequests(page, (req) => errors.push(req));
+    await SUT.recordFailedRequests(page, [], (req) => errors.push(req));
     await page.goto(`file:${path.join(__dirname, 'record-failed-requests-500.test.html')}`);
     await page.waitFor(2000);
 
@@ -85,7 +85,7 @@ describe('record failed requests', (): void => {
         .willFail(503);
 
     // When
-    await SUT.recordFailedRequests(page, (req) => errors.push(req));
+    await SUT.recordFailedRequests(page, [], (req) => errors.push(req));
     await page.goto(`file:${path.join(__dirname, 'record-failed-requests-503.test.html')}`);
     await page.waitFor(2000);
 
@@ -110,7 +110,7 @@ describe('record failed requests', (): void => {
         .willFail(307);
 
     // When
-    await SUT.recordFailedRequests(page, (req) => errors.push(req));
+    await SUT.recordFailedRequests(page, [], (req) => errors.push(req));
     await page.goto(`file:${path.join(__dirname, 'record-failed-requests-307.test.html')}`);
     await page.waitFor(2000);
 
@@ -118,6 +118,55 @@ describe('record failed requests', (): void => {
     expect(errors.length).toBe(1);
     expect(errors[0].response()?.status()).toBe(307);
     expect(errors[0].response()?.statusText()).toBe('Temporary Redirect');
+  });
+  test('should record failed requests HTTP 404', async (): Promise<void> => {
+    // Given
+    browser = await launchBrowser({
+      headless: true,
+      executablePath: getChromePath(),
+    });
+    const page = await browser.newPage();
+    const errors: puppeteer.Request[] = [];
+    fakeServer &&
+      fakeServer.http
+        .get()
+        .to('/404')
+        .willFail(404);
+
+    // When
+    await SUT.recordFailedRequests(page, [], (req) => errors.push(req));
+    await page.goto(`file:${path.join(__dirname, 'record-failed-requests-404.test.html')}`);
+    await page.waitFor(2000);
+
+    // Then
+    expect(errors.length).toBe(1);
+    expect(errors[0].response()?.status()).toBe(404);
+    expect(errors[0].response()?.statusText()).toBe('Not Found');
+  });
+
+  test('should record failed additional requests ', async (): Promise<void> => {
+    // Given
+    browser = await launchBrowser({
+      headless: true,
+      executablePath: getChromePath(),
+    });
+    const page = await browser.newPage();
+    const errors: puppeteer.Request[] = [];
+    fakeServer &&
+      fakeServer.http
+        .get()
+        .to('/other')
+        .willFail(408);
+
+    // When
+    await SUT.recordFailedRequests(page, [408], (req) => errors.push(req));
+    await page.goto(`file:${path.join(__dirname, 'record-failed-requests-other.test.html')}`);
+    await page.waitFor(2000);
+
+    // Then
+    expect(errors.length).toBe(1);
+    expect(errors[0].response()?.status()).toBe(408);
+    expect(errors[0].response()?.statusText()).toBe('Request Timeout');
   });
 
   test('should record failed requests due to invalid url', async (): Promise<void> => {
@@ -131,7 +180,7 @@ describe('record failed requests', (): void => {
     const requests: puppeteer.Request[] = [];
 
     // When
-    await SUT.recordFailedRequests(page, (req) => errors.push(req));
+    await SUT.recordFailedRequests(page, [], (req) => errors.push(req));
     await recordRequestsTo('foo/bar', page, (req) => requests.push(req));
     await page.goto(`file:${path.join(__dirname, 'record-failed-requests.test.html')}`);
     await page.waitFor(10000);

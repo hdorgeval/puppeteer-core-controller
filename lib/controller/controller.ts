@@ -230,7 +230,10 @@ export class PuppeteerController implements PromiseLike<void> {
   private async startNewPage(): Promise<void> {
     this.page = await action.startNewPageInBrowser(this.browser, this.launchOptions.showCursor);
     if (this.launchOptions.recordFailedRequests) {
-      await action.recordFailedRequests(this.page, (request) => this.failedRequests.push(request));
+      const additionalFailedStatus = this.launchOptions.additionalFailedStatus || [];
+      await action.recordFailedRequests(this.page, additionalFailedStatus, (request) =>
+        this.failedRequests.push(request),
+      );
     }
     if (this.launchOptions.recordPageErrors) {
       await action.recordPageErrors(this.page, (err) => this.pageErrors.push(err));
@@ -265,14 +268,15 @@ export class PuppeteerController implements PromiseLike<void> {
     return this;
   }
 
-  public recordFailedRequests(): PuppeteerController {
+  public recordFailedRequests(additionalFailedStatus: number[] = []): PuppeteerController {
     if (this.page === undefined) {
       this.launchOptions.recordFailedRequests = true;
+      this.launchOptions.additionalFailedStatus = additionalFailedStatus;
       return this;
     }
     this.actions.push(
       async (): Promise<void> =>
-        await action.recordFailedRequests(this.page, (request) =>
+        await action.recordFailedRequests(this.page, additionalFailedStatus, (request) =>
           this.failedRequests.push(request),
         ),
     );
