@@ -119,7 +119,7 @@ await pptc
 - Chainable Methods
 
   - [initWith([options])](#initWithoptions)
-  - [recordFailedRequests()](#recordFailedRequests)
+  - [recordFailedRequests([options])](#recordFailedRequestsoptions)
   - [recordPageErrors()](#recordPageErrors)
   - [recordRequestsTo(url)](#recordRequestsTourl)
   - [withMaxSizeWindow([minViewPort])](#withMaxSizeWindowminViewPort)
@@ -219,11 +219,15 @@ Emulates a mobile device.
 
 ---
 
-### recordFailedRequests()
+### recordFailedRequests([options])
 
-- track and record failed requests. Should be called after `initWith`.
+- track and record failed requests. Should be called after `initWith`. All requests with the following HTTP response status will be recorded as failed requests: `500, 503, 400, 401, 403, 404, 307`.
+
 - use `getFailedRequests()` helper method on the controller to access errors that have occurred.
 - use `clearFailedRequests()` helper method on the controller to clear all past errors.
+
+- options: `...number[]`
+  - add any HTTP status that should be processed as failed request.
 
 ---
 
