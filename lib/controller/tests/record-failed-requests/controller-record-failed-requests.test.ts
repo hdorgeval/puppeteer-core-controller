@@ -133,6 +133,11 @@ describe('Puppeteer Controller', (): void => {
         .get()
         .to('/400')
         .willFail(400);
+    fakeServer &&
+      fakeServer.http
+        .get()
+        .to('/other')
+        .willFail(408);
 
     const url500 = `file:${path.join(
       __dirname,
@@ -147,25 +152,34 @@ describe('Puppeteer Controller', (): void => {
       'controller-record-failed-requests-400.test.html',
     )}`;
 
+    const urlOther = `file:${path.join(
+      __dirname,
+      'controller-record-failed-requests-Other.test.html',
+    )}`;
+
     // When
     await pptc
       .initWith(launchOptions)
-      .recordFailedRequests()
+      .recordFailedRequests(408)
       .navigateTo(url500)
       .wait(2000)
       .navigateTo(url503)
       .wait(2000)
       .navigateTo(url400)
+      .wait(2000)
+      .navigateTo(urlOther)
       .wait(2000);
 
     // Then
     const result = pptc.getFailedRequests();
-    expect(result.length).toBe(3);
+    expect(result.length).toBe(4);
     expect(result[0].response()?.status()).toBe(500);
     expect(result[0].response()?.statusText()).toBe('Internal Server Error');
     expect(result[1].response()?.status()).toBe(503);
     expect(result[1].response()?.statusText()).toBe('Service Unavailable');
     expect(result[2].response()?.status()).toBe(400);
     expect(result[2].response()?.statusText()).toBe('Bad Request');
+    expect(result[3].response()?.status()).toBe(408);
+    expect(result[3].response()?.statusText()).toBe('Request Timeout');
   });
 });

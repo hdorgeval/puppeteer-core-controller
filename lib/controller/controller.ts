@@ -268,15 +268,15 @@ export class PuppeteerController implements PromiseLike<void> {
     return this;
   }
 
-  public recordFailedRequests(additionalFailedStatus: number[] = []): PuppeteerController {
+  public recordFailedRequests(...additionalFailedStatus: number[]): PuppeteerController {
     if (this.page === undefined) {
       this.launchOptions.recordFailedRequests = true;
-      this.launchOptions.additionalFailedStatus = additionalFailedStatus;
+      this.launchOptions.additionalFailedStatus = additionalFailedStatus || [];
       return this;
     }
     this.actions.push(
       async (): Promise<void> =>
-        await action.recordFailedRequests(this.page, additionalFailedStatus, (request) =>
+        await action.recordFailedRequests(this.page, additionalFailedStatus || [], (request) =>
           this.failedRequests.push(request),
         ),
     );
