@@ -391,6 +391,83 @@ export class SelectorController {
     await handle?.click(options);
   }
 
+  /**
+   * Double Click on the selector.
+   * This method automatically waits for the selector to appear in the DOM;
+   * Then hover over the selector;
+   * Then double-clicks on the selector.
+   *
+   * @param {Partial<ClickOptions>} [options=defaultClickOptions]
+   * @returns {Promise<void>}
+   * @memberof SelectorController
+   */
+  public async doubleClick(options: Partial<ClickOptions> = defaultClickOptions): Promise<void> {
+    const clickOptions: ClickOptions = {
+      ...defaultClickOptions,
+      ...options,
+    };
+
+    await this.pptc.waitUntil(
+      () => this.exists(),
+      {
+        timeoutInMilliseconds: clickOptions.timeoutInMilliseconds,
+        throwOnTimeout: true,
+      },
+      `Cannot double-click on ${this.toString()} because this selector was not found in DOM`,
+    );
+
+    const handle = await this.getFirstHandleOrNull();
+    await action.scrollToHandle(handle);
+
+    await this.pptc.waitUntil(
+      () => this.isVisible(),
+      {
+        timeoutInMilliseconds: clickOptions.timeoutInMilliseconds,
+        throwOnTimeout: true,
+      },
+      `Cannot double-click on ${this.toString()} because this selector is not visible`,
+    );
+
+    await action.waitUntilHandleDoesNotMove(handle, this.toString(), {
+      timeoutInMilliseconds: clickOptions.timeoutInMilliseconds,
+    });
+
+    for (let index = 0; index < 3; index++) {
+      await sleep(50);
+      const clientRectangle = await action.getClientRectangleOfHandle(handle);
+      if (clientRectangle === null) {
+        continue;
+      }
+      const x = clientRectangle.left + clientRectangle.width / 2;
+      const y = clientRectangle.top + clientRectangle.height / 2;
+      this.pptc &&
+        this.pptc.currentPage &&
+        (await this.pptc.currentPage.mouse.move(x, y, { steps: defaultHoverOptions.steps }));
+    }
+
+    await this.pptc.waitUntil(
+      () => this.isEnabled(),
+      {
+        timeoutInMilliseconds: clickOptions.timeoutInMilliseconds,
+        throwOnTimeout: true,
+      },
+      `Cannot double-click on ${this.toString()} because this selector is disabled`,
+    );
+
+    const page = this.pptc.currentPage;
+
+    if (!page) {
+      throw new Error(
+        `Cannot double-click on ${this.toString()} because no browser has been launched`,
+      );
+    }
+    if (page) {
+      await page.mouse.down({ clickCount: 1 });
+      await page.waitFor(clickOptions.delay || 0);
+      await page.mouse.down({ clickCount: 2 });
+    }
+  }
+
   public async hover(options: Partial<HoverOptions> = defaultHoverOptions): Promise<void> {
     const hooverOptions = {
       ...defaultHoverOptions,
