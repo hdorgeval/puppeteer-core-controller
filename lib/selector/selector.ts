@@ -340,11 +340,16 @@ export class SelectorController {
    * @returns {Promise<void>}
    * @memberof SelectorController
    */
-  public async click(options: ClickOptions = defaultClickOptions): Promise<void> {
+  public async click(options: Partial<ClickOptions> = defaultClickOptions): Promise<void> {
+    const clickOptions: ClickOptions = {
+      ...defaultClickOptions,
+      ...options,
+    };
+
     await this.pptc.waitUntil(
       () => this.exists(),
       {
-        timeoutInMilliseconds: options.timeoutInMilliseconds,
+        timeoutInMilliseconds: clickOptions.timeoutInMilliseconds,
         throwOnTimeout: true,
       },
       `Cannot click on ${this.toString()} because this selector was not found in DOM`,
@@ -356,14 +361,14 @@ export class SelectorController {
     await this.pptc.waitUntil(
       () => this.isVisible(),
       {
-        timeoutInMilliseconds: options.timeoutInMilliseconds,
+        timeoutInMilliseconds: clickOptions.timeoutInMilliseconds,
         throwOnTimeout: true,
       },
       `Cannot click on ${this.toString()} because this selector is not visible`,
     );
 
     await action.waitUntilHandleDoesNotMove(handle, this.toString(), {
-      timeoutInMilliseconds: options.timeoutInMilliseconds,
+      timeoutInMilliseconds: clickOptions.timeoutInMilliseconds,
     });
 
     for (let index = 0; index < 3; index++) {
@@ -382,13 +387,13 @@ export class SelectorController {
     await this.pptc.waitUntil(
       () => this.isEnabled(),
       {
-        timeoutInMilliseconds: options.timeoutInMilliseconds,
+        timeoutInMilliseconds: clickOptions.timeoutInMilliseconds,
         throwOnTimeout: true,
       },
       `Cannot click on ${this.toString()} because this selector is disabled`,
     );
 
-    await handle?.click(options);
+    await handle?.click(clickOptions);
   }
 
   /**
