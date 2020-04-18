@@ -25,6 +25,7 @@ describe('Puppeteer Controller - assertion API - isNotVisible', (): void => {
     // When
     let result: Error | undefined = undefined;
     try {
+      // prettier-ignore
       await pptc
         .initWith(launchOptions)
         .navigateTo(url)
@@ -89,6 +90,7 @@ describe('Puppeteer Controller - assertion API - isNotVisible', (): void => {
     // When
     let result: Error | undefined = undefined;
     try {
+      // prettier-ignore
       await pptc
         .initWith(launchOptions)
         .navigateTo(url)
