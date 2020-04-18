@@ -54,7 +54,8 @@ describe('record requests to', (): void => {
     const errors: puppeteer.Request[] = [];
     const requests: puppeteer.Request[] = [];
 
-    fakeServer &&
+    // prettier-ignore
+    fakeServer && 
       fakeServer.http
         .get()
         .to('/500')
@@ -89,13 +90,15 @@ describe('record requests to', (): void => {
       'foo-header': 'bar',
     };
 
+    // prettier-ignore
     fakeServer &&
       fakeServer.http
         .get()
         .to('/foobar')
         .willReturn(responseBody, 200, responseHeaders);
 
-    fakeServer &&
+    // prettier-ignore
+    fakeServer && 
       fakeServer.http
         .get()
         .to('/yo')
@@ -135,13 +138,15 @@ describe('record requests to', (): void => {
       'foo-header': 'bar2',
     };
 
+    // prettier-ignore
     fakeServer &&
       fakeServer.http
         .get()
         .to('/foobar')
         .willReturn(responseBody, 200, responseHeaders);
 
-    fakeServer &&
+    // prettier-ignore
+    fakeServer && 
       fakeServer.http
         .get()
         .to('/yo')
