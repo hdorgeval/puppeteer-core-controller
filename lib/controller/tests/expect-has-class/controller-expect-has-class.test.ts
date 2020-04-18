@@ -175,6 +175,7 @@ describe('Puppeteer Controller', (): void => {
     const selector = 'input#input3';
 
     // When
+    // prettier-ignore
     await pptc
       .initWith(launchOptions)
       .navigateTo(url)
@@ -199,6 +200,7 @@ describe('Puppeteer Controller', (): void => {
     const selector = 'input#input4';
 
     // When
+    // prettier-ignore
     await pptc
       .initWith(launchOptions)
       .navigateTo(url)
