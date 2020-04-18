@@ -41,10 +41,7 @@ describe('Puppeteer Controller - Selector API - count', (): void => {
     // When
     const selector1 = pptc.selector('[role="row"]');
     const selector2 = pptc.selector('[role="row"]').find('td');
-    const selector3 = pptc
-      .selector('[role="row"]')
-      .find('td')
-      .find('[data-test-id="my-select"]');
+    const selector3 = pptc.selector('[role="row"]').find('td').find('[data-test-id="my-select"]');
 
     const result1 = await selector1.count();
     const result2 = await selector2.count();
@@ -85,6 +82,7 @@ describe('Puppeteer Controller - Selector API - count', (): void => {
     await pptc.initWith(launchOptions).navigateTo(url);
 
     // When
+    // prettier-ignore
     const selector = pptc
       .selector('[role="row"]')
       .find('p')
@@ -104,6 +102,7 @@ describe('Puppeteer Controller - Selector API - count', (): void => {
       headless: true,
     };
 
+    // prettier-ignore
     const selector = pptc
       .selector('[role="row"]')
       .find('p')
