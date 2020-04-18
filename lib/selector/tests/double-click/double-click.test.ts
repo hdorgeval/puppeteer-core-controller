@@ -20,12 +20,14 @@ describe('Puppeteer Controller - Selector API - doubleClick', (): void => {
       headless: true,
     };
 
+    // prettier-ignore
     const selector = pptc
       .selector('[role="row"]')
       .find('p')
       .withText('I am dynamically added');
 
     const url = `file:${path.join(__dirname, 'double-click.test.html')}`;
+    // prettier-ignore
     await pptc
       .initWith(launchOptions)
       .withCursor()
@@ -50,6 +52,7 @@ describe('Puppeteer Controller - Selector API - doubleClick', (): void => {
       .withValue('I am dynamically added');
 
     const url = `file:${path.join(__dirname, 'double-click.test.html')}`;
+    // prettier-ignore
     await pptc
       .initWith(launchOptions)
       .withCursor()
@@ -68,12 +71,14 @@ describe('Puppeteer Controller - Selector API - doubleClick', (): void => {
       headless: true,
     };
 
+    // prettier-ignore
     const selector = pptc
       .selector('[role="row"]')
       .find('p')
       .withText('I am transparent');
 
     const url = `file:${path.join(__dirname, 'double-click.test.html')}`;
+    // prettier-ignore
     await pptc
       .initWith(launchOptions)
       .withCursor()
@@ -100,12 +105,14 @@ describe('Puppeteer Controller - Selector API - doubleClick', (): void => {
       headless: true,
     };
 
+    // prettier-ignore
     const selector = pptc
       .selector('[role="row"]')
       .find('p')
       .withText('I am out of screen');
 
     const url = `file:${path.join(__dirname, 'double-click.test.html')}`;
+    // prettier-ignore
     await pptc
       .initWith(launchOptions)
       .withCursor()
@@ -135,6 +142,7 @@ describe('Puppeteer Controller - Selector API - doubleClick', (): void => {
     const selector = pptc.selector('#double-click-me');
 
     const url = `file:${path.join(__dirname, 'double-click.test.html')}`;
+    // prettier-ignore
     await pptc
       .initWith(launchOptions)
       .withCursor()
