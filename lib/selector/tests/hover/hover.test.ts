@@ -23,6 +23,7 @@ describe('Puppeteer Controller - Selector API - hover', (): void => {
     const selector = pptc.selector('#in-view-port');
 
     const url = `file:${path.join(__dirname, 'hover.test.html')}`;
+    // prettier-ignore
     await pptc
       .initWith(launchOptions)
       .withCursor()
@@ -44,6 +45,7 @@ describe('Puppeteer Controller - Selector API - hover', (): void => {
     const selector = pptc.selector('input#out-of-view-port');
 
     const url = `file:${path.join(__dirname, 'hover.test.html')}`;
+    // prettier-ignore
     await pptc
       .initWith(launchOptions)
       .withCursor()
