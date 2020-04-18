@@ -40,6 +40,7 @@ describe('Puppeteer Controller - Selector API - isDisabled', (): void => {
     await pptc.initWith(launchOptions).navigateTo(url);
 
     // When
+    // prettier-ignore
     const selector = pptc
       .selector('[role="row"]')
       .find('td')
