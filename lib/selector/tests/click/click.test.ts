@@ -20,12 +20,14 @@ describe('Puppeteer Controller - Selector API - click', (): void => {
       headless: true,
     };
 
+    // prettier-ignore
     const selector = pptc
       .selector('[role="row"]')
       .find('p')
       .withText('I am dynamically added');
 
     const url = `file:${path.join(__dirname, 'click.test.html')}`;
+    // prettier-ignore
     await pptc
       .initWith(launchOptions)
       .withCursor()
@@ -50,6 +52,7 @@ describe('Puppeteer Controller - Selector API - click', (): void => {
       .withValue('I am dynamically added');
 
     const url = `file:${path.join(__dirname, 'click.test.html')}`;
+    // prettier-ignore
     await pptc
       .initWith(launchOptions)
       .withCursor()
@@ -68,12 +71,14 @@ describe('Puppeteer Controller - Selector API - click', (): void => {
       headless: true,
     };
 
+    // prettier-ignore
     const selector = pptc
       .selector('[role="row"]')
       .find('p')
       .withText('I am transparent');
 
     const url = `file:${path.join(__dirname, 'click.test.html')}`;
+    // prettier-ignore
     await pptc
       .initWith(launchOptions)
       .withCursor()
@@ -100,12 +105,14 @@ describe('Puppeteer Controller - Selector API - click', (): void => {
       headless: true,
     };
 
+    // prettier-ignore
     const selector = pptc
       .selector('[role="row"]')
       .find('p')
       .withText('I am out of screen');
 
     const url = `file:${path.join(__dirname, 'click.test.html')}`;
+    // prettier-ignore
     await pptc
       .initWith(launchOptions)
       .withCursor()
