@@ -125,6 +125,7 @@ describe('Puppeteer Controller - ExpectThat - hasAttribute', (): void => {
     const selector = 'p#changing-attr';
 
     // When
+    // prettier-ignore
     await pptc
       .initWith(launchOptions)
       .navigateTo(url)
@@ -133,6 +134,7 @@ describe('Puppeteer Controller - ExpectThat - hasAttribute', (): void => {
 
     const initialHasAttribute = await pptc.hasAttributeWithValue(selector, 'foo', 'bar');
 
+    // prettier-ignore
     await pptc
       .expectThat(selector)
       .hasAttribute('foo')
