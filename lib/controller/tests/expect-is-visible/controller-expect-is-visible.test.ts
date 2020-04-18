@@ -91,6 +91,7 @@ describe('Puppeteer Controller - assertion API - isVisible', (): void => {
     // When
     let result: Error | undefined = undefined;
     try {
+      // prettier-ignore
       await pptc
         .initWith(launchOptions)
         .navigateTo(url)
