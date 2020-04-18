@@ -39,6 +39,7 @@ describe('Puppeteer Controller - Selector API - doesNotExist', (): void => {
     await pptc.initWith(launchOptions).navigateTo(url);
 
     // When
+    // prettier-ignore
     const selector = pptc
       .selector('[role="row"]')
       .find('p')
@@ -59,6 +60,7 @@ describe('Puppeteer Controller - Selector API - doesNotExist', (): void => {
     await pptc.initWith(launchOptions).navigateTo(url);
 
     // When
+    // prettier-ignore
     const selector = pptc
       .selector('[role="row"]')
       .find('p')
@@ -80,6 +82,7 @@ describe('Puppeteer Controller - Selector API - doesNotExist', (): void => {
     await pptc.initWith(launchOptions).navigateTo(url);
 
     // When
+    // prettier-ignore
     const selector = pptc
       .selector('[role="row"]')
       .find('p')
@@ -100,6 +103,7 @@ describe('Puppeteer Controller - Selector API - doesNotExist', (): void => {
     await pptc.initWith(launchOptions).navigateTo(url);
 
     // When
+    // prettier-ignore
     const selector = pptc
       .selector('[role="row"]')
       .find('p')
@@ -162,6 +166,7 @@ describe('Puppeteer Controller - Selector API - doesNotExist', (): void => {
       headless: true,
     };
 
+    // prettier-ignore
     const selector = pptc
       .selector('[role="row"]')
       .find('p')
