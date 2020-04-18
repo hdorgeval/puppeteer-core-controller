@@ -40,6 +40,7 @@ describe('Puppeteer Controller - Selector API - withText', (): void => {
     await pptc.initWith(launchOptions).navigateTo(url);
 
     // When
+    // prettier-ignore
     const selector = pptc
       .selector('[role="row"]')
       .find('td')
@@ -65,6 +66,7 @@ describe('Puppeteer Controller - Selector API - withText', (): void => {
       headless: true,
     };
 
+    // prettier-ignore
     const selector = pptc
       .selector('[role="row"]')
       .find('td')
