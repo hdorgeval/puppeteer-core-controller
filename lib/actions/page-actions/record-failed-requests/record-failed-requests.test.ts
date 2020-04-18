@@ -53,7 +53,8 @@ describe('record failed requests', (): void => {
     const page = await browser.newPage();
     const errors: puppeteer.Request[] = [];
 
-    fakeServer &&
+    // prettier-ignore
+    fakeServer && 
       fakeServer.http
         .get()
         .to('/500')
@@ -78,7 +79,8 @@ describe('record failed requests', (): void => {
     });
     const page = await browser.newPage();
     const errors: puppeteer.Request[] = [];
-    fakeServer &&
+    // prettier-ignore
+    fakeServer && 
       fakeServer.http
         .get()
         .to('/503')
@@ -103,7 +105,8 @@ describe('record failed requests', (): void => {
     });
     const page = await browser.newPage();
     const errors: puppeteer.Request[] = [];
-    fakeServer &&
+    // prettier-ignore
+    fakeServer && 
       fakeServer.http
         .get()
         .to('/307')
@@ -127,7 +130,8 @@ describe('record failed requests', (): void => {
     });
     const page = await browser.newPage();
     const errors: puppeteer.Request[] = [];
-    fakeServer &&
+    // prettier-ignore
+    fakeServer && 
       fakeServer.http
         .get()
         .to('/404')
@@ -152,7 +156,8 @@ describe('record failed requests', (): void => {
     });
     const page = await browser.newPage();
     const errors: puppeteer.Request[] = [];
-    fakeServer &&
+    // prettier-ignore
+    fakeServer && 
       fakeServer.http
         .get()
         .to('/other')
