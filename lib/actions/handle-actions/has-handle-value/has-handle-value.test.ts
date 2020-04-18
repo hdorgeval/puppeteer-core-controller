@@ -97,6 +97,7 @@ describe('handle has value', (): void => {
 
     // When
     const pptc = new PuppeteerController(browser, page);
+    // prettier-ignore
     const selector = await pptc
       .selector('input')
       .nth(1)
@@ -125,6 +126,7 @@ describe('handle has value', (): void => {
 
     // When
     const pptc = new PuppeteerController(browser, page);
+    // prettier-ignore
     const selector = await pptc
       .selector('input')
       .nth(1)
