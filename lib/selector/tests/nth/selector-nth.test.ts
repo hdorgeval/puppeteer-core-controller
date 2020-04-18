@@ -61,6 +61,7 @@ describe('Puppeteer Controller - Selector API - find', (): void => {
     await pptc.initWith(launchOptions).navigateTo(url);
 
     // When
+    // prettier-ignore
     const selector = pptc
       .selector('[role="row"]')
       .find('select[data-test-id="my-select"]')
@@ -85,6 +86,7 @@ describe('Puppeteer Controller - Selector API - find', (): void => {
     await pptc.initWith(launchOptions).navigateTo(url);
 
     // When
+    // prettier-ignore
     const selector = pptc
       .selector('[role="row"]')
       .find('select[data-test-id="my-select"]')
@@ -109,6 +111,7 @@ describe('Puppeteer Controller - Selector API - find', (): void => {
     await pptc.initWith(launchOptions).navigateTo(url);
 
     // When
+    // prettier-ignore
     const selector = pptc
       .selector('[role="row"]')
       .find('select[data-test-id="my-select"]')
@@ -133,6 +136,7 @@ describe('Puppeteer Controller - Selector API - find', (): void => {
     await pptc.initWith(launchOptions).navigateTo(url);
 
     // When
+    // prettier-ignore
     const selector = pptc
       .selector('[role="row"]')
       .find('select[data-test-id="my-select"]')
@@ -156,6 +160,7 @@ describe('Puppeteer Controller - Selector API - find', (): void => {
       headless: true,
     };
 
+    // prettier-ignore
     const selector = pptc
       .selector('[role="row"]')
       .find('select[data-test-id="my-select"]')
