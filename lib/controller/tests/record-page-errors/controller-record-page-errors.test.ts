@@ -22,6 +22,7 @@ describe('Puppeteer Controller', (): void => {
     const url = `file:${path.join(__dirname, 'controller-record-page-errors.test.html')}`;
 
     // When
+    // prettier-ignore
     await pptc
       .initWith(launchOptions)
       .recordPageErrors()
@@ -47,6 +48,7 @@ describe('Puppeteer Controller', (): void => {
     // When
     await pptc.initWith(launchOptions);
 
+    // prettier-ignore
     await pptc
       .recordPageErrors()
       .navigateTo(url)
@@ -69,6 +71,7 @@ describe('Puppeteer Controller', (): void => {
     const url = `file:${path.join(__dirname, 'controller-record-page-errors.test.html')}`;
 
     // When
+    // prettier-ignore
     await pptc
       .initWith(launchOptions)
       .recordPageErrors()
@@ -94,6 +97,7 @@ describe('Puppeteer Controller', (): void => {
     const url = `file:${path.join(__dirname, 'controller-record-page-errors.test.html')}`;
 
     // When
+    // prettier-ignore
     await pptc
       .initWith(launchOptions)
       .recordPageErrors()
