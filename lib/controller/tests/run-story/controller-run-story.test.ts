@@ -30,6 +30,7 @@ describe('Puppeteer Controller', (): void => {
     };
 
     const fillForm: SUT.Story = async (pptc) => {
+      // prettier-ignore
       await pptc
         .click(customSelect)
         .select(option)
@@ -71,6 +72,7 @@ describe('Puppeteer Controller', (): void => {
     };
 
     const fillForm: SUT.Story = async (pptc) => {
+      // prettier-ignore
       await pptc
         .click(customSelect)
         .select(option)
