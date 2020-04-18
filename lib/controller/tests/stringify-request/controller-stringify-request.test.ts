@@ -38,13 +38,15 @@ describe('Puppeteer Controller', (): void => {
     const responseHeaders = {
       'foo-header': 'bar',
     };
+    // prettier-ignore
     fakeServer &&
       fakeServer.http
         .get()
         .to('/foobar')
         .willReturn(responseBody, 200, responseHeaders);
 
-    fakeServer &&
+    // prettier-ignore
+    fakeServer && 
       fakeServer.http
         .get()
         .to('/yo')
@@ -53,6 +55,7 @@ describe('Puppeteer Controller', (): void => {
     const url = `file:${path.join(__dirname, 'controller-stringify-request.test.html')}`;
 
     // When
+    // prettier-ignore
     await pptc
       .initWith(launchOptions)
       .recordRequestsTo('/foobar')
