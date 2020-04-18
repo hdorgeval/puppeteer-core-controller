@@ -154,7 +154,7 @@ describe('Puppeteer Controller', (): void => {
 
     const urlOther = `file:${path.join(
       __dirname,
-      'controller-record-failed-requests-Other.test.html',
+      'controller-record-failed-requests-other.test.html',
     )}`;
 
     // When
