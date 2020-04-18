@@ -123,6 +123,7 @@ describe('Puppeteer Controller - ExpectThat - hasText', (): void => {
     const selector = 'p#changing-content';
 
     // When
+    // prettier-ignore
     await pptc
       .initWith(launchOptions)
       .navigateTo(url)
