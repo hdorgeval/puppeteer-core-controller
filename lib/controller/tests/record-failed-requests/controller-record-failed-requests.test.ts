@@ -31,7 +31,8 @@ describe('Puppeteer Controller', (): void => {
     const launchOptions: LaunchOptions = {
       headless: true,
     };
-    fakeServer &&
+    // prettier-ignore
+    fakeServer && 
       fakeServer.http
         .get()
         .to('/500')
@@ -42,6 +43,7 @@ describe('Puppeteer Controller', (): void => {
     // When
     await pptc.initWith(launchOptions);
 
+    // prettier-ignore
     await pptc
       .recordFailedRequests()
       .navigateTo(url)
@@ -60,7 +62,8 @@ describe('Puppeteer Controller', (): void => {
     const launchOptions: LaunchOptions = {
       headless: true,
     };
-    fakeServer &&
+    // prettier-ignore
+    fakeServer && 
       fakeServer.http
         .get()
         .to('/500')
@@ -69,6 +72,7 @@ describe('Puppeteer Controller', (): void => {
     const url = `file:${path.join(__dirname, 'controller-record-failed-requests-500.test.html')}`;
 
     // When
+    // prettier-ignore
     await pptc
       .initWith(launchOptions)
       .recordFailedRequests()
@@ -88,7 +92,8 @@ describe('Puppeteer Controller', (): void => {
     const launchOptions: LaunchOptions = {
       headless: true,
     };
-    fakeServer &&
+    // prettier-ignore
+    fakeServer && 
       fakeServer.http
         .get()
         .to('/500')
@@ -97,6 +102,7 @@ describe('Puppeteer Controller', (): void => {
     const url = `file:${path.join(__dirname, 'controller-record-failed-requests-500.test.html')}`;
 
     // When
+    // prettier-ignore
     await pptc
       .initWith(launchOptions)
       .recordFailedRequests()
@@ -118,26 +124,10 @@ describe('Puppeteer Controller', (): void => {
     const launchOptions: LaunchOptions = {
       headless: true,
     };
-    fakeServer &&
-      fakeServer.http
-        .get()
-        .to('/500')
-        .willFail(500);
-    fakeServer &&
-      fakeServer.http
-        .get()
-        .to('/503')
-        .willFail(503);
-    fakeServer &&
-      fakeServer.http
-        .get()
-        .to('/400')
-        .willFail(400);
-    fakeServer &&
-      fakeServer.http
-        .get()
-        .to('/other')
-        .willFail(408);
+    fakeServer && fakeServer.http.get().to('/500').willFail(500);
+    fakeServer && fakeServer.http.get().to('/503').willFail(503);
+    fakeServer && fakeServer.http.get().to('/400').willFail(400);
+    fakeServer && fakeServer.http.get().to('/other').willFail(408);
 
     const url500 = `file:${path.join(
       __dirname,
