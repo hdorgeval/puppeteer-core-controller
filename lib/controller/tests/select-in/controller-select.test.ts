@@ -23,6 +23,7 @@ describe('Puppeteer Controller', (): void => {
     const selector = '#select2';
 
     // When
+    // prettier-ignore
     await pptc
       .initWith(launchOptions)
       .navigateTo(url)
