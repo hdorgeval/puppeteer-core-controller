@@ -1022,6 +1022,7 @@ const pptc = cast(this.context.pptc);
   - [click([options])](#clickoptions)
   - [count()](#count)
   - [doesNotExist()](#doesNotExist)
+  - [doubleClick([options])](#doubleClickoptions)
   - [exists()](#exists)
   - [getFirstHandleOrNull()](#getFirstHandleOrNull)
   - [getHandles()](#getHandles)
@@ -1258,6 +1259,21 @@ The result may differ from one execution to another especially if targeted eleme
   - then hover over the selector;
   - then waits for the selector to be enabled (ie: no disabled attribute)
   - then clicks on the selector.
+
+---
+
+### doubleClick([options])
+
+- options: same object as [page.click(selector[, options])](https://github.com/puppeteer/puppeteer/blob/v2.0.0/docs/api.md#pageclickselector-options)
+
+  with an additional property: `timeoutInMilliseconds`. This option enables the click method to wait for the selector to appear in the DOM before attempting to double-click on it. Defaults to 30000 (30 seconds).
+
+  the `delay` option enables to configure the delay between the two clicks, defaults to 100ms.
+
+- This method automatically waits for the selector to appear in the DOM:
+  - then hover over the selector;
+  - then waits for the selector to be enabled (ie: no disabled attribute)
+  - then double-clicks on the selector.
 
 ---
 
