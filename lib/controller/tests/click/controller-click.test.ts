@@ -22,6 +22,7 @@ describe('Puppeteer Controller', (): void => {
     const checkMeOutSelector = 'input[type="checkbox"].form-check-input';
 
     // When
+    // prettier-ignore
     await pptc
       .initWith(launchOptions)
       .navigateTo(url)
