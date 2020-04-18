@@ -31,7 +31,8 @@ describe('Puppeteer Controller', (): void => {
     const launchOptions: LaunchOptions = {
       headless: true,
     };
-    fakeServer &&
+    // prettier-ignore
+    fakeServer && 
       fakeServer.http
         .get()
         .to('/500')
@@ -42,6 +43,7 @@ describe('Puppeteer Controller', (): void => {
     // When
     await pptc.initWith(launchOptions);
 
+    // prettier-ignore
     await pptc
       .recordFailedRequests()
       .recordRequestsTo('/500')
@@ -65,7 +67,8 @@ describe('Puppeteer Controller', (): void => {
     const launchOptions: LaunchOptions = {
       headless: true,
     };
-    fakeServer &&
+    // prettier-ignore
+    fakeServer && 
       fakeServer.http
         .get()
         .to('/500')
@@ -98,7 +101,8 @@ describe('Puppeteer Controller', (): void => {
     const launchOptions: LaunchOptions = {
       headless: true,
     };
-    fakeServer &&
+    // prettier-ignore
+    fakeServer && 
       fakeServer.http
         .get()
         .to('/500')
@@ -107,6 +111,7 @@ describe('Puppeteer Controller', (): void => {
     const url = `file:${path.join(__dirname, 'controller-record-failed-requests-500.test.html')}`;
 
     // When
+    // prettier-ignore
     await pptc
       .initWith(launchOptions)
       .recordRequestsTo('/500')
@@ -134,13 +139,15 @@ describe('Puppeteer Controller', (): void => {
     const responseHeaders = {
       'foo-header': 'bar',
     };
+    // prettier-ignore
     fakeServer &&
       fakeServer.http
         .get()
         .to('/foobar')
         .willReturn(responseBody, 200, responseHeaders);
 
-    fakeServer &&
+    // prettier-ignore
+    fakeServer && 
       fakeServer.http
         .get()
         .to('/yo')
@@ -149,6 +156,7 @@ describe('Puppeteer Controller', (): void => {
     const url = `file:${path.join(__dirname, 'controller-record-requests-to.test.html')}`;
 
     // When
+    // prettier-ignore
     await pptc
       .initWith(launchOptions)
       .recordRequestsTo('/foobar')
@@ -182,13 +190,15 @@ describe('Puppeteer Controller', (): void => {
     const responseHeaders2 = {
       'foo-header2': 'bar',
     };
+    // prettier-ignore
     fakeServer &&
       fakeServer.http
         .get()
         .to('/foobar')
         .willReturn(responseBody, 200, responseHeaders);
 
-    fakeServer &&
+    // prettier-ignore
+    fakeServer && 
       fakeServer.http
         .get()
         .to('/yo')
@@ -243,13 +253,15 @@ describe('Puppeteer Controller', (): void => {
     const responseHeaders = {
       'foo-header': 'bar',
     };
+    // prettier-ignore
     fakeServer &&
       fakeServer.http
         .get()
         .to('/foobar')
         .willReturn(responseBody, 200, responseHeaders);
 
-    fakeServer &&
+    // prettier-ignore
+    fakeServer && 
       fakeServer.http
         .get()
         .to('/yo')
