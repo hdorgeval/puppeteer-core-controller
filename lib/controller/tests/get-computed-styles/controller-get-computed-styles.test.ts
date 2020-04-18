@@ -22,6 +22,7 @@ describe('Puppeteer Controller', (): void => {
     const validInput = 'input[type="text"].is-valid.form-control';
 
     // When
+    // prettier-ignore
     await pptc
       .initWith(launchOptions)
       .navigateTo(url)
@@ -42,6 +43,7 @@ describe('Puppeteer Controller', (): void => {
     const invalidInput = 'input[type="text"].is-invalid.form-control';
 
     // When
+    // prettier-ignore
     await pptc
       .initWith(launchOptions)
       .navigateTo(url)
