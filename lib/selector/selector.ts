@@ -459,17 +459,10 @@ export class SelectorController {
       `Cannot double-click on ${this.toString()} because this selector is disabled`,
     );
 
-    const page = this.pptc.currentPage;
-
-    if (!page) {
-      throw new Error(
-        `Cannot double-click on ${this.toString()} because no browser has been launched`,
-      );
-    }
-    if (page) {
-      await page.mouse.down({ clickCount: 1 });
-      await page.waitFor(clickOptions.delay || 0);
-      await page.mouse.down({ clickCount: 2 });
+    if (handle) {
+      await handle.click({ clickCount: 1 });
+      await sleep(clickOptions.delay || 0);
+      await handle.click({ clickCount: 2 });
     }
   }
 

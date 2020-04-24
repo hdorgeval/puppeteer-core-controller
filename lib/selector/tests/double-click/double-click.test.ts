@@ -99,7 +99,7 @@ describe('Puppeteer Controller - Selector API - doubleClick', (): void => {
     expect(result && result.message).toContain(expectedErrorMessage);
   });
 
-  test('should not click when selector is out of screen', async (): Promise<void> => {
+  test('should not double click when selector is out of screen', async (): Promise<void> => {
     // Given
     const launchOptions: LaunchOptions = {
       headless: true,
