@@ -160,6 +160,11 @@ export class PuppeteerController implements PromiseLike<void> {
   public get currentPage(): puppeteer.Page | undefined {
     return this.page;
   }
+
+  public get currentBrowser(): puppeteer.Browser | undefined {
+    return this.browser;
+  }
+
   private _lastError?: Error;
   public get lastError(): Error | undefined {
     return this._lastError;
