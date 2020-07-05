@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 import * as puppeteer from 'puppeteer-core';
 import { getCurrentBrowserWindowState } from './get-current-browser-window-state';
 import { defaultDevice, Device } from '../page-actions/emulate-device';

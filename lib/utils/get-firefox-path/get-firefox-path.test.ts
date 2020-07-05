@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 describe('get-firefox-path', (): void => {
   afterEach((): void => {
     jest.resetModules();

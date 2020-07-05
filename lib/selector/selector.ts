@@ -43,27 +43,21 @@ export class SelectorController {
   private getActionFrom(actionInfo: ActionInfo): Action {
     switch (actionInfo.name) {
       case 'querySelectorAllInPage':
-        // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
         return () => action.querySelectorAllInPage(actionInfo.selector, this.pptc.currentPage);
 
       case 'find':
-        // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
         return (handles) => action.querySelectorAllFromElements(actionInfo.selector, [...handles]);
 
       case 'nth':
-        // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
         return (handles) => action.getNthElement(actionInfo.index, [...handles]);
 
       case 'parent':
-        // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
         return (handles) => action.getParentsOf([...handles]);
 
       case 'withText':
-        // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
         return (handles) => action.getElementsWithText(actionInfo.text, [...handles]);
 
       case 'withValue':
-        // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
         return (handles) => action.getElementsWithValue(actionInfo.text, [...handles]);
 
       default:

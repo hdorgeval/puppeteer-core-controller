@@ -324,10 +324,9 @@ export class PuppeteerController implements PromiseLike<void> {
     return this;
   }
 
-  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   public find(selector: string, waitOptions: WaitOptions = defaultWaitOptions) {
     return {
-      // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
       withText: (text: string) => {
         return {
           click: (clickOptions: ClickOptions = defaultClickOptions): PuppeteerController => {
@@ -345,7 +344,6 @@ export class PuppeteerController implements PromiseLike<void> {
           },
         };
       },
-      // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
       withExactText: (text: string) => {
         return {
           click: (clickOptions: ClickOptions = defaultClickOptions): PuppeteerController => {
