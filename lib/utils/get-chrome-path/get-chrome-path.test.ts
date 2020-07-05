@@ -6,7 +6,8 @@ describe('get-chrome-path', (): void => {
   test('should return default windows path on Windows platform', (): void => {
     // Given
     jest.mock('os', (): unknown => ({
-      ...jest.requireActual('os'),
+      // eslint-disable-next-line @typescript-eslint/ban-types
+      ...jest.requireActual<Object>('os'),
       type: (): string => 'Windows_NT',
     }));
 
@@ -20,7 +21,8 @@ describe('get-chrome-path', (): void => {
   test('should return default MacOS path on MAcOS platform', (): void => {
     // Given
     jest.mock('os', (): unknown => ({
-      ...jest.requireActual('os'),
+      // eslint-disable-next-line @typescript-eslint/ban-types
+      ...jest.requireActual<Object>('os'),
       type: (): string => 'Darwin',
     }));
 
@@ -34,11 +36,13 @@ describe('get-chrome-path', (): void => {
   test('should return default Unix path on Unix platform for google stable install', (): void => {
     // Given
     jest.mock('os', (): unknown => ({
-      ...jest.requireActual('os'),
+      // eslint-disable-next-line @typescript-eslint/ban-types
+      ...jest.requireActual<Object>('os'),
       type: (): string => 'Linux',
     }));
     jest.mock('which', (): unknown => ({
-      ...jest.requireActual('which'),
+      // eslint-disable-next-line @typescript-eslint/ban-types
+      ...jest.requireActual<Object>('which'),
       sync: (): boolean => true,
     }));
 
@@ -52,11 +56,13 @@ describe('get-chrome-path', (): void => {
   test('should return default Unix path on Unix platform for google install', (): void => {
     // Given
     jest.mock('os', (): unknown => ({
-      ...jest.requireActual('os'),
+      // eslint-disable-next-line @typescript-eslint/ban-types
+      ...jest.requireActual<Object>('os'),
       type: (): string => 'Linux',
     }));
     jest.mock('which', (): unknown => ({
-      ...jest.requireActual('which'),
+      // eslint-disable-next-line @typescript-eslint/ban-types
+      ...jest.requireActual<Object>('which'),
       sync: (): boolean => false,
     }));
 
@@ -70,7 +76,8 @@ describe('get-chrome-path', (): void => {
   test('should return an error when platform is unknown', (): void => {
     // Given
     jest.mock('os', (): unknown => ({
-      ...jest.requireActual('os'),
+      // eslint-disable-next-line @typescript-eslint/ban-types
+      ...jest.requireActual<Object>('os'),
       type: (): string => 'foo',
     }));
 
