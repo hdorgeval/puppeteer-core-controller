@@ -71,7 +71,7 @@ describe('selector is moving', (): void => {
     });
     const page = await browser.newPage();
     await page.goto(`file:${path.join(__dirname, 'is-moving.test2.html')}`);
-    await page.waitFor(2000); // wait twice the animation duration
+    await page.waitFor(1000); // wait twice the animation duration
 
     // When
     const isMoving = await SUT.isMoving('#moving', page);
