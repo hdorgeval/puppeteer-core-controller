@@ -79,7 +79,7 @@ describe('selector has moved', (): void => {
     const page = await browser.newPage();
     await page.goto(`file:${path.join(__dirname, 'has-handle-moved.test2.html')}`);
     const handle = await page.$('#moving');
-    await page.waitFor(2000); // wait twice the animation duration
+    await page.waitFor(500); // wait twice the animation duration
     const previousClientRectangle = await SUT.getClientRectangleOfHandle(handle);
 
     // When
